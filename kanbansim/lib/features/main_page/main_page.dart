@@ -21,7 +21,7 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     menuBar = MainMenuBar(this);
     kanbanBoard = KanbanBoard(this);
-    print("AAAAAAAAAAAAAAAAAAA - $scaffoldKey");
+
     return Container(
       child: Column(
         children: [
