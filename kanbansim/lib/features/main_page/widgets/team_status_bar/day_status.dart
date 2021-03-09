@@ -86,7 +86,7 @@ class DayStatusState extends State<DayStatus> {
                           SubtleMessage.messageWithContext(
                             context,
                             isSuccessful
-                                ? "Previous day clicked!"
+                                ? "Switched to previous day!"
                                 : "Previous day's limit reached.",
                           );
                         },
