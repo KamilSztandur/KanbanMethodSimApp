@@ -40,6 +40,7 @@ class DayStatusState extends State<DayStatus> {
       return true;
     } else {
       return false;
+    }
   }
 
   @override
