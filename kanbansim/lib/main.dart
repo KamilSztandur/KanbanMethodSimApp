@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Kanban Method Simulator',
-      theme: ThemeData.light(),
       home: Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
