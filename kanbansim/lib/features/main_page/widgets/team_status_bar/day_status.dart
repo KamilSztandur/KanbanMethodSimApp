@@ -47,88 +47,112 @@ class DayStatusState extends State<DayStatus> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        height: 100,
+        width: 150,
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.2),
+          color: Colors.white,
           borderRadius: BorderRadius.all(
             Radius.circular(15.0),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Day",
-              style: Theme.of(context).textTheme.headline4,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 2,
+              offset: Offset(0, 3),
             ),
-            Container(
-              alignment: Alignment.center,
-              width: 150,
-              height: 50,
-              child: Center(
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_left_outlined),
-                        color: Theme.of(context).primaryColor,
-                        splashRadius: 28,
-                        splashColor: Colors.grey,
-                        iconSize: 108,
-                        onPressed: () {
-                          bool isSuccessful = false;
+          ],
+        ),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 5),
+              Text(
+                "Day",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                alignment: Alignment.center,
+                width: 150,
+                height: 50,
+                child: Center(
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.keyboard_arrow_left_outlined),
+                          color: Theme.of(context).primaryColor,
+                          splashRadius: 15,
+                          splashColor: Colors.grey,
+                          iconSize: 50,
+                          onPressed: () {
+                            bool isSuccessful = false;
 
-                          setState(() {
-                            isSuccessful = _switchToPreviousDay();
-                          });
+                            setState(() {
+                              isSuccessful = _switchToPreviousDay();
+                            });
 
-                          SubtleMessage.messageWithContext(
-                            context,
-                            isSuccessful
-                                ? "Switched to previous day!"
-                                : "Previous day's limit reached.",
-                          );
-                        },
-                      ),
-                      Container(
-                        child: Text(
-                          '$_daysPassed',
-                          style: Theme.of(context).textTheme.headline2,
-                          textAlign: TextAlign.center,
+                            SubtleMessage.messageWithContext(
+                              context,
+                              isSuccessful
+                                  ? "Switched to previous day!"
+                                  : "Previous day's limit reached.",
+                            );
+                          },
                         ),
-                        width: 100,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          border: Border.all(),
+                        Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            '$_daysPassed',
+                            style: TextStyle(
+                              fontSize: 50,
+                              color: Colors.grey,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          width: 100,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                          ),
                         ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.arrow_right_outlined),
-                        color: Theme.of(context).primaryColor,
-                        splashRadius: 28,
-                        splashColor: Colors.grey,
-                        iconSize: 108,
-                        onPressed: () {
-                          bool isSuccessful = false;
-                          setState(() {
-                            isSuccessful = _switchToNextDay();
-                          });
+                        IconButton(
+                          icon: Icon(Icons.keyboard_arrow_right_outlined),
+                          color: Theme.of(context).primaryColor,
+                          splashRadius: 15,
+                          splashColor: Colors.grey,
+                          iconSize: 50,
+                          onPressed: () {
+                            bool isSuccessful = false;
+                            setState(() {
+                              isSuccessful = _switchToNextDay();
+                            });
 
-                          SubtleMessage.messageWithContext(
-                            context,
-                            isSuccessful
-                                ? "Switched to next day!"
-                                : "Next day's limit reached.",
-                          );
-                        },
-                      ),
-                    ],
+                            SubtleMessage.messageWithContext(
+                              context,
+                              isSuccessful
+                                  ? "Switched to next day!"
+                                  : "Next day's limit reached.",
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );
