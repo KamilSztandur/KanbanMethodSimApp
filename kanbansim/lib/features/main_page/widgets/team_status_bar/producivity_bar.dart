@@ -24,7 +24,7 @@ class ProductivityBarState extends State<ProductivityBar> {
   }
 
   void _test_createDummyUsers() {
-    //this.users = <_User>[];
+    this.users = <_User>[];
 
     users.add(_User(
       "Kamil",

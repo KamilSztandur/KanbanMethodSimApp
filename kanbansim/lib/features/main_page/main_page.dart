@@ -25,8 +25,8 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    menuBar = MainMenuBar(this);
     kanbanBoard = KanbanBoard(this);
+    menuBar = MainMenuBar(this);
     dayStatus = DayStatus(this);
     locksStatus = LocksStatus(this);
     productivityBar = ProductivityBar(this);
@@ -47,14 +47,7 @@ class MainPageState extends State<MainPage> {
               locksStatus,
             ],
           ),
-          SizedBox(height: 10),
-          Container(
-            height: 1,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-            ),
-          ),
+          SizedBox(height: 25),
           kanbanBoard,
         ],
       ),

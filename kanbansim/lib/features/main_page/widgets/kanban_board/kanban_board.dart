@@ -104,8 +104,9 @@ class KanbanBoardState extends State<KanbanBoard> {
 
   Column _buildTitle(String title) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(height: 20),
         Text(
           title,
           textAlign: TextAlign.center,
@@ -113,10 +114,9 @@ class KanbanBoardState extends State<KanbanBoard> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 25,
-            color: Theme.of(context).primaryColor,
+            color: Colors.white,
           ),
         ),
-        SizedBox(height: 20),
       ],
     );
   }
@@ -151,11 +151,165 @@ class KanbanBoardState extends State<KanbanBoard> {
   }
 
   @override
-  Widget build(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
+  Widget build(BuildContext context) {
+    _addRandomTasks(idleTasksColumn);
+    _addRandomTasks(stageOneInProgressTasksColumn);
+    _addRandomTasks(stageOneDoneTasksColumn);
+    _addRandomTasks(stageTwoTasksColumn);
+    _addRandomTasks(finishedTasksColumn);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 20,
+          child: KanbanColumn(
+            parent: this,
+            title: "IDLE TASKS",
+            tasks: idleTasksColumn,
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 40,
+          child: Container(
+            alignment: Alignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      fit: FlexFit.tight,
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.indigoAccent.shade400,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(100.0),
+                            topRight: Radius.circular(100.0),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: _buildTitle("STAGE ONE TASKS"),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.indigoAccent.shade100,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10.0),
+                      bottomRight: Radius.circular(10.0),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 15),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            flex: 2,
+                            child: Container(),
+                          ),
+                          Flexible(
+                            flex: 20,
+                            child: KanbanColumn(
+                              parent: this,
+                              title: "IN PROGRESS",
+                              tasks: stageOneInProgressTasksColumn,
+                            ),
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: Container(),
+                          ),
+                          Flexible(
+                            flex: 20,
+                            child: KanbanColumn(
+                              parent: this,
+                              title: "DONE",
+                              tasks: stageOneDoneTasksColumn,
+                            ),
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: Container(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 15),
+              ],
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 20,
+          child: KanbanColumn(
+            parent: this,
+            title: "STAGE TWO",
+            tasks: stageTwoTasksColumn,
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 20,
+          child: KanbanColumn(
+            parent: this,
+            title: "FINISHED",
+            tasks: finishedTasksColumn,
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+      ],
+    );
+  }
+}
+
+/*
+Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -196,11 +350,16 @@ class KanbanBoardState extends State<KanbanBoard> {
             ],
           ),
           Container(height: 1000, child: VerticalDivider(color: Colors.grey)),
-          Column(
-            children: [
-              _buildTitle("Stage Two Tasks"),
-              KanbanColumn(parent: this, tasks: stageTwoTasksColumn),
-            ],
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Column(
+              children: [
+                _buildTitle("Stage Two Tasks"),
+                KanbanColumn(parent: this, tasks: stageTwoTasksColumn),
+              ],
+            ),
           ),
           Container(height: 1000, child: VerticalDivider(color: Colors.grey)),
           Column(
@@ -209,6 +368,4 @@ class KanbanBoardState extends State<KanbanBoard> {
               KanbanColumn(parent: this, tasks: finishedTasksColumn),
             ],
           ),
-        ],
-      );
-}
+*/

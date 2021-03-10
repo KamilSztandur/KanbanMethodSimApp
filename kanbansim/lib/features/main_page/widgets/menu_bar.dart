@@ -18,7 +18,7 @@ class MainMenuBar extends StatelessWidget {
 
   @override
   ConstrainedBox build(BuildContext context) {
-    //var kanbanBoard = ;
+    var kanbanBoard = this.parent.kanbanBoard.child;
 
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: 100),
@@ -78,14 +78,21 @@ class MainMenuBar extends StatelessWidget {
             title: 'Add random tasks',
             icon: Icons.library_add_outlined,
             onTap: () {
-              this.parent.kanbanBoard.child.addRandomTasksForAllColumns();
+              kanbanBoard.addRandomTasksForAllColumns();
             },
           ),
           MenuItem(
             title: 'Clear all columns',
             icon: Icons.delete_forever_outlined,
             onTap: () {
-              this.parent.kanbanBoard.child.clearAllTasks();
+              try {
+                kanbanBoard.clearAllTasks();
+              } catch (NoSuchMethodError) {
+                SubtleMessage.messageWithContext(
+                  context,
+                  'Wystąpił nieoczekiwany błąd...',
+                );
+              }
             },
           ),
           MenuItem(

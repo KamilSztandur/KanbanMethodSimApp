@@ -36,6 +36,14 @@ class TaskCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.yellowAccent,
           border: Border.all(),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 4,
+              blurRadius: 1,
+              offset: Offset(0, 4),
+            )
+          ],
         ),
         child: Center(
           child: Text(
