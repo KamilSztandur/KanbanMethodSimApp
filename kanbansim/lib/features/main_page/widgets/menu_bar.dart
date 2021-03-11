@@ -89,12 +89,15 @@ class MainMenuBar extends StatelessWidget {
             },
           ),
           MenuItem(
-            title: 'Help',
+            title: 'Info',
             icon: Icons.help_outline_outlined,
             onTap: () {
-              SubtleMessage.messageWithContext(
-                context,
-                'Opening help guide...',
+              showAboutDialog(
+                context: context,
+                applicationVersion: '0.1.6',
+                applicationLegalese:
+                    'For education purposes only.\nDeveloped by Kamil Sztandur.\nContact: kamil.sztandur@vp.pl.',
+                applicationName: "Kanban Method's simulator",
               );
             },
           ),
