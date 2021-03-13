@@ -1,30 +1,22 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:kanbansim/features/main_page/main_page.dart';
 
 class LocksStatus extends StatefulWidget {
-  MainPageState parent;
+  final Function checkForLocks;
 
-  LocksStatus(MainPageState parent) {
-    this.parent = parent;
-  }
+  LocksStatus({
+    Key key,
+    @required this.checkForLocks,
+  }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => LocksStatusState(parent);
+  State<StatefulWidget> createState() => LocksStatusState();
 }
 
 class LocksStatusState extends State<LocksStatus> {
-  MainPageState _parent;
   bool _areThereAnyLocks;
 
-  LocksStatusState(MainPageState parent) {
-    this._parent = parent;
-  }
-
-  void updateStatus(bool status) {
-    this._areThereAnyLocks = status;
+  void _updateStatus() {
+    this._areThereAnyLocks = this.widget.checkForLocks();
   }
 
   bool getStatus() {
@@ -33,7 +25,7 @@ class LocksStatusState extends State<LocksStatus> {
 
   @override
   Widget build(BuildContext context) {
-    _test_randStatus();
+    _updateStatus();
 
     return Center(
       child: Container(
@@ -90,9 +82,5 @@ class LocksStatusState extends State<LocksStatus> {
         ),
       ),
     );
-  }
-
-  void _test_randStatus() {
-    this._areThereAnyLocks = Random().nextBool();
   }
 }

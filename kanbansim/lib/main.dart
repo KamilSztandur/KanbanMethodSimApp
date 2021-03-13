@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
         body: SingleChildScrollView(
           child: MainPage(scaffoldKey: _scaffoldKey),
         ),
+        backgroundColor: Colors.white,
       ),
     );
   }

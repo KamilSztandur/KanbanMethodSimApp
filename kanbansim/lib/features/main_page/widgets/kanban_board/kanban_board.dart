@@ -1,111 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:kanbansim/features/main_page/main_page.dart';
-import 'dart:math';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/create_task_button.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_column.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
+import 'package:kanbansim/models/AllTasksContainer.dart';
 
 class KanbanBoard extends StatefulWidget {
-  //KanbanBoard({Key key, @required this.parent}) : super(key: key);
-  KanbanBoard(MainPageState parent) {
-    this.parent = parent;
-  }
+  final AllTasksContainer allTasks;
+  final VoidCallback createNewTask;
 
-  MainPageState parent;
-  KanbanBoardState child;
+  KanbanBoard({
+    Key key,
+    @required this.allTasks,
+    @required this.createNewTask,
+  }) : super(key: key);
 
   @override
-  KanbanBoardState createState() => KanbanBoardState(parent);
+  KanbanBoardState createState() => KanbanBoardState();
 }
 
 class KanbanBoardState extends State<KanbanBoard> {
-  MainPageState parent;
-  List<TaskCard> idleTasksColumn,
-      stageOneInProgressTasksColumn,
-      stageOneDoneTasksColumn,
-      stageTwoTasksColumn,
-      finishedTasksColumn;
-
-  KanbanBoardState(MainPageState parent) {
-    _setUpTaskLists();
-    this.parent = parent;
-    this.parent.kanbanBoard.child = this;
-  }
-
-  void removeTask(TaskCard task) {
-    setState(() {
-      if (this.idleTasksColumn.remove(task) == true) {
-        return;
-      }
-
-      if (this.stageOneInProgressTasksColumn.remove(task) == true) {
-        return;
-      }
-
-      if (this.stageOneDoneTasksColumn.remove(task) == true) {
-        return;
-      }
-
-      if (this.stageTwoTasksColumn.remove(task) == true) {
-        return;
-      }
-
-      if (this.finishedTasksColumn.remove(task) == true) {
-        return;
-      }
-    });
-
-    SubtleMessage.messageWithContext(
-      context,
-      "Task #${task.getID()} removed successfuly.",
-    );
-  }
-
-  void addRandomTasksForAllColumns() {
-    setState(() {
-      _addRandomTasks(this.idleTasksColumn);
-      _addRandomTasks(this.stageOneInProgressTasksColumn);
-      _addRandomTasks(this.stageOneDoneTasksColumn);
-      _addRandomTasks(this.stageTwoTasksColumn);
-      _addRandomTasks(this.finishedTasksColumn);
-    });
-    SubtleMessage.messageWithContext(
-      context,
-      "Sucessfully added few random tasks.",
-    );
-  }
-
-  void clearAllTasks() {
-    setState(() {
-      _setUpTaskLists();
-    });
-
-    SubtleMessage.messageWithContext(
-      context,
-      "Sucessfully cleared all tasks.",
-    );
-  }
-
-  void _setUpTaskLists() {
-    this.idleTasksColumn = <TaskCard>[];
-    this.stageOneInProgressTasksColumn = <TaskCard>[];
-    this.stageOneDoneTasksColumn = <TaskCard>[];
-    this.stageTwoTasksColumn = <TaskCard>[];
-    this.finishedTasksColumn = <TaskCard>[];
-  }
-
-  void _addRandomTasks(List<TaskCard> tasks) {
-    var rand = new Random();
-    int newTasks = rand.nextInt(3);
-    for (int i = 0; i < newTasks; i++) {
-      tasks.add(TaskCard(this));
-    }
-  }
-
   Column _buildTitle(String title) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(height: 20),
         Text(
           title,
           textAlign: TextAlign.center,
@@ -113,49 +32,169 @@ class KanbanBoardState extends State<KanbanBoard> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 25,
-            color: Theme.of(context).primaryColor,
+            color: Colors.white,
           ),
         ),
-        SizedBox(height: 20),
       ],
     );
   }
 
-  Widget _buildAddButton() {
-    return new Container(
-      alignment: Alignment.center,
-      width: 150,
-      height: 150,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-      ),
-      child: Center(
-        child: IconButton(
-          icon: Icon(Icons.post_add),
-          color: Colors.grey,
-          iconSize: 100,
-          splashColor: Theme.of(context).primaryColor,
-          onPressed: () {
-            setState(() {
-              idleTasksColumn.add(TaskCard(this));
-            });
-
-            SubtleMessage.messageWithContext(
-              context,
-              "New task added successfuly.",
-            );
-          },
-        ),
-      ),
-    );
+  Widget _buildCreateNewTaskButton() {
+    return CreateTaskButton(createNewTask: () {
+      this.widget.createNewTask();
+    });
   }
 
   @override
-  Widget build(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 20,
+          child: Column(
+            children: [
+              SizedBox(height: 15),
+              KanbanColumn(
+                title: "IDLE TASKS",
+                isInternal: false,
+                tasks: widget.allTasks.idleTasksColumn,
+                additionalWidget: _buildCreateNewTaskButton(),
+              ),
+            ],
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 40,
+          child: Container(
+            alignment: Alignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      fit: FlexFit.tight,
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.indigoAccent.shade400,
+                          border:
+                              Border.all(color: Colors.indigoAccent.shade400),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(100.0),
+                            topRight: Radius.circular(100.0),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.0),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: _buildTitle("STAGE ONE TASKS"),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.indigoAccent.shade400,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10.0),
+                      bottomRight: Radius.circular(10.0),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            flex: 20,
+                            child: KanbanColumn(
+                              title: "IN PROGRESS",
+                              isInternal: true,
+                              tasks:
+                                  widget.allTasks.stageOneInProgressTasksColumn,
+                            ),
+                          ),
+                          Flexible(
+                            flex: 20,
+                            child: KanbanColumn(
+                              title: "DONE",
+                              isInternal: true,
+                              tasks: widget.allTasks.stageOneDoneTasksColumn,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 15),
+              ],
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 20,
+          child: KanbanColumn(
+            title: "STAGE TWO",
+            isInternal: false,
+            tasks: widget.allTasks.stageTwoTasksColumn,
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 20,
+          child: KanbanColumn(
+            title: "FINISHED",
+            isInternal: false,
+            tasks: widget.allTasks.finishedTasksColumn,
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+      ],
+    );
+  }
+}
+
+/*
+Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -196,11 +235,16 @@ class KanbanBoardState extends State<KanbanBoard> {
             ],
           ),
           Container(height: 1000, child: VerticalDivider(color: Colors.grey)),
-          Column(
-            children: [
-              _buildTitle("Stage Two Tasks"),
-              KanbanColumn(parent: this, tasks: stageTwoTasksColumn),
-            ],
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Column(
+              children: [
+                _buildTitle("Stage Two Tasks"),
+                KanbanColumn(parent: this, tasks: stageTwoTasksColumn),
+              ],
+            ),
           ),
           Container(height: 1000, child: VerticalDivider(color: Colors.grey)),
           Column(
@@ -209,6 +253,4 @@ class KanbanBoardState extends State<KanbanBoard> {
               KanbanColumn(parent: this, tasks: finishedTasksColumn),
             ],
           ),
-        ],
-      );
-}
+*/
