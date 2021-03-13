@@ -101,6 +101,7 @@ class MainMenuBar extends StatelessWidget {
               showAboutDialog(
                 context: context,
                 applicationVersion: '0.1.6',
+                applicationIcon: Icon(Icons.info_outline_rounded),
                 applicationLegalese:
                     'For education purposes only.\nDeveloped by Kamil Sztandur.\nContact: kamil.sztandur@vp.pl.',
                 applicationName: "Kanban Method's simulator",
