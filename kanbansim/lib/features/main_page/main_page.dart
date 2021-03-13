@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card.dart';
@@ -7,6 +9,7 @@ import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_statu
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
+import 'package:kanbansim/models/User.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({this.scaffoldKey});
@@ -27,6 +30,7 @@ class MainPageState extends State<MainPage> {
   ProductivityBar productivityBar;
 
   AllTasksContainer allTasks;
+  int currentDay;
 
   void _initializeMainMenuBar() {
     this.menuBar = MainMenuBar(
@@ -55,9 +59,58 @@ class MainPageState extends State<MainPage> {
   }
 
   void _initializeStatusBar() {
-    dayStatus = DayStatus(this);
-    locksStatus = LocksStatus(this);
-    productivityBar = ProductivityBar(this);
+    dayStatus = DayStatus(
+      MIN_DAY: 1,
+      MAX_DAY: 15,
+      dayHasChanged: () {
+        // TODO
+      },
+    );
+
+    locksStatus = LocksStatus(
+      checkForLocks: () {
+        return Random().nextBool();
+      },
+    );
+
+    productivityBar = ProductivityBar(
+      users: _createDummyUsers(),
+    );
+  }
+
+  List<User> _createDummyUsers() {
+    List<User> users = <User>[];
+
+    users.add(User(
+      "Kamil",
+      5,
+      Colors.blue,
+    ));
+
+    users.add(User(
+      "Janek",
+      5,
+      Colors.limeAccent,
+    ));
+
+    users.add(User(
+      "Łukasz",
+      5,
+      Colors.purpleAccent,
+    ));
+
+    users.add(User(
+      "Agata",
+      3,
+      Colors.orangeAccent,
+    ));
+
+    users[0].decreaseProductivity(2);
+    users[1].decreaseProductivity(3);
+    users[2].decreaseProductivity(0);
+    users[3].decreaseProductivity(1);
+
+    return users;
   }
 
   @override

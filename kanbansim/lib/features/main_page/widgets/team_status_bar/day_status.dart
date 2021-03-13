@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 
 class DayStatus extends StatefulWidget {
-  MainPageState parent;
-
-  DayStatus(MainPageState parent) {
-    this.parent = parent;
-  }
+  final VoidCallback dayHasChanged;
+  final int MAX_DAY;
+  final int MIN_DAY;
+  DayStatus({
+    Key key,
+    @required this.MAX_DAY,
+    @required this.MIN_DAY,
+    @required this.dayHasChanged,
+  }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => DayStatusState(parent);
+  State<StatefulWidget> createState() => DayStatusState();
 }
 
 class DayStatusState extends State<DayStatus> {
-  MainPageState _parent;
-  /* dummies, it awaits to be replaced by values stored in user settings class */
-  final int MAX_DAY = 15;
-  final int MIN_DAY = 0;
-  /* end of dummies */
   int _daysPassed = 0;
 
-  DayStatusState(MainPageState parent) {
-    this._parent = parent;
-  }
-
   bool _switchToNextDay() {
-    if (_daysPassed < this.MAX_DAY) {
+    if (_daysPassed < this.widget.MAX_DAY) {
       this._daysPassed++;
+      this.widget.dayHasChanged();
       return true;
     } else {
       return false;
@@ -35,7 +30,7 @@ class DayStatusState extends State<DayStatus> {
   }
 
   bool _switchToPreviousDay() {
-    if (_daysPassed > this.MIN_DAY) {
+    if (_daysPassed > this.widget.MIN_DAY) {
       this._daysPassed--;
       return true;
     } else {
