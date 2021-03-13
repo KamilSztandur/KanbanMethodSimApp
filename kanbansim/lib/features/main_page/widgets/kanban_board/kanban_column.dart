@@ -53,14 +53,6 @@ class KanbanColumn extends StatelessWidget {
                     topLeft: Radius.circular(100.0),
                     topRight: Radius.circular(100.0),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
                 ),
                 child: _buildTitle(),
               ),

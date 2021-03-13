@@ -217,7 +217,7 @@ class KanbanBoardState extends State<KanbanBoard> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.indigoAccent.shade100,
+                    color: Colors.indigoAccent.shade400,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(10.0),
                       bottomRight: Radius.circular(10.0),
@@ -233,14 +233,9 @@ class KanbanBoardState extends State<KanbanBoard> {
                   ),
                   child: Column(
                     children: [
-                      SizedBox(height: 15),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(
-                            flex: 2,
-                            child: Container(),
-                          ),
                           Flexible(
                             flex: 20,
                             child: KanbanColumn(
@@ -250,20 +245,12 @@ class KanbanBoardState extends State<KanbanBoard> {
                             ),
                           ),
                           Flexible(
-                            flex: 2,
-                            child: Container(),
-                          ),
-                          Flexible(
                             flex: 20,
                             child: KanbanColumn(
                               parent: this,
                               title: "DONE",
                               tasks: stageOneDoneTasksColumn,
                             ),
-                          ),
-                          Flexible(
-                            flex: 2,
-                            child: Container(),
                           ),
                         ],
                       ),
