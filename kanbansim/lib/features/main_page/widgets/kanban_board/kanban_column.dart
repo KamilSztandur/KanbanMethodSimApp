@@ -3,37 +3,21 @@ import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.d
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card.dart';
 
 class KanbanColumn extends StatelessWidget {
+  final List<TaskCard> tasks;
+  final String title;
+  final bool isInternal;
+  final Widget additionalWidget;
+
   KanbanColumn({
     Key key,
-    @required this.parent,
     @required this.tasks,
     @required this.title,
+    @required this.isInternal,
+    this.additionalWidget,
   }) : super(key: key);
-  final List<TaskCard> tasks;
-  final KanbanBoardState parent;
-  final title;
 
   @override
   Widget build(BuildContext context) => _buildKanbanColumn();
-
-  Column _buildTitle() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-            color: Colors.white,
-          ),
-        ),
-      ],
-    );
-  }
 
   Column _buildKanbanColumn() {
     return Column(
@@ -49,10 +33,12 @@ class KanbanColumn extends StatelessWidget {
                 height: 50,
                 decoration: BoxDecoration(
                   color: Colors.indigoAccent.shade400,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(100.0),
-                    topRight: Radius.circular(100.0),
-                  ),
+                  borderRadius: this.isInternal
+                      ? BorderRadius.zero
+                      : BorderRadius.only(
+                          topLeft: Radius.circular(100.0),
+                          topRight: Radius.circular(100.0),
+                        ),
                 ),
                 child: _buildTitle(),
               ),
@@ -77,7 +63,7 @@ class KanbanColumn extends StatelessWidget {
             ],
           ),
           child: Column(
-            children: _buildTaskList(),
+            children: _buildTaskColumn(),
           ),
         ),
         SizedBox(height: 15),
@@ -85,29 +71,63 @@ class KanbanColumn extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildTaskList() {
-    var columnChildren = <Widget>[];
-
-    columnChildren.add(
-      Row(
-        children: [
-          Flexible(
-            flex: 1,
-            fit: FlexFit.tight,
-            child: Container(),
-          )
-        ],
-      ),
+  Column _buildTitle() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+            color: Colors.white,
+          ),
+        ),
+      ],
     );
+  }
 
-    columnChildren.add(SizedBox(height: 15));
+  List<Widget> _buildTaskColumn() {
+    List<Widget> taskColumn = <Widget>[];
+    taskColumn = _addHorizontalParentFitGuard(taskColumn);
+    taskColumn = _addAdditionalWidget(taskColumn);
+    taskColumn = _buildTaskList(taskColumn);
 
-    int n = tasks.length;
-    for (int i = 0; i < n; i++) {
-      columnChildren.add(tasks[i]);
-      columnChildren.add(SizedBox(height: 15));
+    return taskColumn;
+  }
+
+  List<Widget> _addHorizontalParentFitGuard(List<Widget> column) {
+    column.add(Row(children: [
+      Flexible(
+        flex: 1,
+        fit: FlexFit.tight,
+        child: Container(),
+      )
+    ]));
+    column.add(SizedBox(height: 15));
+
+    return column;
+  }
+
+  List<Widget> _addAdditionalWidget(List<Widget> column) {
+    if (this.additionalWidget != null) {
+      column.add(this.additionalWidget);
+      column.add(SizedBox(height: 15));
     }
 
-    return columnChildren;
+    return column;
+  }
+
+  List<Widget> _buildTaskList(List<Widget> column) {
+    int n = tasks.length;
+    for (int i = 0; i < n; i++) {
+      column.add(tasks[i]);
+      column.add(SizedBox(height: 15));
+    }
+
+    return column;
   }
 }

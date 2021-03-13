@@ -1,25 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:pluto_menu_bar/pluto_menu_bar.dart';
 
 class MainMenuBar extends StatelessWidget {
-  //MainMenuBar({Key key, @required this.parent, @required this.scaffoldKey})
-  //    : super(key: key);
-  //final scaffoldKey;
+  final VoidCallback addRandomTasks;
+  final VoidCallback clearAllTasks;
 
-  MainMenuBar(MainPageState parent) {
-    this.parent = parent;
-  }
-
-  MainPageState parent;
+  MainMenuBar({
+    Key key,
+    @required this.addRandomTasks,
+    @required this.clearAllTasks,
+  }) : super(key: key);
 
   @override
   ConstrainedBox build(BuildContext context) {
-    var kanbanBoard = this.parent.kanbanBoard.child;
-
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: 100),
       child: PlutoMenuBar(
@@ -78,21 +74,24 @@ class MainMenuBar extends StatelessWidget {
             title: 'Add random tasks',
             icon: Icons.library_add_outlined,
             onTap: () {
-              kanbanBoard.addRandomTasksForAllColumns();
+              this.addRandomTasks();
+
+              SubtleMessage.messageWithContext(
+                context,
+                "Sucessfully added few random tasks.",
+              );
             },
           ),
           MenuItem(
             title: 'Clear all columns',
             icon: Icons.delete_forever_outlined,
             onTap: () {
-              try {
-                kanbanBoard.clearAllTasks();
-              } catch (NoSuchMethodError) {
-                SubtleMessage.messageWithContext(
-                  context,
-                  'Wystąpił nieoczekiwany błąd...',
-                );
-              }
+              this.clearAllTasks();
+
+              SubtleMessage.messageWithContext(
+                context,
+                "Sucessfully cleared all tasks.",
+              );
             },
           ),
           MenuItem(

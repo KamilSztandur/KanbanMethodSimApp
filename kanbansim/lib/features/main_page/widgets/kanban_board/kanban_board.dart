@@ -1,107 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:kanbansim/features/main_page/main_page.dart';
-import 'dart:math';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/create_task_button.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_column.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
+import 'package:kanbansim/models/AllTasksContainer.dart';
 
 class KanbanBoard extends StatefulWidget {
-  //KanbanBoard({Key key, @required this.parent}) : super(key: key);
-  KanbanBoard(MainPageState parent) {
-    this.parent = parent;
-  }
+  final AllTasksContainer allTasks;
+  final VoidCallback createNewTask;
 
-  MainPageState parent;
-  KanbanBoardState child;
+  KanbanBoard({
+    Key key,
+    @required this.allTasks,
+    @required this.createNewTask,
+  }) : super(key: key);
 
   @override
-  KanbanBoardState createState() => KanbanBoardState(parent);
+  KanbanBoardState createState() => KanbanBoardState();
 }
 
 class KanbanBoardState extends State<KanbanBoard> {
-  MainPageState parent;
-  List<TaskCard> idleTasksColumn,
-      stageOneInProgressTasksColumn,
-      stageOneDoneTasksColumn,
-      stageTwoTasksColumn,
-      finishedTasksColumn;
-
-  KanbanBoardState(MainPageState parent) {
-    _setUpTaskLists();
-    this.parent = parent;
-    this.parent.kanbanBoard.child = this;
-  }
-
-  void removeTask(TaskCard task) {
-    setState(() {
-      if (this.idleTasksColumn.remove(task) == true) {
-        return;
-      }
-
-      if (this.stageOneInProgressTasksColumn.remove(task) == true) {
-        return;
-      }
-
-      if (this.stageOneDoneTasksColumn.remove(task) == true) {
-        return;
-      }
-
-      if (this.stageTwoTasksColumn.remove(task) == true) {
-        return;
-      }
-
-      if (this.finishedTasksColumn.remove(task) == true) {
-        return;
-      }
-    });
-
-    SubtleMessage.messageWithContext(
-      context,
-      "Task #${task.getID()} removed successfuly.",
-    );
-  }
-
-  void addRandomTasksForAllColumns() {
-    setState(() {
-      _addRandomTasks(this.idleTasksColumn);
-      _addRandomTasks(this.stageOneInProgressTasksColumn);
-      _addRandomTasks(this.stageOneDoneTasksColumn);
-      _addRandomTasks(this.stageTwoTasksColumn);
-      _addRandomTasks(this.finishedTasksColumn);
-    });
-    SubtleMessage.messageWithContext(
-      context,
-      "Sucessfully added few random tasks.",
-    );
-  }
-
-  void clearAllTasks() {
-    setState(() {
-      _setUpTaskLists();
-    });
-
-    SubtleMessage.messageWithContext(
-      context,
-      "Sucessfully cleared all tasks.",
-    );
-  }
-
-  void _setUpTaskLists() {
-    this.idleTasksColumn = <TaskCard>[];
-    this.stageOneInProgressTasksColumn = <TaskCard>[];
-    this.stageOneDoneTasksColumn = <TaskCard>[];
-    this.stageTwoTasksColumn = <TaskCard>[];
-    this.finishedTasksColumn = <TaskCard>[];
-  }
-
-  void _addRandomTasks(List<TaskCard> tasks) {
-    var rand = new Random();
-    int newTasks = rand.nextInt(3);
-    for (int i = 0; i < newTasks; i++) {
-      tasks.add(TaskCard(this));
-    }
-  }
-
   Column _buildTitle(String title) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -121,43 +39,14 @@ class KanbanBoardState extends State<KanbanBoard> {
     );
   }
 
-  Widget _buildAddButton() {
-    return new Container(
-      alignment: Alignment.center,
-      width: 150,
-      height: 150,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-      ),
-      child: Center(
-        child: IconButton(
-          icon: Icon(Icons.post_add),
-          color: Colors.grey,
-          iconSize: 100,
-          splashColor: Theme.of(context).primaryColor,
-          onPressed: () {
-            setState(() {
-              idleTasksColumn.add(TaskCard(this));
-            });
-
-            SubtleMessage.messageWithContext(
-              context,
-              "New task added successfuly.",
-            );
-          },
-        ),
-      ),
-    );
+  Widget _buildCreateNewTaskButton() {
+    return CreateTaskButton(createNewTask: () {
+      this.widget.createNewTask();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    _addRandomTasks(idleTasksColumn);
-    _addRandomTasks(stageOneInProgressTasksColumn);
-    _addRandomTasks(stageOneDoneTasksColumn);
-    _addRandomTasks(stageTwoTasksColumn);
-    _addRandomTasks(finishedTasksColumn);
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,10 +57,16 @@ class KanbanBoardState extends State<KanbanBoard> {
         ),
         Flexible(
           flex: 20,
-          child: KanbanColumn(
-            parent: this,
-            title: "IDLE TASKS",
-            tasks: idleTasksColumn,
+          child: Column(
+            children: [
+              SizedBox(height: 15),
+              KanbanColumn(
+                title: "IDLE TASKS",
+                isInternal: false,
+                tasks: widget.allTasks.idleTasksColumn,
+                additionalWidget: _buildCreateNewTaskButton(),
+              ),
+            ],
           ),
         ),
         Flexible(
@@ -197,13 +92,15 @@ class KanbanBoardState extends State<KanbanBoard> {
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colors.indigoAccent.shade400,
+                          border:
+                              Border.all(color: Colors.indigoAccent.shade400),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(100.0),
                             topRight: Radius.circular(100.0),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
+                              color: Colors.grey.withOpacity(0.0),
                               spreadRadius: 2,
                               blurRadius: 2,
                               offset: Offset(0, 3),
@@ -239,17 +136,18 @@ class KanbanBoardState extends State<KanbanBoard> {
                           Flexible(
                             flex: 20,
                             child: KanbanColumn(
-                              parent: this,
                               title: "IN PROGRESS",
-                              tasks: stageOneInProgressTasksColumn,
+                              isInternal: true,
+                              tasks:
+                                  widget.allTasks.stageOneInProgressTasksColumn,
                             ),
                           ),
                           Flexible(
                             flex: 20,
                             child: KanbanColumn(
-                              parent: this,
                               title: "DONE",
-                              tasks: stageOneDoneTasksColumn,
+                              isInternal: true,
+                              tasks: widget.allTasks.stageOneDoneTasksColumn,
                             ),
                           ),
                         ],
@@ -269,9 +167,9 @@ class KanbanBoardState extends State<KanbanBoard> {
         Flexible(
           flex: 20,
           child: KanbanColumn(
-            parent: this,
             title: "STAGE TWO",
-            tasks: stageTwoTasksColumn,
+            isInternal: false,
+            tasks: widget.allTasks.stageTwoTasksColumn,
           ),
         ),
         Flexible(
@@ -281,9 +179,9 @@ class KanbanBoardState extends State<KanbanBoard> {
         Flexible(
           flex: 20,
           child: KanbanColumn(
-            parent: this,
             title: "FINISHED",
-            tasks: finishedTasksColumn,
+            isInternal: false,
+            tasks: widget.allTasks.finishedTasksColumn,
           ),
         ),
         Flexible(
