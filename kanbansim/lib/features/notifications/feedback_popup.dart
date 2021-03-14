@@ -21,8 +21,10 @@ class FeedbackPopUp {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            textColor: Theme.of(context).primaryColor,
-            child: const Text('Close'),
+            textColor: Theme.of(context).brightness == Brightness.light
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).accentColor,
+            child: Text('Close'),
           ),
         ),
       ],

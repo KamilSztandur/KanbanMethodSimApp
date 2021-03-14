@@ -5,9 +5,16 @@ class SubtleMessage {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(text),
+        content: Text(
+          text,
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+          ),
+        ),
         duration: Duration(seconds: 1),
+        backgroundColor: Theme.of(context).primaryColor,
         action: SnackBarAction(
+            textColor: Theme.of(context).accentColor,
             label: "Close",
             onPressed: () {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();

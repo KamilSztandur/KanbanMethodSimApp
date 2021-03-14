@@ -32,8 +32,9 @@ class ProductivityBarState extends State<ProductivityBar> {
         width: 100,
         height: 50,
         decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.9),
           border: Border.all(
-            color: Colors.grey,
+            color: Theme.of(context).primaryColor,
           ),
           borderRadius: BorderRadius.all(
             Radius.circular(5.0),
@@ -50,7 +51,7 @@ class ProductivityBarState extends State<ProductivityBar> {
                     '${user.getName()}',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey,
+                      color: Theme.of(context).primaryColor,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -62,7 +63,7 @@ class ProductivityBarState extends State<ProductivityBar> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey,
+                color: Theme.of(context).primaryColor,
               ),
               textAlign: TextAlign.center,
             ),
@@ -117,7 +118,7 @@ class ProductivityBarState extends State<ProductivityBar> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey,
+                color: Theme.of(context).primaryColor,
               ),
               textAlign: TextAlign.center,
             ),
@@ -130,7 +131,9 @@ class ProductivityBarState extends State<ProductivityBar> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              textColor: Theme.of(context).primaryColor,
+              textColor: Theme.of(context).brightness == Brightness.light
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).accentColor,
               child: const Text('Close'),
             ),
           ),
@@ -146,15 +149,15 @@ class ProductivityBarState extends State<ProductivityBar> {
         height: 100,
         width: 800,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.all(
             Radius.circular(15.0),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 2,
+              color: Colors.black.withOpacity(0.4),
+              spreadRadius: 1,
+              blurRadius: 1,
               offset: Offset(0, 3),
             ),
           ],

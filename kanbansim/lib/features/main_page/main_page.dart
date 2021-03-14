@@ -11,9 +11,13 @@ import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/User.dart';
 
+import '../../main.dart';
+
 class MainPage extends StatefulWidget {
-  MainPage({this.scaffoldKey});
+  final VoidCallback switchTheme;
   final scaffoldKey;
+
+  MainPage({this.scaffoldKey, @required this.switchTheme});
 
   @override
   MainPageState createState() => MainPageState(scaffoldKey: scaffoldKey);
@@ -43,6 +47,9 @@ class MainPageState extends State<MainPage> {
         setState(() {
           this.allTasks.addRandomTasksForAllColumns();
         });
+      },
+      switchTheme: () {
+        this.widget.switchTheme();
       },
     );
   }
@@ -154,6 +161,7 @@ class MainPageState extends State<MainPage> {
           ),
           SizedBox(height: 25),
           kanbanBoard,
+          SizedBox(height: 25),
         ],
       ),
     );

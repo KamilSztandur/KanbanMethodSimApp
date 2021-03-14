@@ -16,12 +16,12 @@ class CreateTaskButton extends StatelessWidget {
       width: 150,
       height: 150,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white70),
+        border: Border.all(color: Theme.of(context).primaryColor),
       ),
       child: Center(
         child: IconButton(
           icon: Icon(Icons.post_add),
-          color: Colors.white70,
+          color: Theme.of(context).primaryColor,
           iconSize: 100,
           splashColor: Theme.of(context).primaryColor,
           onPressed: () {
