@@ -185,7 +185,7 @@ class _LoadFilePageState extends State<_LoadFilePage> {
                         backgroundColor: MaterialStateProperty.all<Color>(
                           this._readyToSubmit
                               ? Theme.of(context).primaryColor
-                              : Colors.grey,
+                              : Theme.of(context).backgroundColor,
                         ),
                       ),
                       child: Text('submit'),
