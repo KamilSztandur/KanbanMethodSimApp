@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
+import 'package:kanbansim/features/notifications/feedback_popup.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/User.dart';
@@ -38,6 +40,12 @@ class MainPageState extends State<MainPage> {
 
   void _initializeMainMenuBar() {
     this.menuBar = MainMenuBar(
+      loadSimStateFromFilePath: (String filePath) {
+        print(filePath);
+      },
+      saveSimStateIntoFile: () {
+        // TODO
+      },
       clearAllTasks: () {
         setState(() {
           this.allTasks.clearAllTasks();

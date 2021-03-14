@@ -10,12 +10,15 @@ environment:
 
 dependencies:
   pluto_menu_bar: ^0.1.4
-  google_fonts: ^2.0.0
+  filesystem_picker: ^1.0.4
+  intl: ^0.16.1
+  google_fonts: any
   window_size:
     git:
       url: git://github.com/google/flutter-desktop-embedding.git
       path: plugins/window_size
       ref: fd519be1e8398c6b6c2062c2447bac960a71bc02
+  file_picker_cross: any
   flutter:
     sdk: flutter
 
