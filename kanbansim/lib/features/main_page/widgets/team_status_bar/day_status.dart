@@ -117,15 +117,19 @@ class DayStatusState extends State<DayStatus> {
                           width: 100,
                           height: 80,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.9),
-                            border: Border.all(),
+                            color: Colors.white.withOpacity(
+                                Theme.of(context).brightness == Brightness.light
+                                    ? (0.9)
+                                    : (0.0)),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor),
                           ),
                         ),
                         IconButton(
                           icon: Icon(Icons.keyboard_arrow_right_outlined),
                           color: Theme.of(context).primaryColor,
                           splashRadius: 15,
-                          splashColor: Colors.grey,
+                          splashColor: Theme.of(context).primaryColor,
                           iconSize: 50,
                           onPressed: () {
                             bool isSuccessful = false;

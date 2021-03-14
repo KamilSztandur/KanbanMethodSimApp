@@ -32,7 +32,8 @@ class ProductivityBarState extends State<ProductivityBar> {
         width: 100,
         height: 50,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9),
+          color: Colors.white.withOpacity(
+              Theme.of(context).brightness == Brightness.light ? (0.9) : (0.0)),
           border: Border.all(
             color: Theme.of(context).primaryColor,
           ),
@@ -127,13 +128,14 @@ class ProductivityBarState extends State<ProductivityBar> {
         actions: <Widget>[
           Align(
             alignment: Alignment.bottomCenter,
-            child: FlatButton(
+            child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              textColor: Theme.of(context).brightness == Brightness.light
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).accentColor,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Theme.of(context).primaryColor),
+              ),
               child: const Text('Close'),
             ),
           ),

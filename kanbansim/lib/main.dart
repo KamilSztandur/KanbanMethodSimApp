@@ -45,8 +45,7 @@ class KanbanSimAppState extends State<KanbanSimApp> {
       theme: ThemeData(
         brightness: _currentBrightness(),
         primaryColor: Colors.blue.shade800,
-        accentColor: Colors.blue.shade100,
-        fontFamily: 'Comic Sans',
+        accentColor: this._darkTheme ? Colors.grey[900] : Colors.blue.shade100,
       ),
     );
   }
@@ -67,9 +66,10 @@ primaryColor: Colors.deepOrange.shade800,
 accentColor: Colors.orange.shade300,
 
 BLUE
-Colors.blue.shade800,
+primaryColor: Colors.blue.shade800,
 accentColor: Colors.blue.shade100,
 
 GREY:
-Colors.grey
+primaryColor: Colors.grey.shade800,
+accentColor: Colors.grey.shade500,
 */

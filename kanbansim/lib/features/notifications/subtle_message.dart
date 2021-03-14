@@ -8,13 +8,13 @@ class SubtleMessage {
         content: Text(
           text,
           style: TextStyle(
-            color: Theme.of(context).accentColor,
+            color: Colors.white,
           ),
         ),
         duration: Duration(seconds: 1),
         backgroundColor: Theme.of(context).primaryColor,
         action: SnackBarAction(
-            textColor: Theme.of(context).accentColor,
+            textColor: Colors.white,
             label: "Close",
             onPressed: () {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -27,9 +27,15 @@ class SubtleMessage {
     scaffoldKey.currentState.hideCurrentSnackBar();
     scaffoldKey.currentState.showSnackBar(
       SnackBar(
-        content: Text(text),
+        content: Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
         duration: Duration(seconds: 1),
         action: SnackBarAction(
+            textColor: Colors.white,
             label: "Close",
             onPressed: () {
               scaffoldKey.currentState.hideCurrentSnackBar();
