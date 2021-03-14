@@ -11,7 +11,7 @@ class SubtleMessage {
             color: Colors.white,
           ),
         ),
-        duration: Duration(seconds: 1),
+        duration: Duration(seconds: _countDisplayTime(text)),
         backgroundColor: Theme.of(context).primaryColor,
         action: SnackBarAction(
             textColor: Colors.white,
@@ -21,6 +21,16 @@ class SubtleMessage {
             }),
       ),
     );
+  }
+
+  static int _countDisplayTime(String message) {
+    int charsAmount = message.length;
+    double averageEnglishWordLength = 4.7;
+    double averageReadingSpeedPerSecond = (450 * averageEnglishWordLength) / 60;
+
+    double displayTimeInSeconds = charsAmount / averageReadingSpeedPerSecond;
+
+    return displayTimeInSeconds.ceil();
   }
 
   static void message(final scaffoldKey, String text) {
@@ -33,7 +43,7 @@ class SubtleMessage {
             color: Colors.white,
           ),
         ),
-        duration: Duration(seconds: 1),
+        duration: Duration(seconds: _countDisplayTime(text)),
         action: SnackBarAction(
             textColor: Colors.white,
             label: "Close",
