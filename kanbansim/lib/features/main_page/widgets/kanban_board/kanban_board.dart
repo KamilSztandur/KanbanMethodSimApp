@@ -165,7 +165,7 @@ class KanbanBoardState extends State<KanbanBoard> {
         Flexible(
           flex: 20,
           child: KanbanColumn(
-            title: "STAGE TWO",
+            title: "STAGE TWO TASKS",
             isInternal: false,
             tasks: widget.allTasks.stageTwoTasksColumn,
           ),
@@ -177,7 +177,7 @@ class KanbanBoardState extends State<KanbanBoard> {
         Flexible(
           flex: 20,
           child: KanbanColumn(
-            title: "FINISHED",
+            title: "FINISHED TASKS",
             isInternal: false,
             tasks: widget.allTasks.finishedTasksColumn,
           ),
