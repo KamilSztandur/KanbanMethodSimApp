@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
+import 'package:kanbansim/features/input_output_popups/save_file_popup.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:pluto_menu_bar/pluto_menu_bar.dart';
 
@@ -8,16 +10,38 @@ class MainMenuBar extends StatelessWidget {
   final VoidCallback addRandomTasks;
   final VoidCallback clearAllTasks;
   final VoidCallback switchTheme;
+  final Function(String) loadSimStateFromFilePath;
+  final VoidCallback saveSimStateIntoFile;
+
+  LoadFilePopup pickFilePopup;
+  SaveFilePopup saveFilePopup;
 
   MainMenuBar({
     Key key,
     @required this.addRandomTasks,
     @required this.clearAllTasks,
     @required this.switchTheme,
+    @required this.loadSimStateFromFilePath,
+    @required this.saveSimStateIntoFile,
   }) : super(key: key);
+
+  void _initializeFilePickerPopup() {
+    pickFilePopup = LoadFilePopup(
+      returnPickedFilepath: (String filePath) {
+        this.loadSimStateFromFilePath(filePath);
+      },
+    );
+  }
+
+  void _initializeFileSaverPopup() {
+    saveFilePopup = SaveFilePopup();
+  }
 
   @override
   ConstrainedBox build(BuildContext context) {
+    _initializeFilePickerPopup();
+    _initializeFileSaverPopup();
+
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: 100),
       child: PlutoMenuBar(
@@ -55,9 +79,10 @@ class MainMenuBar extends StatelessWidget {
             title: 'Load session',
             icon: Icons.read_more_outlined,
             onTap: () {
-              SubtleMessage.messageWithContext(
-                context,
-                'Select session to load.',
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    this.pickFilePopup.show(context),
               );
             },
           ),
@@ -65,9 +90,10 @@ class MainMenuBar extends StatelessWidget {
             title: 'Save current session',
             icon: Icons.save_outlined,
             onTap: () {
-              SubtleMessage.messageWithContext(
-                context,
-                'Saving...',
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    this.saveFilePopup.show(context),
               );
             },
           ),
