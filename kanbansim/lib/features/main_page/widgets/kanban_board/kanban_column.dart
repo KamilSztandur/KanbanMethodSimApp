@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card.dart';
 
-class KanbanColumn extends StatelessWidget {
+class KanbanColumn extends StatefulWidget {
   final List<TaskCard> tasks;
   final String title;
   final bool isInternal;
@@ -16,6 +15,11 @@ class KanbanColumn extends StatelessWidget {
     this.additionalWidget,
   }) : super(key: key);
 
+  @override
+  State<StatefulWidget> createState() => KanbanColumnState();
+}
+
+class KanbanColumnState extends State<KanbanColumn> {
   @override
   Widget build(BuildContext context) => _buildKanbanColumn();
 
@@ -32,8 +36,8 @@ class KanbanColumn extends StatelessWidget {
               child: Container(
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Colors.indigoAccent.shade400,
-                  borderRadius: this.isInternal
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: this.widget.isInternal
                       ? BorderRadius.zero
                       : BorderRadius.only(
                           topLeft: Radius.circular(100.0),
@@ -45,28 +49,32 @@ class KanbanColumn extends StatelessWidget {
             ),
           ],
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.indigoAccent.shade100,
-            border: Border.all(color: Colors.indigoAccent.shade400),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10.0),
-              bottomRight: Radius.circular(10.0),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 2,
-                blurRadius: 2,
-                offset: Offset(0, 3),
-              ),
-            ],
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: 700,
           ),
-          child: Column(
-            children: _buildTaskColumn(),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).accentColor,
+              border: Border.all(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10.0),
+                bottomRight: Radius.circular(10.0),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.4),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              children: _buildTaskColumn(),
+            ),
           ),
         ),
-        SizedBox(height: 15),
       ],
     );
   }
@@ -77,7 +85,7 @@ class KanbanColumn extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          title,
+          widget.title,
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -113,8 +121,8 @@ class KanbanColumn extends StatelessWidget {
   }
 
   List<Widget> _addAdditionalWidget(List<Widget> column) {
-    if (this.additionalWidget != null) {
-      column.add(this.additionalWidget);
+    if (this.widget.additionalWidget != null) {
+      column.add(this.widget.additionalWidget);
       column.add(SizedBox(height: 15));
     }
 
@@ -122,9 +130,9 @@ class KanbanColumn extends StatelessWidget {
   }
 
   List<Widget> _buildTaskList(List<Widget> column) {
-    int n = tasks.length;
+    int n = widget.tasks.length;
     for (int i = 0; i < n; i++) {
-      column.add(tasks[i]);
+      column.add(widget.tasks[i]);
       column.add(SizedBox(height: 15));
     }
 

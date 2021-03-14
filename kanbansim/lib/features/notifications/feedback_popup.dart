@@ -17,12 +17,15 @@ class FeedbackPopUp {
       actions: <Widget>[
         Align(
           alignment: Alignment.bottomCenter,
-          child: FlatButton(
+          child: ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            textColor: Theme.of(context).primaryColor,
-            child: const Text('Close'),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).primaryColor),
+            ),
+            child: Text('Close'),
           ),
         ),
       ],

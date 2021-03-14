@@ -45,15 +45,15 @@ class DayStatusState extends State<DayStatus> {
         height: 100,
         width: 150,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.all(
             Radius.circular(15.0),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 2,
+              color: Colors.black.withOpacity(0.4),
+              spreadRadius: 1,
+              blurRadius: 1,
               offset: Offset(0, 3),
             ),
           ],
@@ -86,8 +86,8 @@ class DayStatusState extends State<DayStatus> {
                         IconButton(
                           icon: Icon(Icons.keyboard_arrow_left_outlined),
                           color: Theme.of(context).primaryColor,
-                          splashRadius: 15,
-                          splashColor: Colors.grey,
+                          splashRadius: 55,
+                          splashColor: Theme.of(context).primaryColor,
                           iconSize: 50,
                           onPressed: () {
                             bool isSuccessful = false;
@@ -110,21 +110,26 @@ class DayStatusState extends State<DayStatus> {
                             '$_daysPassed',
                             style: TextStyle(
                               fontSize: 50,
-                              color: Colors.grey,
+                              color: Theme.of(context).primaryColor,
                             ),
                             textAlign: TextAlign.center,
                           ),
                           width: 100,
                           height: 80,
                           decoration: BoxDecoration(
-                            border: Border.all(),
+                            color: Colors.white.withOpacity(
+                                Theme.of(context).brightness == Brightness.light
+                                    ? (0.9)
+                                    : (0.0)),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor),
                           ),
                         ),
                         IconButton(
                           icon: Icon(Icons.keyboard_arrow_right_outlined),
                           color: Theme.of(context).primaryColor,
                           splashRadius: 15,
-                          splashColor: Colors.grey,
+                          splashColor: Theme.of(context).primaryColor,
                           iconSize: 50,
                           onPressed: () {
                             bool isSuccessful = false;

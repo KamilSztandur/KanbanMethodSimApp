@@ -32,15 +32,15 @@ class LocksStatusState extends State<LocksStatus> {
         height: 100,
         width: 150,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.all(
             Radius.circular(15.0),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 2,
+              color: Colors.black.withOpacity(0.4),
+              spreadRadius: 1,
+              blurRadius: 1,
               offset: Offset(0, 3),
             ),
           ],
@@ -66,9 +66,8 @@ class LocksStatusState extends State<LocksStatus> {
                 height: 50,
                 decoration: BoxDecoration(
                   border: Border.all(),
-                  color: this._areThereAnyLocks
-                      ? Colors.redAccent
-                      : Colors.lightGreenAccent,
+                  color:
+                      this._areThereAnyLocks ? Colors.redAccent : Colors.green,
                 ),
                 child: Text(
                   this._areThereAnyLocks ? "YES" : "NO",

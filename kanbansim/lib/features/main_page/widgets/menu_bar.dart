@@ -7,11 +7,13 @@ import 'package:pluto_menu_bar/pluto_menu_bar.dart';
 class MainMenuBar extends StatelessWidget {
   final VoidCallback addRandomTasks;
   final VoidCallback clearAllTasks;
+  final VoidCallback switchTheme;
 
   MainMenuBar({
     Key key,
     @required this.addRandomTasks,
     @required this.clearAllTasks,
+    @required this.switchTheme,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,6 @@ class MainMenuBar extends StatelessWidget {
       constraints: BoxConstraints(maxHeight: 100),
       child: PlutoMenuBar(
         backgroundColor: Theme.of(context).primaryColor,
-        borderColor: Colors.white,
         menuIconColor: Colors.white,
         textStyle: TextStyle(color: Colors.white),
         menus: [
@@ -91,6 +92,20 @@ class MainMenuBar extends StatelessWidget {
               SubtleMessage.messageWithContext(
                 context,
                 "Sucessfully cleared all tasks.",
+              );
+            },
+          ),
+          MenuItem(
+            title: 'Switch theme',
+            icon: Theme.of(context).brightness == Brightness.light
+                ? Icons.brightness_2_outlined
+                : Icons.wb_sunny_outlined,
+            onTap: () {
+              this.switchTheme();
+
+              SubtleMessage.messageWithContext(
+                context,
+                "Theme switched successfully.",
               );
             },
           ),
