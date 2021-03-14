@@ -55,21 +55,3 @@ class KanbanSimApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => KanbanSimAppState();
 }
-
-/*
-PURPLE:
-primaryColor: Colors.indigoAccent.shade400,
-accentColor: Colors.indigoAccent.shade100,
-
-ORANGE:
-primaryColor: Colors.deepOrange.shade800,
-accentColor: Colors.orange.shade300,
-
-BLUE
-primaryColor: Colors.blue.shade800,
-accentColor: Colors.blue.shade100,
-
-GREY:
-primaryColor: Colors.grey.shade800,
-accentColor: Colors.grey.shade500,
-*/
