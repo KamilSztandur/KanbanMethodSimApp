@@ -87,7 +87,9 @@ class KanbanColumnState extends State<KanbanColumn> {
         Text(
           widget.title,
           textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
+          overflow: TextOverflow.fade,
+          maxLines: 1,
+          softWrap: false,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 25,

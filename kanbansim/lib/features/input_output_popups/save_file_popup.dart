@@ -56,7 +56,13 @@ class _SaveFilePageState extends State<_SaveFilePage> {
 
   String _getCurrentDateAsString() {
     DateTime currentTime = DateTime.now();
-    String currentHour = currentTime.hour.toString() + ".";
+    String currentHour = '';
+
+    if (currentTime.hour < 10) {
+      currentHour += "0";
+    }
+    currentHour += currentTime.hour.toString() + ".";
+
     if (currentTime.minute < 10) {
       currentHour += "0";
     }
@@ -133,6 +139,16 @@ class _SaveFilePageState extends State<_SaveFilePage> {
                 hintText: "Enter you savefile name here",
                 labelText: "Filename:",
                 labelStyle: new TextStyle(color: const Color(0xFF424242)),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.send),
+                  color: Theme.of(context).primaryColor,
+                  focusColor: Theme.of(context).primaryColor,
+                  disabledColor: Theme.of(context).primaryColor,
+                  onPressed: (() {
+                    _saveFile(this._controller.text);
+                  }),
+                ),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Theme.of(context).primaryColor),
                 ),
@@ -191,7 +207,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Theme.of(context).primaryColor),
                     ),
-                    child: Text('cancel'),
+                    child: Text('Cancel'),
                   ),
                 ),
                 Flexible(flex: 5, child: Container()),

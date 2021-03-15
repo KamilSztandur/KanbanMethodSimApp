@@ -90,7 +90,7 @@ class ProductivityBarState extends State<ProductivityBar> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text(
-          "User info.",
+          "User info",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         content: new Column(
@@ -128,15 +128,20 @@ class ProductivityBarState extends State<ProductivityBar> {
         actions: <Widget>[
           Align(
             alignment: Alignment.bottomCenter,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    Theme.of(context).primaryColor),
-              ),
-              child: const Text('Close'),
+            child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).primaryColor),
+                  ),
+                  child: const Text('Close'),
+                ),
+                SizedBox(height: 10),
+              ],
             ),
           ),
         ],

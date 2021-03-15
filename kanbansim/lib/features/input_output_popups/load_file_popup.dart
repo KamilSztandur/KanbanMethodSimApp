@@ -128,7 +128,7 @@ class _LoadFilePageState extends State<_LoadFilePage> {
                         maxLines: 1,
                         softWrap: false,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 15,
                         ),
                       ),
                     ],
@@ -160,20 +160,6 @@ class _LoadFilePageState extends State<_LoadFilePage> {
                 Flexible(flex: 2, child: Container()),
                 Flexible(
                   flex: 3,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).primaryColor),
-                    ),
-                    child: Text('cancel'),
-                  ),
-                ),
-                Flexible(flex: 4, child: Container()),
-                Flexible(
-                  flex: 3,
                   child: IgnorePointer(
                     ignoring: !this._readyToSubmit,
                     child: ElevatedButton(
@@ -188,8 +174,22 @@ class _LoadFilePageState extends State<_LoadFilePage> {
                               : Theme.of(context).backgroundColor,
                         ),
                       ),
-                      child: Text('submit'),
+                      child: Text('Submit'),
                     ),
+                  ),
+                ),
+                Flexible(flex: 4, child: Container()),
+                Flexible(
+                  flex: 3,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Theme.of(context).primaryColor),
+                    ),
+                    child: Text('Cancel'),
                   ),
                 ),
               ],

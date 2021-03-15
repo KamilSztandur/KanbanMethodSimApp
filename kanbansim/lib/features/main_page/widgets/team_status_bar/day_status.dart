@@ -17,7 +17,7 @@ class DayStatus extends StatefulWidget {
 }
 
 class DayStatusState extends State<DayStatus> {
-  int _daysPassed = 0;
+  int _daysPassed = 1;
 
   bool _switchToNextDay() {
     if (_daysPassed < this.widget.MAX_DAY) {

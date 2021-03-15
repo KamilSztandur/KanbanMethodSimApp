@@ -76,17 +76,6 @@ class MainMenuBar extends StatelessWidget {
             ],
           ),
           MenuItem(
-            title: 'Load session',
-            icon: Icons.read_more_outlined,
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) =>
-                    this.pickFilePopup.show(context),
-              );
-            },
-          ),
-          MenuItem(
             title: 'Save current session',
             icon: Icons.save_outlined,
             onTap: () {
@@ -94,6 +83,17 @@ class MainMenuBar extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) =>
                     this.saveFilePopup.show(context),
+              );
+            },
+          ),
+          MenuItem(
+            title: 'Load session',
+            icon: Icons.read_more_outlined,
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    this.pickFilePopup.show(context),
               );
             },
           ),
@@ -136,8 +136,18 @@ class MainMenuBar extends StatelessWidget {
             },
           ),
           MenuItem(
+            title: 'Help',
+            icon: Icons.help_outline,
+            onTap: () {
+              SubtleMessage.messageWithContext(
+                context,
+                "Opening help guide...",
+              );
+            },
+          ),
+          MenuItem(
             title: 'Info',
-            icon: Icons.help_outline_outlined,
+            icon: Icons.info_outline_rounded,
             onTap: () {
               showAboutDialog(
                 context: context,
@@ -151,7 +161,7 @@ class MainMenuBar extends StatelessWidget {
           ),
           MenuItem(
             title: 'Quit',
-            icon: Icons.close_outlined,
+            icon: Icons.exit_to_app,
             onTap: () => exit(0),
           ),
         ],

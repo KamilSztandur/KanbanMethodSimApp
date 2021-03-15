@@ -17,15 +17,20 @@ class FeedbackPopUp {
       actions: <Widget>[
         Align(
           alignment: Alignment.bottomCenter,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                  Theme.of(context).primaryColor),
-            ),
-            child: Text('Close'),
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).primaryColor),
+                ),
+                child: Text('Close'),
+              ),
+              SizedBox(height: 10),
+            ],
           ),
         ),
       ],

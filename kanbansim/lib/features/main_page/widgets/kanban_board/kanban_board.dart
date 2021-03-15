@@ -26,7 +26,9 @@ class KanbanBoardState extends State<KanbanBoard> {
         Text(
           title,
           textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
+          overflow: TextOverflow.fade,
+          maxLines: 1,
+          softWrap: false,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 25,
