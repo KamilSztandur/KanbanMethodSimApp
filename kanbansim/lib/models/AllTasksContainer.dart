@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
 
 class AllTasksContainer {
   List<TaskCard> idleTasksColumn,

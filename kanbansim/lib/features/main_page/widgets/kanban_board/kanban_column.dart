@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
 
 class KanbanColumn extends StatefulWidget {
   final List<TaskCard> tasks;
@@ -133,9 +133,41 @@ class KanbanColumnState extends State<KanbanColumn> {
 
   List<Widget> _buildTaskList(List<Widget> column) {
     int n = widget.tasks.length;
-    for (int i = 0; i < n; i++) {
-      column.add(widget.tasks[i]);
-      column.add(SizedBox(height: 15));
+
+    if (n % 2 == 0) {
+      for (int i = 0; i < n; i++) {
+        column.add(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              widget.tasks[i],
+              SizedBox(width: 15),
+              widget.tasks[++i],
+            ],
+          ),
+        );
+        column.add(SizedBox(height: 15));
+      }
+    } else {
+      for (int i = 0; i < n; i++) {
+        if (i + 1 < n) {
+          column.add(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                widget.tasks[i],
+                SizedBox(width: 15),
+                widget.tasks[++i],
+              ],
+            ),
+          );
+        } else {
+          column.add(widget.tasks[i]);
+        }
+        column.add(SizedBox(height: 15));
+      }
     }
 
     return column;
