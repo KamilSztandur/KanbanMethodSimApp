@@ -27,25 +27,22 @@ class KanbanSimAppState extends State<KanbanSimApp> {
   @override
   Widget build(BuildContext context) {
     setWindowTitle("Kanban Method's Simulator");
-
     return MaterialApp(
-      title: 'Kanban Method Simulator',
       home: Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          child: MainPage(
-            scaffoldKey: _scaffoldKey,
-            switchTheme: () {
-              _switchBrightness();
-            },
-          ),
+        body: MainPage(
+          scaffoldKey: _scaffoldKey,
+          switchTheme: () {
+            _switchBrightness();
+          },
         ),
       ),
       theme: ThemeData(
         brightness: _currentBrightness(),
         primaryColor: Colors.blue.shade800,
         accentColor: this._darkTheme ? Colors.grey[900] : Colors.blue.shade100,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
     );
   }
