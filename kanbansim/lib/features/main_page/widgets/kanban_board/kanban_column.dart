@@ -51,7 +51,7 @@ class KanbanColumnState extends State<KanbanColumn> {
         ),
         ConstrainedBox(
           constraints: BoxConstraints(
-            minHeight: 700,
+            minHeight: MediaQuery.of(context).size.height * 0.65,
           ),
           child: Container(
             decoration: BoxDecoration(

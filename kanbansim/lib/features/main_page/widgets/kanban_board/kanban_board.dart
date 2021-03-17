@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/create_task_button.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_column.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
+import 'package:kanbansim/models/Task.dart';
 
 class KanbanBoard extends StatefulWidget {
   final AllTasksContainer allTasks;
   final VoidCallback createNewTask;
+  final Function(Task) deleteMe;
 
   KanbanBoard({
     Key key,
     @required this.allTasks,
     @required this.createNewTask,
+    @required this.deleteMe,
   }) : super(key: key);
 
   @override
@@ -18,6 +22,24 @@ class KanbanBoard extends StatefulWidget {
 }
 
 class KanbanBoardState extends State<KanbanBoard> {
+  List<TaskCard> _parseTaskCardsList(List<Task> tasksList) {
+    List<TaskCard> taskCardsList = <TaskCard>[];
+
+    int length = tasksList.length;
+    for (int i = 0; i < length; i++) {
+      taskCardsList.add(_parseTaskCard(tasksList[i]));
+    }
+
+    return taskCardsList;
+  }
+
+  TaskCard _parseTaskCard(Task task) {
+    return TaskCard(
+      task,
+      this.widget.deleteMe,
+    );
+  }
+
   Column _buildTitle(String title) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +85,7 @@ class KanbanBoardState extends State<KanbanBoard> {
               KanbanColumn(
                 title: "IDLE TASKS",
                 isInternal: false,
-                tasks: widget.allTasks.idleTasksColumn,
+                tasks: _parseTaskCardsList(widget.allTasks.idleTasksColumn),
                 additionalWidget: _buildCreateNewTaskButton(),
               ),
             ],
@@ -138,8 +160,9 @@ class KanbanBoardState extends State<KanbanBoard> {
                             child: KanbanColumn(
                               title: "IN PROGRESS",
                               isInternal: true,
-                              tasks:
-                                  widget.allTasks.stageOneInProgressTasksColumn,
+                              tasks: _parseTaskCardsList(
+                                widget.allTasks.stageOneInProgressTasksColumn,
+                              ),
                             ),
                           ),
                           Flexible(
@@ -147,7 +170,9 @@ class KanbanBoardState extends State<KanbanBoard> {
                             child: KanbanColumn(
                               title: "DONE",
                               isInternal: true,
-                              tasks: widget.allTasks.stageOneDoneTasksColumn,
+                              tasks: _parseTaskCardsList(
+                                widget.allTasks.stageOneDoneTasksColumn,
+                              ),
                             ),
                           ),
                         ],
@@ -169,7 +194,7 @@ class KanbanBoardState extends State<KanbanBoard> {
           child: KanbanColumn(
             title: "STAGE TWO TASKS",
             isInternal: false,
-            tasks: widget.allTasks.stageTwoTasksColumn,
+            tasks: _parseTaskCardsList(widget.allTasks.stageTwoTasksColumn),
           ),
         ),
         Flexible(
@@ -181,7 +206,7 @@ class KanbanBoardState extends State<KanbanBoard> {
           child: KanbanColumn(
             title: "FINISHED TASKS",
             isInternal: false,
-            tasks: widget.allTasks.finishedTasksColumn,
+            tasks: _parseTaskCardsList(widget.allTasks.finishedTasksColumn),
           ),
         ),
         Flexible(

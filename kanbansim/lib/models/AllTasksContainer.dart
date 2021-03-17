@@ -1,27 +1,32 @@
 import 'dart:math';
-
-import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
+import 'package:kanbansim/models/Task.dart';
+import 'package:kanbansim/models/User.dart';
 
 class AllTasksContainer {
-  List<TaskCard> idleTasksColumn,
+  Function getUserList;
+
+  List<Task> idleTasksColumn,
       stageOneInProgressTasksColumn,
       stageOneDoneTasksColumn,
       stageTwoTasksColumn,
       finishedTasksColumn;
 
-  Function(TaskCard) _onRemove;
-
-  AllTasksContainer(Function(TaskCard) onRemove) {
+  AllTasksContainer(Function getUserList) {
+    this.getUserList = getUserList;
     _setUpTaskLists();
-
-    this._onRemove = onRemove;
   }
 
-  void createTask() {
-    this.idleTasksColumn.add(TaskCard(this._onRemove));
+  void createTask(String title, int productivityRequired, User owner) {
+    this.idleTasksColumn.add(
+          Task(
+            title,
+            productivityRequired,
+            owner,
+          ),
+        );
   }
 
-  void removeTask(TaskCard task) {
+  void removeTask(Task task) {
     if (this.idleTasksColumn.remove(task) == true) {
       return;
     }
@@ -55,21 +60,106 @@ class AllTasksContainer {
     _setUpTaskLists();
   }
 
-  void _setUpTaskLists() {
-    this.idleTasksColumn = <TaskCard>[];
-    this.stageOneInProgressTasksColumn = <TaskCard>[];
-    this.stageOneDoneTasksColumn = <TaskCard>[];
-    this.stageTwoTasksColumn = <TaskCard>[];
-    this.finishedTasksColumn = <TaskCard>[];
+  bool areThereAnyLocks() {
+    if (_checkForLockedTasks(this.idleTasksColumn)) {
+      return true;
+    }
+
+    if (_checkForLockedTasks(this.stageOneInProgressTasksColumn)) {
+      return true;
+    }
+
+    if (_checkForLockedTasks(this.stageOneDoneTasksColumn)) {
+      return true;
+    }
+
+    if (_checkForLockedTasks(this.stageTwoTasksColumn)) {
+      return true;
+    }
+
+    if (_checkForLockedTasks(this.finishedTasksColumn)) {
+      return true;
+    }
+
+    return false;
   }
 
-  void _addRandomTasks(List<TaskCard> tasks) {
-    var rand = new Random();
+  bool _checkForLockedTasks(List<Task> tasksList) {
+    int length = tasksList.length;
+    for (int i = 0; i < length; i++) {
+      if (tasksList[i].isLocked()) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  void _setUpTaskLists() {
+    this.idleTasksColumn = <Task>[];
+    this.stageOneInProgressTasksColumn = <Task>[];
+    this.stageOneDoneTasksColumn = <Task>[];
+    this.stageTwoTasksColumn = <Task>[];
+    this.finishedTasksColumn = <Task>[];
+  }
+
+  void _addRandomTasks(List<Task> tasks) {
+    Random rand = new Random();
     int newTasks = rand.nextInt(3);
     for (int i = 0; i < newTasks; i++) {
-      tasks.add(TaskCard(
-        this._onRemove,
-      ));
+      tasks.add(
+        createRandomTask(),
+      );
     }
+  }
+
+  Task createRandomTask() {
+    Random rand = new Random();
+
+    Task randomTask = Task(
+      "RANDOM TITLE",
+      Random().nextInt(5) + 1,
+      _getRandomUser(),
+    );
+
+    randomTask = _fulfillTaskRandomly(randomTask);
+
+    return randomTask;
+  }
+
+  Task _fulfillTaskRandomly(Task task) {
+    task.investProductivity(
+      Random().nextInt(task.owner.getProductivity() + 1),
+    );
+
+    var userList = this.getUserList();
+    int n = userList.length;
+
+    for (int i = 0; i < n; i++) {
+      User otherUser = userList[i];
+      if (otherUser.getID() == task.owner.getID()) {
+        continue;
+      }
+
+      int randomUserProductivity = otherUser.getProductivity();
+      if (randomUserProductivity == 0) {
+        continue;
+      }
+
+      int range = Random().nextInt(randomUserProductivity + 1);
+      task.investProductivityFrom(
+        otherUser,
+        range,
+      );
+    }
+
+    return task;
+  }
+
+  User _getRandomUser() {
+    List<User> userList = this.getUserList();
+    int randomIndex = Random().nextInt(userList.length);
+
+    return userList[randomIndex];
   }
 }

@@ -13,8 +13,8 @@ class CreateTaskButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
       alignment: Alignment.center,
-      width: 150,
-      height: 150,
+      width: 100,
+      height: 100,
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).primaryColor),
       ),
@@ -22,7 +22,7 @@ class CreateTaskButton extends StatelessWidget {
         child: IconButton(
           icon: Icon(Icons.post_add),
           color: Theme.of(context).primaryColor,
-          iconSize: 100,
+          iconSize: 66,
           splashColor: Theme.of(context).primaryColor,
           onPressed: () {
             this.createNewTask();
