@@ -21,3 +21,17 @@ kanbansim/linux/flutter/generated_plugin_registrant.cc
 kanbansim/windows/flutter/generated_plugin_registrant.cc
 kanbansim/windows/flutter/generated_plugin_registrant.h
 kanbansim/windows/flutter/generated_plugins.cmake
+kanbansim/windows/flutter/generated_plugin_registrant.cc
+kanbansim/windows/flutter/generated_plugin_registrant.h
+kanbansim/windows/flutter/generated_plugins.cmake
+kanbansim/linux/flutter/generated_plugin_registrant.cc
+kanbansim/linux/flutter/generated_plugin_registrant.h
+kanbansim/macos/Flutter/GeneratedPluginRegistrant.swift
+kanbansim/linux/flutter/generated_plugins.cmake
+kanbansim/linux/flutter/generated_plugin_registrant.cc
+kanbansim/linux/flutter/generated_plugin_registrant.h
+kanbansim/linux/flutter/generated_plugins.cmake
+kanbansim/macos/Flutter/GeneratedPluginRegistrant.swift
+kanbansim/windows/flutter/generated_plugin_registrant.cc
+kanbansim/windows/flutter/generated_plugin_registrant.h
+kanbansim/windows/flutter/generated_plugins.cmake
