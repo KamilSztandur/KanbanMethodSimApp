@@ -21,7 +21,7 @@ class ScrollBarState extends State<ScrollBar> {
     return VsScrollbar(
       controller: _scrollController,
       showTrackOnHover: true,
-      isAlwaysShown: false,
+      isAlwaysShown: true,
       scrollbarFadeDuration: Duration(milliseconds: 500),
       scrollbarTimeToFade: Duration(milliseconds: 800),
       style: VsScrollbarStyle(
