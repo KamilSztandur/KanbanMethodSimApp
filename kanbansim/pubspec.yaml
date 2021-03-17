@@ -9,6 +9,7 @@ environment:
   sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
+  vs_scrollbar: ^0.2.0
   pluto_menu_bar: ^0.1.4
   filesystem_picker: ^1.0.4
   intl: ^0.16.1
