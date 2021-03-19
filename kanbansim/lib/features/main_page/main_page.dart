@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
 import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
@@ -5,6 +6,7 @@ import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
+import 'package:kanbansim/features/scroll_bar.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
@@ -165,7 +167,79 @@ class MainPageState extends State<MainPage> {
     _initializeMainMenuBar();
     _initializeStatusBar();
 
-    return Container(
+    return ListView(
+      children: [
+        menuBar,
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).accentColor.withOpacity(
+                  Theme.of(context).brightness == Brightness.light ? 0.6 : 0.5,
+                ),
+            border: Border.all(
+              width: 2.0,
+              color: Colors.black.withOpacity(
+                Theme.of(context).brightness == Brightness.light ? 0.3 : 0.5,
+              ),
+            ),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(25),
+              bottomRight: Radius.circular(25),
+            ),
+          ),
+          child: Column(
+            children: [
+              SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  dayStatus,
+                  SizedBox(width: 10),
+                  productivityBar,
+                  SizedBox(width: 10),
+                  locksStatus,
+                ],
+              ),
+              SizedBox(height: 15),
+            ],
+          ),
+        ),
+        Container(
+          height: (MediaQuery.of(context).size.height) * 0.825,
+          child: ScrollBar(
+            child: kanbanBoard,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /*
+      return ListView(
+      padding: EdgeInsets.all(20),
+      physics: BouncingScrollPhysics(),
+      children: [
+        menuBar,
+        SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            dayStatus,
+            SizedBox(width: 10),
+            productivityBar,
+            SizedBox(width: 10),
+            locksStatus,
+          ],
+        ),
+        SizedBox(height: 10),
+        ScrollBar(
+          child: kanbanBoard,
+        ),
+      ],
+    );
+    /*
+    Container(
       child: Column(
         children: [
           menuBar,
@@ -181,11 +255,14 @@ class MainPageState extends State<MainPage> {
               locksStatus,
             ],
           ),
-          SizedBox(height: 25),
-          kanbanBoard,
-          SizedBox(height: 25),
+          ScrollBar(
+            context: context,
+            child: kanbanBoard,
+          ),
         ],
       ),
     );
+    */
   }
+  */
 }
