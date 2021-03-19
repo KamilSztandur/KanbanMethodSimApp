@@ -1,8 +1,6 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
-import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card.dart';
 import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
@@ -10,6 +8,7 @@ import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:kanbansim/features/scroll_bar.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
+import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
 
 class MainPage extends StatefulWidget {
@@ -33,7 +32,15 @@ class MainPageState extends State<MainPage> {
   ProductivityBar productivityBar;
 
   AllTasksContainer allTasks;
+  List<User> users;
   int currentDay;
+
+  void _restoreUsersProductivities() {
+    int n = this.users.length;
+    for (int i = 0; i < n; i++) {
+      this.users[i].restoreProductivity();
+    }
+  }
 
   void _initializeMainMenuBar() {
     this.menuBar = MainMenuBar(
@@ -46,6 +53,7 @@ class MainPageState extends State<MainPage> {
       clearAllTasks: () {
         setState(() {
           this.allTasks.clearAllTasks();
+          _restoreUsersProductivities();
         });
       },
       addRandomTasks: () {
@@ -62,9 +70,29 @@ class MainPageState extends State<MainPage> {
   void _initializeKanbanBoard() {
     kanbanBoard = KanbanBoard(
       allTasks: this.allTasks,
-      createNewTask: () {
+      taskCreated: (Task task) {
         setState(() {
-          this.allTasks.createTask();
+          this.allTasks.idleTasksColumn.add(task);
+        });
+      },
+      deleteMe: (Task task) {
+        setState(
+          () {
+            this.allTasks.removeTask(task);
+          },
+        );
+
+        SubtleMessage.messageWithContext(
+          context,
+          'Successfully deleted task #${task.getID()}.',
+        );
+      },
+      getUsers: () {
+        return this.users;
+      },
+      taskUnlocked: () {
+        setState(() {
+          this.locksStatus.checkForLocks();
         });
       },
     );
@@ -81,68 +109,59 @@ class MainPageState extends State<MainPage> {
 
     locksStatus = LocksStatus(
       checkForLocks: () {
-        return Random().nextBool();
+        return this.allTasks.areThereAnyLocks();
       },
     );
 
     productivityBar = ProductivityBar(
-      users: _createDummyUsers(),
+      users: this.users,
     );
   }
 
-  List<User> _createDummyUsers() {
-    List<User> users = <User>[];
+  void _initializeDummyUsers() {
+    if (this.users == null) {
+      this.users = <User>[];
 
-    users.add(User(
-      "Kamil",
-      5,
-      Colors.blue,
-    ));
+      this.users.add(User(
+            "Kamil",
+            5,
+            Colors.blue,
+          ));
 
-    users.add(User(
-      "Janek",
-      5,
-      Colors.limeAccent,
-    ));
+      this.users.add(User(
+            "Janek",
+            5,
+            Colors.limeAccent,
+          ));
 
-    users.add(User(
-      "Łukasz",
-      5,
-      Colors.purpleAccent,
-    ));
+      this.users.add(User(
+            "Łukasz",
+            5,
+            Colors.purpleAccent,
+          ));
 
-    users.add(User(
-      "Agata",
-      3,
-      Colors.orangeAccent,
-    ));
+      this.users.add(User(
+            "Agata",
+            3,
+            Colors.orangeAccent,
+          ));
+    }
+  }
 
-    users[0].decreaseProductivity(2);
-    users[1].decreaseProductivity(3);
-    users[2].decreaseProductivity(0);
-    users[3].decreaseProductivity(1);
-
-    return users;
+  void _initializeAllTasksContainer() {
+    if (this.allTasks == null) {
+      this.allTasks = AllTasksContainer(
+        () {
+          return this.users;
+        },
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (this.allTasks == null) {
-      this.allTasks = AllTasksContainer(
-        (TaskCard taskCard) {
-          setState(
-            () {
-              this.allTasks.removeTask(taskCard);
-            },
-          );
-
-          SubtleMessage.messageWithContext(
-            context,
-            'Successfully deleted task #${taskCard.getID()}.',
-          );
-        },
-      );
-    }
+    _initializeDummyUsers();
+    _initializeAllTasksContainer();
 
     _initializeKanbanBoard();
     _initializeMainMenuBar();
