@@ -8,6 +8,6 @@ flutter pub get
 flutter build windows
 
 cd build/windows/runner/Release
-./testowa.exe
+./kanbansim.exe
 
 echo 'Finished.'
