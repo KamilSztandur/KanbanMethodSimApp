@@ -1,9 +1,11 @@
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:kanbansim/models/Task.dart';
+import 'package:kanbansim/models/TaskType.dart';
 import 'package:kanbansim/models/User.dart';
 
 class AllTasksContainer {
-  Function getUserList;
+  Function getUsersList;
 
   List<Task> idleTasksColumn,
       stageOneInProgressTasksColumn,
@@ -12,16 +14,18 @@ class AllTasksContainer {
       finishedTasksColumn;
 
   AllTasksContainer(Function getUserList) {
-    this.getUserList = getUserList;
+    this.getUsersList = getUserList;
     _setUpTaskLists();
   }
 
-  void createTask(String title, int productivityRequired, User owner) {
+  void createTask(
+      String title, int productivityRequired, User owner, Color color) {
     this.idleTasksColumn.add(
           Task(
             title,
             productivityRequired,
             owner,
+            _getRandomTaskType(),
           ),
         );
   }
@@ -113,6 +117,11 @@ class AllTasksContainer {
     }
   }
 
+  TaskType _getRandomTaskType() {
+    int randomIndex = Random().nextInt(3);
+    return TaskType.values[randomIndex];
+  }
+
   Task createRandomTask() {
     Random rand = new Random();
 
@@ -120,6 +129,7 @@ class AllTasksContainer {
       "RANDOM TITLE",
       Random().nextInt(5) + 1,
       _getRandomUser(),
+      _getRandomTaskType(),
     );
 
     randomTask = _fulfillTaskRandomly(randomTask);
@@ -132,7 +142,7 @@ class AllTasksContainer {
       Random().nextInt(task.owner.getProductivity() + 1),
     );
 
-    var userList = this.getUserList();
+    var userList = this.getUsersList();
     int n = userList.length;
 
     for (int i = 0; i < n; i++) {
@@ -157,7 +167,7 @@ class AllTasksContainer {
   }
 
   User _getRandomUser() {
-    List<User> userList = this.getUserList();
+    List<User> userList = this.getUsersList();
     int randomIndex = Random().nextInt(userList.length);
 
     return userList[randomIndex];

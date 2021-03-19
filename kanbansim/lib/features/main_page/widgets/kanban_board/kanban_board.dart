@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:kanbansim/features/main_page/widgets/kanban_board/create_task_button.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_task/create_task_button.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_column.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 
 class KanbanBoard extends StatefulWidget {
+  final Function taskUnlocked;
+  final Function getUsers;
   final AllTasksContainer allTasks;
-  final VoidCallback createNewTask;
+  final Function(Task) taskCreated;
   final Function(Task) deleteMe;
 
   KanbanBoard({
     Key key,
     @required this.allTasks,
-    @required this.createNewTask,
+    @required this.taskCreated,
     @required this.deleteMe,
+    @required this.taskUnlocked,
+    @required this.getUsers,
   }) : super(key: key);
 
   @override
@@ -35,8 +39,10 @@ class KanbanBoardState extends State<KanbanBoard> {
 
   TaskCard _parseTaskCard(Task task) {
     return TaskCard(
-      task,
-      this.widget.deleteMe,
+      task: task,
+      deleteMe: this.widget.deleteMe,
+      getUsers: this.widget.getUsers,
+      taskUnlocked: this.widget.taskUnlocked,
     );
   }
 
@@ -62,9 +68,10 @@ class KanbanBoardState extends State<KanbanBoard> {
   }
 
   Widget _buildCreateNewTaskButton() {
-    return CreateTaskButton(createNewTask: () {
-      this.widget.createNewTask();
-    });
+    return CreateTaskButton(
+      getUsers: this.widget.getUsers,
+      taskCreated: this.widget.taskCreated,
+    );
   }
 
   @override

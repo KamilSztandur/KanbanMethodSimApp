@@ -16,30 +16,37 @@ class TaskStatusState extends State<TaskStatus> {
   TaskProgress _buildTaskProgressBar() {
     return TaskProgress(
       task: this.widget.task,
+      mode: Size.small,
+    );
+  }
+
+  Widget _buildUserIcon() {
+    return IgnorePointer(
+      ignoring: true,
+      child: IconButton(
+        iconSize: 15,
+        icon: Icon(
+          Icons.account_circle_outlined,
+          color: widget.task.owner.getColor(),
+        ),
+        onPressed: () {},
+      ),
     );
   }
 
   Widget _buildLockIcon() {
-    return Row(
-      children: [
-        Flexible(
-          flex: 1,
-          child: IgnorePointer(
-            ignoring: true,
-            child: IconButton(
-              iconSize: 17,
-              icon: Icon(
-                widget.task.getProductivityRequiredToUnlock() != 0
-                    ? Icons.lock_rounded
-                    : Icons.lock_open_rounded,
-                color: Colors.black,
-              ),
-              onPressed: () {},
-            ),
-          ),
+    return IgnorePointer(
+      ignoring: true,
+      child: IconButton(
+        iconSize: 17,
+        icon: Icon(
+          widget.task.getProductivityRequiredToUnlock() != 0
+              ? Icons.lock_rounded
+              : Icons.lock_open_rounded,
+          color: Colors.black,
         ),
-        Flexible(flex: 4, child: Container()),
-      ],
+        onPressed: () {},
+      ),
     );
   }
 
@@ -60,8 +67,17 @@ class TaskStatusState extends State<TaskStatus> {
       children: [
         Flexible(
           flex: 10,
-          fit: FlexFit.tight,
-          child: _buildLockIcon(),
+          child: Row(
+            children: [
+              Flexible(
+                flex: 5,
+                child: _buildLockIcon(),
+              ),
+              Flexible(flex: 5, fit: FlexFit.tight, child: Container()),
+              Flexible(flex: 5, child: _buildUserIcon()),
+              Flexible(flex: 15, fit: FlexFit.tight, child: Container()),
+            ],
+          ),
         ),
         Flexible(flex: 5, child: Container()),
         Flexible(

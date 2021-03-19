@@ -27,6 +27,10 @@ class User {
     }
   }
 
+  void restoreProductivity() {
+    this._productivity = this._maxProductivity;
+  }
+
   bool increaseProductivity(int amount) {
     int newProductivity = this._productivity + amount;
 

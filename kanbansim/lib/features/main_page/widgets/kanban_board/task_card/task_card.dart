@@ -1,43 +1,89 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card_window/task_card_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_status.dart';
-import 'package:kanbansim/features/notifications/feedback_popup.dart';
 import 'package:kanbansim/models/Task.dart';
+import 'package:kanbansim/models/TaskType.dart';
 
 class TaskCard extends StatelessWidget {
+  final Function taskUnlocked;
+  final Function getUsers;
   Function(Task) deleteMe;
-  Task _task;
+  Color _taskCardColor;
+  Task task;
 
-  TaskCard(Task task, Function(Task) deleteMe) {
-    this.deleteMe = deleteMe;
-    this._task = task;
-  }
+  TaskCard({
+    @required this.task,
+    @required this.deleteMe,
+    @required this.getUsers,
+    @required this.taskUnlocked,
+  });
 
   int getID() {
-    return this._task.getID();
+    return this.task.getID();
+  }
+
+  Color _getRandomColor() {
+    List<Color> colors = <Color>[];
+
+    colors.add(Color.fromRGBO(255, 231, 156, 1.0)); // Default
+    colors.add(Color.fromRGBO(247, 100, 115, 1.0)); // Red
+    colors.add(Color.fromRGBO(238, 88, 141, 1.0)); // Pink
+    colors.add(Color.fromRGBO(245, 237, 123, 1.0)); // Yellow
+    colors.add(Color.fromRGBO(158, 208, 115, 1.0)); // Green
+    colors.add(Color.fromRGBO(86, 179, 226, 1.0)); // Blue
+    colors.add(Color.fromRGBO(247, 147, 105, 1.0)); // Orange
+    colors.add(Color.fromRGBO(206, 149, 232, 1.0)); // Purple
+
+    int randomColorsIndex = Random().nextInt(colors.length);
+
+    return colors[randomColorsIndex];
+  }
+
+  Color _getTaskTypeColor(TaskType type) {
+    switch (type) {
+      case TaskType.Standard:
+        return Color.fromRGBO(245, 237, 123, 1.0); // Yellow
+        break;
+
+      case TaskType.Expedite:
+        return Color.fromRGBO(247, 100, 115, 1.0); // Red
+        break;
+
+      case TaskType.FixedDate:
+        return Color.fromRGBO(86, 179, 226, 1.0); // Blue
+        break;
+
+      default:
+        return Color.fromRGBO(255, 231, 156, 1.0); // Default
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    this._taskCardColor = _getTaskTypeColor(task.getTaskType());
+
     return GestureDetector(
       onTap: () {
         showDialog(
           context: context,
-          builder: (BuildContext context) => FeedbackPopUp.show(
+          builder: (BuildContext context) => TaskCardPopup(
+            getUsers: this.getUsers,
+            taskUnlocked: this.taskUnlocked,
+            taskCardColor: this._taskCardColor,
+          ).show(
             context,
-            "Attention!",
-            "Task #${getID()} selected.",
+            task,
           ),
         );
       },
-      onLongPress: () => deleteMe(this._task),
+      onLongPress: () => deleteMe(this.task),
       child: Container(
-        padding: const EdgeInsets.all(0.0),
+        padding: EdgeInsets.all(0.0),
         width: 100,
         height: 100,
         decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.light
-              ? Color.fromRGBO(255, 231, 156, 1.0)
-              : Color.fromRGBO(249, 216, 118, 1.0),
+          color: this._taskCardColor,
           border: Border.all(),
           boxShadow: [
             BoxShadow(
@@ -48,7 +94,7 @@ class TaskCard extends StatelessWidget {
             ),
           ],
         ),
-        child: TaskStatus(task: this._task),
+        child: TaskStatus(task: this.task),
       ),
     );
   }

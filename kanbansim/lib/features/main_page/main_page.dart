@@ -1,7 +1,5 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
-import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
 import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
@@ -35,6 +33,13 @@ class MainPageState extends State<MainPage> {
   List<User> users;
   int currentDay;
 
+  void _restoreUsersProductivities() {
+    int n = this.users.length;
+    for (int i = 0; i < n; i++) {
+      this.users[i].restoreProductivity();
+    }
+  }
+
   void _initializeMainMenuBar() {
     this.menuBar = MainMenuBar(
       loadSimStateFromFilePath: (String filePath) {
@@ -46,6 +51,7 @@ class MainPageState extends State<MainPage> {
       clearAllTasks: () {
         setState(() {
           this.allTasks.clearAllTasks();
+          _restoreUsersProductivities();
         });
       },
       addRandomTasks: () {
@@ -62,9 +68,9 @@ class MainPageState extends State<MainPage> {
   void _initializeKanbanBoard() {
     kanbanBoard = KanbanBoard(
       allTasks: this.allTasks,
-      createNewTask: () {
+      taskCreated: (Task task) {
         setState(() {
-          this.allTasks.idleTasksColumn.add(this.allTasks.createRandomTask());
+          this.allTasks.idleTasksColumn.add(task);
         });
       },
       deleteMe: (Task task) {
@@ -78,6 +84,14 @@ class MainPageState extends State<MainPage> {
           context,
           'Successfully deleted task #${task.getID()}.',
         );
+      },
+      getUsers: () {
+        return this.users;
+      },
+      taskUnlocked: () {
+        setState(() {
+          this.locksStatus.checkForLocks();
+        });
       },
     );
   }

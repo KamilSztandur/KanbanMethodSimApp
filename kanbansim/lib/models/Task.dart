@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:kanbansim/models/TaskType.dart';
 import 'package:kanbansim/models/User.dart';
 
 class Task {
@@ -10,33 +11,56 @@ class Task {
   _TaskProgress progress;
   bool _isCompleted;
   int _productivityRequiredToUnlock;
+  TaskType _type;
+  int _deadlineDay;
 
-  Task(String title, int productivityRequired, User owner) {
+  Task(String title, int productivityRequired, User owner, TaskType type) {
     this._taskID = _tasksNumber;
     _tasksNumber++;
 
-    this._title = "Task number #$_taskID";
+    this._title = title;
     this.progress = _TaskProgress(
       productivityRequired,
     );
     this.owner = owner;
     this._productivityRequiredToUnlock = 0;
+    this._type = type;
+
+    blockTaskRandomly();
+  }
+
+  TaskType getTaskType() {
+    return this._type;
+  }
+
+  void setDeadlineDay(int day) {
+    this._deadlineDay = day;
+  }
+
+  int getDeadlineDay() {
+    if (this._type == TaskType.FixedDate) {
+      return this._deadlineDay;
+    } else {
+      return -1;
+    }
   }
 
   void blockTaskRandomly() {
     var dice = Random().nextInt(6) + 1;
-    this._productivityRequiredToUnlock = dice == 1 ? 1 : 0;
+    if (dice == 1) {
+      this._productivityRequiredToUnlock = Random().nextInt(3) + 1;
+    } else {
+      this._productivityRequiredToUnlock = 0;
+    }
   }
 
-  bool unlockTaskWith(User user) {
-    if (user.getProductivity() >= this._productivityRequiredToUnlock) {
-      user.decreaseProductivity(this._productivityRequiredToUnlock);
-      this._productivityRequiredToUnlock = 0;
+  void unlock() {
+    this._productivityRequiredToUnlock = 0;
+  }
 
-      return true;
-    } else {
-      return false;
-    }
+  void unlockWith(User user) {
+    user.decreaseProductivity(this._productivityRequiredToUnlock);
+    this.unlock();
   }
 
   bool investProductivity(int amount) {

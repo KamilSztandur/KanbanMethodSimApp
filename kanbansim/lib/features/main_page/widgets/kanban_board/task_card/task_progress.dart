@@ -1,41 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/models/Task.dart';
 
+enum Size {
+  small,
+  big,
+}
+
 class TaskProgress extends StatelessWidget {
   final Task task;
+  final Size mode;
 
-  TaskProgress({
-    Key key,
-    @required this.task,
-  }) : super(key: key);
+  TaskProgress({Key key, @required this.task, @required this.mode})
+      : super(key: key);
 
-  List<Widget> _buildFormattedTasksList() {
+  List<Widget> _buildFormattedTasksList(BuildContext context) {
     List<Widget> tasksRow = <Widget>[];
 
-    tasksRow.add(SizedBox(height: 15));
+    tasksRow.add(
+      Flexible(flex: 1, child: Container()),
+    );
 
     int allDots = this.task.progress.getNumberOfAllParts();
     for (int i = 0; i < allDots; i++) {
-      tasksRow.add(SizedBox(width: 5));
       if (this.task.progress.isFulfilled(i)) {
         tasksRow.add(
-          Icon(
-            Icons.circle,
-            size: 5,
-            color: this.task.progress.getUserColor(i),
+          Flexible(
+            flex: 1,
+            fit: FlexFit.tight,
+            child: _ProgressDot(
+              mode: mode,
+              color: this.task.progress.getUserColor(i),
+            ),
           ),
         );
       } else {
         tasksRow.add(
-          Icon(
-            Icons.trip_origin,
-            size: 5,
-            color: Colors.black,
+          Flexible(
+            flex: 1,
+            fit: FlexFit.tight,
+            child: _ProgressDot(
+              mode: mode,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.grey.shade100
+                  : Colors.grey.shade800,
+            ),
           ),
         );
       }
     }
-    tasksRow.add(SizedBox(width: 5));
+
+    tasksRow.add(
+      Flexible(flex: 1, child: Container()),
+    );
 
     return tasksRow;
   }
@@ -50,21 +66,57 @@ class TaskProgress extends StatelessWidget {
           fit: FlexFit.tight,
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.grey.shade100,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.grey.shade100
+                  : Colors.grey.shade700,
               borderRadius: BorderRadius.all(
-                Radius.circular(15.0),
+                Radius.circular(
+                  this.mode == Size.big ? 50.0 : 15.0,
+                ),
               ),
               border: Border.all(color: Colors.black),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: _buildFormattedTasksList(),
+              children: _buildFormattedTasksList(context),
             ),
           ),
         ),
         Flexible(flex: 2, child: Container()),
       ],
+    );
+  }
+}
+
+class _ProgressDot extends StatelessWidget {
+  final Color color;
+  final Size mode;
+
+  _ProgressDot({
+    Key key,
+    @required this.color,
+    @required this.mode,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: this.mode == Size.big ? 25.0 : 5.0,
+      width: this.mode == Size.big ? 25.0 : 5.0,
+      decoration: BoxDecoration(
+        color: this.color,
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            this.mode == Size.big ? 25.0 : 5.0,
+          ),
+        ),
+        border: Border.all(
+          color: Theme.of(context).brightness == Brightness.light
+              ? Colors.black
+              : Colors.white,
+        ),
+      ),
     );
   }
 }
