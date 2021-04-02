@@ -33,6 +33,10 @@ class Task {
     return this._type;
   }
 
+  String getTaskTypeName() {
+    return this._type.toString().split('.').last;
+  }
+
   void setDeadlineDay(int day) {
     this._deadlineDay = day;
   }

@@ -5,7 +5,9 @@ import 'package:kanbansim/models/TaskType.dart';
 import 'package:kanbansim/models/User.dart';
 
 class AllTasksContainer {
+  static int _tasksCount = 1;
   Function getUsersList;
+  Function(Task) onRandomTaskAdded;
 
   List<Task> idleTasksColumn,
       stageOneInProgressTasksColumn,
@@ -13,8 +15,9 @@ class AllTasksContainer {
       stageTwoTasksColumn,
       finishedTasksColumn;
 
-  AllTasksContainer(Function getUserList) {
+  AllTasksContainer(Function getUserList, Function(Task) onRandomTaskAdded) {
     this.getUsersList = getUserList;
+    this.onRandomTaskAdded = onRandomTaskAdded;
     _setUpTaskLists();
   }
 
@@ -28,6 +31,7 @@ class AllTasksContainer {
             _getRandomTaskType(),
           ),
         );
+    _tasksCount++;
   }
 
   void removeTask(Task task) {
@@ -111,9 +115,11 @@ class AllTasksContainer {
     Random rand = new Random();
     int newTasks = rand.nextInt(3);
     for (int i = 0; i < newTasks; i++) {
+      var task = createRandomTask();
       tasks.add(
-        createRandomTask(),
+        task,
       );
+      this.onRandomTaskAdded(task);
     }
   }
 
@@ -123,10 +129,8 @@ class AllTasksContainer {
   }
 
   Task createRandomTask() {
-    Random rand = new Random();
-
     Task randomTask = Task(
-      "RANDOM TITLE",
+      "Task #$_tasksCount",
       Random().nextInt(5) + 1,
       _getRandomUser(),
       _getRandomTaskType(),
@@ -134,6 +138,7 @@ class AllTasksContainer {
 
     randomTask = _fulfillTaskRandomly(randomTask);
 
+    _tasksCount++;
     return randomTask;
   }
 
