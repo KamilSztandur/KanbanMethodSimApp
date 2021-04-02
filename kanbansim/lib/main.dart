@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:window_size/window_size.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 void main() {
   runApp(KanbanSimApp());
@@ -27,22 +28,26 @@ class KanbanSimAppState extends State<KanbanSimApp> {
   @override
   Widget build(BuildContext context) {
     setWindowTitle("Kanban Method's Simulator");
-    return MaterialApp(
-      home: Scaffold(
-        key: _scaffoldKey,
-        resizeToAvoidBottomInset: false,
-        body: MainPage(
-          scaffoldKey: _scaffoldKey,
-          switchTheme: () {
-            _switchBrightness();
-          },
+    return OverlaySupport(
+      child: MaterialApp(
+        home: Scaffold(
+          key: _scaffoldKey,
+          resizeToAvoidBottomInset: false,
+          body: MainPage(
+            scaffoldKey: _scaffoldKey,
+            switchTheme: () {
+              _switchBrightness();
+            },
+          ),
         ),
-      ),
-      theme: ThemeData(
-        brightness: _currentBrightness(),
-        primaryColor: Colors.blue.shade800,
-        accentColor: this._darkTheme ? Colors.grey[900] : Colors.blue.shade100,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        theme: ThemeData(
+          brightness: _currentBrightness(),
+          primaryColor:
+              this._darkTheme ? Colors.blue.shade600 : Colors.blue.shade800,
+          accentColor:
+              this._darkTheme ? Colors.grey[900] : Colors.blue.shade100,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
       ),
     );
   }

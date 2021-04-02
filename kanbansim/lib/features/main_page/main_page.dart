@@ -1,7 +1,8 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
 import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
+import 'package:kanbansim/features/main_page/widgets/story_logs/story_notification.dart';
+import 'package:kanbansim/features/main_page/widgets/story_logs/story_panel.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
@@ -30,8 +31,10 @@ class MainPageState extends State<MainPage> {
   DayStatus dayStatus;
   LocksStatus locksStatus;
   ProductivityBar productivityBar;
+  StoryPanel storyPanel;
 
   AllTasksContainer allTasks;
+  List<String> messages;
   List<User> users;
   int currentDay;
 
@@ -40,6 +43,25 @@ class MainPageState extends State<MainPage> {
     for (int i = 0; i < n; i++) {
       this.users[i].restoreProductivity();
     }
+  }
+
+  void _eventOccured(EventType type, String text) {
+    _printNotification(type, text);
+    _addLog(text);
+  }
+
+  void _addLog(String text) {
+    setState(() {
+      this.messages.add(text);
+    });
+  }
+
+  void _printNotification(EventType type, String text) {
+    StoryNotification(
+      context: this.context,
+      type: type,
+      message: text,
+    ).show();
   }
 
   void _initializeMainMenuBar() {
@@ -74,6 +96,11 @@ class MainPageState extends State<MainPage> {
         setState(() {
           this.allTasks.idleTasksColumn.add(task);
         });
+
+        _eventOccured(
+          EventType.NEWTASK,
+          "${task.getTaskTypeName()} task '${task.getTitle()}' appeared.",
+        );
       },
       deleteMe: (Task task) {
         setState(
@@ -82,9 +109,9 @@ class MainPageState extends State<MainPage> {
           },
         );
 
-        SubtleMessage.messageWithContext(
-          context,
-          'Successfully deleted task #${task.getID()}.',
+        _eventOccured(
+          EventType.DELETE,
+          "${task.getTaskTypeName()} task '${task.getTitle()}' dismissed.",
         );
       },
       getUsers: () {
@@ -96,6 +123,14 @@ class MainPageState extends State<MainPage> {
         });
       },
     );
+  }
+
+  void _initializeStoryLogs() {
+    if (this.messages == null) {
+      this.messages = <String>[];
+    }
+
+    this.storyPanel = StoryPanel(messages: messages);
   }
 
   void _initializeStatusBar() {
@@ -154,6 +189,12 @@ class MainPageState extends State<MainPage> {
         () {
           return this.users;
         },
+        (Task task) {
+          _eventOccured(
+            EventType.NEWTASK,
+            "${task.getTaskTypeName()} task '${task.getTitle()}' appeared.",
+          );
+        },
       );
     }
   }
@@ -166,15 +207,15 @@ class MainPageState extends State<MainPage> {
     _initializeKanbanBoard();
     _initializeMainMenuBar();
     _initializeStatusBar();
+    _initializeStoryLogs();
 
     return ListView(
       children: [
         menuBar,
+        SizedBox(width: 10),
         Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).accentColor.withOpacity(
-                  Theme.of(context).brightness == Brightness.light ? 0.6 : 0.5,
-                ),
+            color: Theme.of(context).accentColor,
             border: Border.all(
               width: 2.0,
               color: Colors.black.withOpacity(
@@ -205,64 +246,14 @@ class MainPageState extends State<MainPage> {
           ),
         ),
         Container(
-          height: (MediaQuery.of(context).size.height) * 0.825,
+          height: (MediaQuery.of(context).size.height) * 0.65,
           child: ScrollBar(
             child: kanbanBoard,
           ),
         ),
+        storyPanel,
+        SizedBox(width: 10),
       ],
     );
   }
-
-  /*
-      return ListView(
-      padding: EdgeInsets.all(20),
-      physics: BouncingScrollPhysics(),
-      children: [
-        menuBar,
-        SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            dayStatus,
-            SizedBox(width: 10),
-            productivityBar,
-            SizedBox(width: 10),
-            locksStatus,
-          ],
-        ),
-        SizedBox(height: 10),
-        ScrollBar(
-          child: kanbanBoard,
-        ),
-      ],
-    );
-    /*
-    Container(
-      child: Column(
-        children: [
-          menuBar,
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              dayStatus,
-              SizedBox(width: 10),
-              productivityBar,
-              SizedBox(width: 10),
-              locksStatus,
-            ],
-          ),
-          ScrollBar(
-            context: context,
-            child: kanbanBoard,
-          ),
-        ],
-      ),
-    );
-    */
-  }
-  */
 }
