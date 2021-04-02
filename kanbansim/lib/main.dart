@@ -2,14 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:window_size/window_size.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(KanbanSimApp());
 }
 
+class KanbanSimApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => KanbanSimAppState();
+}
+
 class KanbanSimAppState extends State<KanbanSimApp> {
   final _scaffoldKey = GlobalKey();
   bool _darkTheme = false;
+  Locale _locale;
+
+  void setLocale(Locale value) {
+    setState(() {
+      _locale = value;
+    });
+  }
 
   void _switchBrightness() {
     setState(() {
@@ -30,6 +43,7 @@ class KanbanSimAppState extends State<KanbanSimApp> {
     setWindowTitle("Kanban Method's Simulator");
     return OverlaySupport(
       child: MaterialApp(
+        /* body */
         home: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -55,6 +69,13 @@ class KanbanSimAppState extends State<KanbanSimApp> {
             ),
           ),
         ),
+
+        /* Languages */
+        locale: _locale,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+
+        /* Theme */
         theme: ThemeData(
           brightness: _currentBrightness(),
           primaryColor:
@@ -66,9 +87,4 @@ class KanbanSimAppState extends State<KanbanSimApp> {
       ),
     );
   }
-}
-
-class KanbanSimApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => KanbanSimAppState();
 }
