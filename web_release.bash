@@ -25,10 +25,4 @@ sed -i "s/'main.dart.js';/'KanbanMethodSimApp\/main.dart.js';/g" index.html
 cd ..
 echo 'Finished.'
 
-
-#echo 'Running web app on localhost...'
-#flutter run chrome
-#echo 'Finished.'
-
-
 echo 'Script finished.'
