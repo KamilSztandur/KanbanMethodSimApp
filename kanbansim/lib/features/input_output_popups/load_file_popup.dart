@@ -14,9 +14,7 @@ class LoadFilePopup {
 
   Widget show(BuildContext context) {
     return new AlertDialog(
-      backgroundColor: Theme.of(context).brightness == Brightness.light
-          ? Colors.white
-          : Colors.grey.shade900,
+      backgroundColor: Colors.transparent,
       content: _LoadFilePage(
         returnPickedFilePath: (String filePath) {
           this.returnPickedFilepath(filePath);
@@ -44,6 +42,9 @@ class _LoadFilePage extends StatefulWidget {
 class _LoadFilePageState extends State<_LoadFilePage> {
   bool _readyToSubmit;
   SaveFilePicker _picker;
+  double _cornerRadius = 35;
+  double _height = 250;
+  double _width = 400;
 
   void _initializePicker() {
     _picker = SaveFilePicker(
@@ -73,33 +74,149 @@ class _LoadFilePageState extends State<_LoadFilePage> {
     }
   }
 
+  Widget _buildTitle() {
+    return Container(
+      width: double.infinity,
+      height: 60,
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(_cornerRadius),
+          topRight: Radius.circular(_cornerRadius),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "Load saved session",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilePickerWidget() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          height: 35,
+          width: this._width * 0.7,
+          decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).primaryColor),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.filePath == null ? '' : widget.filePath,
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.fade,
+                maxLines: 1,
+                softWrap: false,
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).primaryColor),
+            color: Theme.of(context).primaryColor,
+          ),
+          child: IconButton(
+            icon: Icon(Icons.file_upload),
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.white
+                : Colors.grey.shade900,
+            onPressed: () {
+              _picker.pickSaveFile();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildButtons() {
+    return Row(
+      children: [
+        Flexible(flex: 3, fit: FlexFit.tight, child: Container()),
+        Flexible(
+          flex: 2,
+          fit: FlexFit.tight,
+          child: IgnorePointer(
+            ignoring: !this._readyToSubmit,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _returnIfExists();
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  this._readyToSubmit
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).backgroundColor,
+                ),
+              ),
+              child: Text('Load'),
+            ),
+          ),
+        ),
+        Flexible(flex: 2, fit: FlexFit.tight, child: Container()),
+        Flexible(
+          flex: 2,
+          fit: FlexFit.tight,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).primaryColor),
+            ),
+            child: Text('Return'),
+          ),
+        ),
+        Flexible(flex: 3, fit: FlexFit.tight, child: Container()),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _initializePicker();
     _readyToSubmit = this.widget.filePath != null;
 
     return Container(
-      height: 250,
-      width: 375,
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Colors.grey.shade900,
+        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
+      ),
+      height: this._height,
+      width: this._width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Flexible(
-            flex: 2,
-            child: Container(),
-          ),
-          Flexible(
-            flex: 2,
-            child: Text(
-              "Select save file to load",
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-              ),
-              textAlign: TextAlign.center,
-            ),
+            flex: 3,
+            fit: FlexFit.tight,
+            child: _buildTitle(),
           ),
           Flexible(
             flex: 3,
@@ -107,93 +224,16 @@ class _LoadFilePageState extends State<_LoadFilePage> {
           ),
           Flexible(
             flex: 2,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 35,
-                  width: 300,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).primaryColor),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.filePath == null ? '' : widget.filePath,
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.fade,
-                        maxLines: 1,
-                        softWrap: false,
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).primaryColor),
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.file_upload),
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.white
-                        : Colors.grey.shade900,
-                    onPressed: () {
-                      _picker.pickSaveFile();
-                    },
-                  ),
-                ),
-              ],
-            ),
+            child: _buildFilePickerWidget(),
           ),
           Flexible(flex: 3, child: Container()),
           Flexible(
             flex: 2,
-            child: Row(
-              children: [
-                Flexible(flex: 2, child: Container()),
-                Flexible(
-                  flex: 3,
-                  child: IgnorePointer(
-                    ignoring: !this._readyToSubmit,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        _returnIfExists();
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          this._readyToSubmit
-                              ? Theme.of(context).primaryColor
-                              : Theme.of(context).backgroundColor,
-                        ),
-                      ),
-                      child: Text('Submit'),
-                    ),
-                  ),
-                ),
-                Flexible(flex: 4, child: Container()),
-                Flexible(
-                  flex: 3,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).primaryColor),
-                    ),
-                    child: Text('Cancel'),
-                  ),
-                ),
-              ],
-            ),
+            child: _buildButtons(),
+          ),
+          Flexible(
+            flex: 1,
+            child: Container(),
           ),
         ],
       ),

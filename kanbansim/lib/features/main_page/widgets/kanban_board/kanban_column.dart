@@ -36,7 +36,16 @@ class KanbanColumnState extends State<KanbanColumn> {
               child: Container(
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    stops: [0.0, 0.8],
+                    tileMode: TileMode.clamp,
+                    colors: [
+                      Colors.blueAccent.shade200,
+                      Colors.blueAccent.shade400,
+                    ],
+                  ),
                   borderRadius: this.widget.isInternal
                       ? BorderRadius.zero
                       : BorderRadius.only(
@@ -51,15 +60,28 @@ class KanbanColumnState extends State<KanbanColumn> {
         ),
         ConstrainedBox(
           constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height * 0.65,
+            minHeight: MediaQuery.of(context).size.height * 0.35,
           ),
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).accentColor,
               border: Border.all(color: Theme.of(context).primaryColor),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(10.0),
                 bottomRight: Radius.circular(10.0),
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.1, 1.0],
+                tileMode: TileMode.clamp,
+                colors: [
+                  Theme.of(context).brightness == Brightness.light
+                      ? Theme.of(context).accentColor
+                      : Theme.of(context).bottomAppBarColor,
+                  Theme.of(context).brightness == Brightness.light
+                      ? Theme.of(context).backgroundColor
+                      : Theme.of(context).accentColor,
+                ],
               ),
               boxShadow: [
                 BoxShadow(

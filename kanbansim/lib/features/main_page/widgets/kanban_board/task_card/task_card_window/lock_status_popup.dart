@@ -46,6 +46,9 @@ class _LockStatusState extends State<_LockStatus> {
   String _selectedValue;
   int _neededProductivity;
   bool _readyToUnlock;
+  double _cornerRadius = 35;
+  double _height = 400;
+  double _width = 350;
 
   void _unlockTask() {
     User selectedUser = _getUserWithNameOf(_selectedValue);
@@ -91,14 +94,31 @@ class _LockStatusState extends State<_LockStatus> {
   }
 
   Widget _buildTitle() {
-    return Text(
-      "Asign user to unlock this task",
-      style: TextStyle(
+    return Container(
+      width: double.infinity,
+      height: 60,
+      decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(_cornerRadius),
+          topRight: Radius.circular(_cornerRadius),
+        ),
       ),
-      textAlign: TextAlign.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "Assign user to unlock this task",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -207,9 +227,12 @@ class _LockStatusState extends State<_LockStatus> {
                 );
               },
               child: Text("Unlock"),
-              style: ElevatedButton.styleFrom(
-                primary: _readyToUnlock ? Colors.green : Colors.transparent,
-                onPrimary: Colors.white,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  this._readyToUnlock
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).backgroundColor,
+                ),
               ),
             ),
           ),
@@ -239,56 +262,50 @@ class _LockStatusState extends State<_LockStatus> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-      ),
-      height: 350,
-      width: 320,
+      height: _height,
+      width: _width,
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        border: Border.all(),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.4),
-            spreadRadius: 1,
-            blurRadius: 1,
-            offset: Offset(0, 3),
-          ),
-        ],
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Colors.grey.shade900,
+        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
       ),
       child: Column(
         children: [
-          Flexible(
-            flex: 1,
-            child: Container(),
-          ),
-          Flexible(
-            flex: 2,
-            fit: FlexFit.tight,
-            child: _buildTitle(),
-          ),
-          Flexible(
-            flex: 2,
-            child: _buildRequirementsInfo(),
-          ),
-          Flexible(
-            flex: 2,
-            fit: FlexFit.tight,
-            child: _buildDropDownList(),
-          ),
-          Flexible(
-            flex: 3,
-            fit: FlexFit.tight,
-            child: _buildRequirementHint(),
-          ),
-          Flexible(
-            flex: 2,
-            child: _buildButtons(),
-          ),
-          Flexible(
-            flex: 1,
-            child: Container(),
+          _buildTitle(),
+          Container(
+            height: _height * 0.85,
+            width: _width * 0.8,
+            child: Column(
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Container(),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: _buildRequirementsInfo(),
+                ),
+                Flexible(
+                  flex: 2,
+                  fit: FlexFit.tight,
+                  child: _buildDropDownList(),
+                ),
+                Flexible(
+                  flex: 3,
+                  fit: FlexFit.tight,
+                  child: _buildRequirementHint(),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: _buildButtons(),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Container(),
+                ),
+              ],
+            ),
           ),
         ],
       ),

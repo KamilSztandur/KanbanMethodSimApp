@@ -32,10 +32,13 @@ class LocksStatusState extends State<LocksStatus> {
         height: 100,
         width: 150,
         decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).brightness == Brightness.light
+              ? Theme.of(context).accentColor
+              : Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.all(
             Radius.circular(15.0),
           ),
+          border: Border.all(color: Theme.of(context).primaryColor),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.4),
