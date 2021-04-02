@@ -30,29 +30,14 @@ class KanbanSimAppState extends State<KanbanSimApp> {
     setWindowTitle("Kanban Method's Simulator");
     return OverlaySupport(
       child: MaterialApp(
-        home: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              stops: [0.0, 0.8],
-              tileMode: TileMode.clamp,
-              colors: [
-                this._darkTheme ? Colors.grey.shade900 : Colors.grey[300],
-                this._darkTheme ? Colors.grey.shade900 : Colors.blue.shade200,
-              ],
-            ),
-          ),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            key: _scaffoldKey,
-            resizeToAvoidBottomInset: false,
-            body: MainPage(
-              scaffoldKey: _scaffoldKey,
-              switchTheme: () {
-                _switchBrightness();
-              },
-            ),
+        home: Scaffold(
+          key: _scaffoldKey,
+          resizeToAvoidBottomInset: false,
+          body: MainPage(
+            scaffoldKey: _scaffoldKey,
+            switchTheme: () {
+              _switchBrightness();
+            },
           ),
         ),
         theme: ThemeData(

@@ -215,20 +215,7 @@ class MainPageState extends State<MainPage> {
         SizedBox(width: 10),
         Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.1, 1.0],
-              tileMode: TileMode.clamp,
-              colors: [
-                Theme.of(context).brightness == Brightness.light
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).scaffoldBackgroundColor,
-                Theme.of(context).brightness == Brightness.light
-                    ? Theme.of(context).backgroundColor
-                    : Theme.of(context).accentColor,
-              ],
-            ),
+            color: Theme.of(context).accentColor,
             border: Border.all(
               width: 2.0,
               color: Colors.black.withOpacity(
