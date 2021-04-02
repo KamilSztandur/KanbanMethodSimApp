@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/models/User.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductivityBar extends StatefulWidget {
   final List<User> users;
@@ -90,7 +91,7 @@ class ProductivityBarState extends State<ProductivityBar> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text(
-          "User info",
+          AppLocalizations.of(context).userInfo,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         content: new Column(
@@ -107,7 +108,7 @@ class ProductivityBarState extends State<ProductivityBar> {
               ),
             ),
             Text(
-              'Productivity:',
+              "${AppLocalizations.of(context).productivity}:",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
@@ -138,7 +139,7 @@ class ProductivityBarState extends State<ProductivityBar> {
                     backgroundColor: MaterialStateProperty.all<Color>(
                         Theme.of(context).primaryColor),
                   ),
-                  child: const Text('Close'),
+                  child: Text(AppLocalizations.of(context).close),
                 ),
                 SizedBox(height: 10),
               ],
@@ -180,7 +181,7 @@ class ProductivityBarState extends State<ProductivityBar> {
             children: [
               SizedBox(height: 5),
               Text(
-                "Productivity",
+                AppLocalizations.of(context).productivity,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

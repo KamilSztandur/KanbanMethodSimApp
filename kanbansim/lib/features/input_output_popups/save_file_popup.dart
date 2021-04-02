@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanbansim/common/input_output_file_picker/save_file_writer.dart';
 import 'package:intl/intl.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SaveFilePopup {
   Function(bool) returnSaveStatus;
@@ -74,7 +75,8 @@ class _SaveFilePageState extends State<_SaveFilePage> {
 
   void _generateNameAutomatically() {
     setState(() {
-      this._controller.text = "Symulation " + _getCurrentDateAsString();
+      this._controller.text = "${AppLocalizations.of(context).simulation} " +
+          _getCurrentDateAsString();
     });
   }
 
@@ -83,18 +85,18 @@ class _SaveFilePageState extends State<_SaveFilePage> {
 
     if (this.creator.isNameAlreadyTaken(filename)) {
       setState(() {
-        this.warningMessage = "Filename already taken!";
+        this.warningMessage = AppLocalizations.of(context).filenameTaken;
       });
     } else if (this.creator.hasInvalidName(filename)) {
       setState(() {
-        this.warningMessage = "Invalid filename.";
+        this.warningMessage = AppLocalizations.of(context).invalidFilename;
       });
     } else {
       this.creator.saveFileAs(filename, [1, 2, 3]);
       Navigator.of(context).pop();
       SubtleMessage.messageWithContext(
         context,
-        '"$filename" session saved successfully.',
+        '"$filename" ${AppLocalizations.of(context).savingSuccess}',
       );
     }
   }
@@ -115,12 +117,12 @@ class _SaveFilePageState extends State<_SaveFilePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Load saved session",
+            AppLocalizations.of(context).saveCurrentSession,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 30,
+              fontSize: 25,
             ),
           ),
         ],
@@ -137,8 +139,8 @@ class _SaveFilePageState extends State<_SaveFilePage> {
         _saveFile(value);
       },
       decoration: new InputDecoration(
-        hintText: "Enter you savefile name here",
-        labelText: "Filename:",
+        hintText: AppLocalizations.of(context).enterSaveNameHere,
+        labelText: "${AppLocalizations.of(context).filenameLabel}:",
         labelStyle: new TextStyle(color: const Color(0xFF424242)),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: IconButton(
@@ -168,17 +170,17 @@ class _SaveFilePageState extends State<_SaveFilePage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Flexible(
-          flex: 2,
+          flex: 4,
           child: TextButton(
             onPressed: () {
               _generateNameAutomatically();
             },
-            child: Text('Generate automatically'),
+            child: Text(AppLocalizations.of(context).generateAutomatically),
           ),
         ),
         Flexible(flex: 1, child: Container()),
         Flexible(
-          flex: 2,
+          flex: 4,
           fit: FlexFit.tight,
           child: Text(
             this.warningMessage,
@@ -206,7 +208,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
               backgroundColor: MaterialStateProperty.all<Color>(
                   Theme.of(context).primaryColor),
             ),
-            child: Text('Cancel'),
+            child: Text(AppLocalizations.of(context).cancel),
           ),
         ),
         Flexible(flex: 5, child: Container()),

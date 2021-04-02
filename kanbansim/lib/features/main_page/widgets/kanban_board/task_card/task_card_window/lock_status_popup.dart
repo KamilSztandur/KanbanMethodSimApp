@@ -1,4 +1,4 @@
-import 'package:flutter/gestures.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:kanbansim/models/Task.dart';
@@ -109,7 +109,7 @@ class _LockStatusState extends State<_LockStatus> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Assign user to unlock this task",
+            AppLocalizations.of(context).assignUserToUnlockTask,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -148,7 +148,7 @@ class _LockStatusState extends State<_LockStatus> {
           ],
         ),
         Text(
-          " productivity required",
+          " ${AppLocalizations.of(context).productivityRequired}",
           style: TextStyle(
             color: color,
             fontSize: 15,
@@ -164,8 +164,9 @@ class _LockStatusState extends State<_LockStatus> {
       _selectedValue = names[0];
       this._readyToUnlock = true;
     } else {
-      names.add('Empty');
-      _selectedValue = 'Empty';
+      String empty = AppLocalizations.of(context).empty;
+      names.add(empty);
+      _selectedValue = empty;
       this._readyToUnlock = false;
     }
 
@@ -194,7 +195,7 @@ class _LockStatusState extends State<_LockStatus> {
 
   Widget _buildRequirementHint() {
     return Text(
-      "If certain user isn't on the list it means either they are owner of this task or do not have enough productivity.",
+      AppLocalizations.of(context).assignUserNotice,
       style: TextStyle(
         color: Theme.of(context).brightness == Brightness.light
             ? Colors.black
@@ -223,10 +224,10 @@ class _LockStatusState extends State<_LockStatus> {
                 _exitPopup();
                 SubtleMessage.messageWithContext(
                   context,
-                  'Task #${widget.task.getID()} unlocked successfully!',
+                  '#${widget.task.getTitle()} ${AppLocalizations.of(context).unlockSuccess}!',
                 );
               },
-              child: Text("Unlock"),
+              child: Text(AppLocalizations.of(context).unlock),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
                   this._readyToUnlock
@@ -248,7 +249,7 @@ class _LockStatusState extends State<_LockStatus> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Cancel"),
+            child: Text(AppLocalizations.of(context).cancel),
           ),
         ),
         Flexible(

@@ -7,10 +7,10 @@ import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
 import 'package:kanbansim/features/scroll_bar.dart';
-import 'package:kanbansim/main.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
   final scaffoldKey;
@@ -47,6 +47,25 @@ class MainPageState extends State<MainPage> {
   void _eventOccured(EventType type, String text) {
     _printNotification(type, text);
     _addLog(text);
+  }
+
+  String _getTranslatedTaskTypeName(String type) {
+    switch (type) {
+      case "Standard":
+        return AppLocalizations.of(context).standard;
+        break;
+
+      case "Expedite":
+        return AppLocalizations.of(context).expedite;
+        break;
+
+      case "FixedDate":
+        return AppLocalizations.of(context).fixedDate;
+        break;
+
+      default:
+        return AppLocalizations.of(context).standard;
+    }
   }
 
   void _addLog(String text) {
@@ -95,7 +114,7 @@ class MainPageState extends State<MainPage> {
 
         _eventOccured(
           EventType.NEWTASK,
-          "${task.getTaskTypeName()} task '${task.getTitle()}' appeared.",
+          "${AppLocalizations.of(context).newTaskAppeared}! ${_getTranslatedTaskTypeName(task.getTaskTypeName())} '${task.getTitle()}'.",
         );
       },
       deleteMe: (Task task) {
@@ -107,7 +126,7 @@ class MainPageState extends State<MainPage> {
 
         _eventOccured(
           EventType.DELETE,
-          "${task.getTaskTypeName()} task '${task.getTitle()}' dismissed.",
+          "${AppLocalizations.of(context).elementDeleted}! ${_getTranslatedTaskTypeName(task.getTaskTypeName())} '${task.getTitle()}'.",
         );
       },
       getUsers: () {
@@ -188,7 +207,7 @@ class MainPageState extends State<MainPage> {
         (Task task) {
           _eventOccured(
             EventType.NEWTASK,
-            "${task.getTaskTypeName()} task '${task.getTitle()}' appeared.",
+            "${AppLocalizations.of(context).newTaskAppeared}! ${_getTranslatedTaskTypeName(task.getTaskTypeName())} '${task.getTitle()}'.",
           );
         },
       );

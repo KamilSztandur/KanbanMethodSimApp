@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum EventType {
   NEWTASK,
@@ -45,22 +46,22 @@ class StoryNotification {
   String _getTitle() {
     switch (type) {
       case EventType.NEWTASK:
-        return "New task assigned.";
+        return AppLocalizations.of(context).newTaskAppeared;
 
       case EventType.LOCK:
-        return "Task got locked!";
+        return AppLocalizations.of(context).taskLocked;
 
       case EventType.INFO:
-        return "Info.";
+        return AppLocalizations.of(context).notice;
 
       case EventType.ERROR:
-        return "Application error.";
+        return AppLocalizations.of(context).errorNotice;
 
       case EventType.DELETE:
-        return "Element deleted.";
+        return AppLocalizations.of(context).elementDeleted;
 
       default:
-        return "Info.";
+        return AppLocalizations.of(context).info;
     }
   }
 

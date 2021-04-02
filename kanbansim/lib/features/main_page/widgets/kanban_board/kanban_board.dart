@@ -4,6 +4,7 @@ import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_column.
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class KanbanBoard extends StatefulWidget {
   final Function taskUnlocked;
@@ -90,7 +91,7 @@ class KanbanBoardState extends State<KanbanBoard> {
             children: [
               SizedBox(height: 15),
               KanbanColumn(
-                title: "IDLE TASKS",
+                title: AppLocalizations.of(context).availableTasks,
                 isInternal: false,
                 tasks: _parseTaskCardsList(widget.allTasks.idleTasksColumn),
                 additionalWidget: _buildCreateNewTaskButton(),
@@ -145,7 +146,8 @@ class KanbanBoardState extends State<KanbanBoard> {
                             ),
                           ],
                         ),
-                        child: _buildTitle("STAGE ONE TASKS"),
+                        child: _buildTitle(
+                            AppLocalizations.of(context).stageOneTasks),
                       ),
                     ),
                   ],
@@ -174,7 +176,8 @@ class KanbanBoardState extends State<KanbanBoard> {
                           Flexible(
                             flex: 20,
                             child: KanbanColumn(
-                              title: "IN PROGRESS",
+                              title:
+                                  AppLocalizations.of(context).inProgressTasks,
                               isInternal: true,
                               tasks: _parseTaskCardsList(
                                 widget.allTasks.stageOneInProgressTasksColumn,
@@ -184,7 +187,7 @@ class KanbanBoardState extends State<KanbanBoard> {
                           Flexible(
                             flex: 20,
                             child: KanbanColumn(
-                              title: "DONE",
+                              title: AppLocalizations.of(context).doneTasks,
                               isInternal: true,
                               tasks: _parseTaskCardsList(
                                 widget.allTasks.stageOneDoneTasksColumn,
@@ -208,7 +211,7 @@ class KanbanBoardState extends State<KanbanBoard> {
         Flexible(
           flex: 20,
           child: KanbanColumn(
-            title: "STAGE TWO TASKS",
+            title: AppLocalizations.of(context).stageTwoTasks,
             isInternal: false,
             tasks: _parseTaskCardsList(widget.allTasks.stageTwoTasksColumn),
           ),
@@ -220,7 +223,7 @@ class KanbanBoardState extends State<KanbanBoard> {
         Flexible(
           flex: 20,
           child: KanbanColumn(
-            title: "FINISHED TASKS",
+            title: AppLocalizations.of(context).finishedTasks,
             isInternal: false,
             tasks: _parseTaskCardsList(widget.allTasks.finishedTasksColumn),
           ),

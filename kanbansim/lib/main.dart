@@ -21,12 +21,19 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
   bool _darkTheme = false;
   Locale _locale;
 
-  void switchLanguage() {
+  void switchLanguageTo(String language) {
     setState(() {
-      if (this._locale == null || this._locale.languageCode == 'en') {
-        _locale = Locale.fromSubtags(languageCode: 'pl');
-      } else {
-        _locale = Locale.fromSubtags(languageCode: 'en');
+      switch (language) {
+        case "polish":
+          _locale = Locale("pl");
+          break;
+
+        case "english":
+          _locale = Locale("en");
+          break;
+
+        default:
+          _locale = Locale("en");
       }
     });
   }

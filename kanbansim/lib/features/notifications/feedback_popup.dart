@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeedbackPopUp {
   static Widget show(BuildContext context, String title, String text) {
@@ -27,7 +28,7 @@ class FeedbackPopUp {
                   backgroundColor: MaterialStateProperty.all<Color>(
                       Theme.of(context).primaryColor),
                 ),
-                child: Text('Close'),
+                child: Text(AppLocalizations.of(context).close),
               ),
               SizedBox(height: 10),
             ],

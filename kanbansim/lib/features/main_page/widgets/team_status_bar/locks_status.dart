@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LocksStatus extends StatefulWidget {
   final Function checkForLocks;
@@ -55,7 +56,7 @@ class LocksStatusState extends State<LocksStatus> {
             children: [
               SizedBox(height: 5),
               Text(
-                "Locks",
+                AppLocalizations.of(context).locks,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -73,7 +74,9 @@ class LocksStatusState extends State<LocksStatus> {
                       this._areThereAnyLocks ? Colors.redAccent : Colors.green,
                 ),
                 child: Text(
-                  this._areThereAnyLocks ? "YES" : "NO",
+                  this._areThereAnyLocks
+                      ? AppLocalizations.of(context).locksArePresent
+                      : AppLocalizations.of(context).noLocksArePresent,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),

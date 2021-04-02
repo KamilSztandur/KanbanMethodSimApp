@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:kanbansim/common/input_output_file_picker/save_file_picker.dart';
 import 'package:kanbansim/features/notifications/feedback_popup.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoadFilePopup {
   Function(String filePath) returnPickedFilepath;
@@ -66,8 +67,8 @@ class _LoadFilePageState extends State<_LoadFilePage> {
         context: context,
         builder: (BuildContext context) => FeedbackPopUp.show(
           context,
-          "Save loading failed.",
-          "File corrupted or recently deleted.",
+          AppLocalizations.of(context).loadingFailed,
+          AppLocalizations.of(context).fileCorruptedNotice,
         ),
       );
       this.widget.returnPickedFilePath(null);
@@ -90,12 +91,12 @@ class _LoadFilePageState extends State<_LoadFilePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Load saved session",
+            AppLocalizations.of(context).loadSavefile,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 30,
+              fontSize: 25,
             ),
           ),
         ],
@@ -171,7 +172,7 @@ class _LoadFilePageState extends State<_LoadFilePage> {
                       : Theme.of(context).backgroundColor,
                 ),
               ),
-              child: Text('Load'),
+              child: Text(AppLocalizations.of(context).loadFile),
             ),
           ),
         ),
@@ -187,7 +188,7 @@ class _LoadFilePageState extends State<_LoadFilePage> {
               backgroundColor: MaterialStateProperty.all<Color>(
                   Theme.of(context).primaryColor),
             ),
-            child: Text('Return'),
+            child: Text(AppLocalizations.of(context).cancel),
           ),
         ),
         Flexible(flex: 3, fit: FlexFit.tight, child: Container()),

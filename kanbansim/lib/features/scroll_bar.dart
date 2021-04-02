@@ -36,8 +36,7 @@ class ScrollBarState extends State<ScrollBar> {
           left: 12,
           right: 12,
         ),
-        controller:
-            _scrollController, // use same scrollController object to support drag functionality
+        controller: _scrollController,
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
