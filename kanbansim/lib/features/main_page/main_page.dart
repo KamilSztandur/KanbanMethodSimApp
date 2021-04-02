@@ -6,7 +6,6 @@ import 'package:kanbansim/features/main_page/widgets/story_logs/story_panel.dart
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
-import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:kanbansim/features/scroll_bar.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
@@ -215,7 +214,20 @@ class MainPageState extends State<MainPage> {
         SizedBox(width: 10),
         Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).accentColor,
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.1, 1.0],
+              tileMode: TileMode.clamp,
+              colors: [
+                Theme.of(context).brightness == Brightness.light
+                    ? Theme.of(context).accentColor
+                    : Theme.of(context).scaffoldBackgroundColor,
+                Theme.of(context).brightness == Brightness.light
+                    ? Theme.of(context).backgroundColor
+                    : Theme.of(context).accentColor,
+              ],
+            ),
             border: Border.all(
               width: 2.0,
               color: Colors.black.withOpacity(

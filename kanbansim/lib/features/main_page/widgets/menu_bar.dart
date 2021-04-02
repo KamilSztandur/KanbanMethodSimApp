@@ -38,14 +38,36 @@ class MainMenuBar extends StatelessWidget {
   }
 
   @override
-  ConstrainedBox build(BuildContext context) {
+  Widget build(BuildContext context) {
     _initializeFilePickerPopup();
     _initializeFileSaverPopup();
 
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: 100),
+    /*
+    LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          stops: [0.0, 0.8],
+          tileMode: TileMode.clamp,
+          colors: [
+            Color.fromRGBO(20, 136, 204, 1.0),
+            Color.fromRGBO(80, 196, 254, 1.0),
+          ],
+        ),
+    */
+
+    return Container(
+      height: 45,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.black, Colors.white],
+          begin: Alignment.topLeft,
+          end: Alignment.topRight,
+          stops: [0.0, 0.8],
+          tileMode: TileMode.clamp,
+        ),
+      ),
       child: PlutoMenuBar(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.blueAccent.withOpacity(0.8),
         menuIconColor: Colors.white,
         textStyle: TextStyle(color: Colors.white),
         menus: [

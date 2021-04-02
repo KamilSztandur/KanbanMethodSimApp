@@ -12,9 +12,7 @@ class SaveFilePopup {
 
   Widget show(BuildContext context) {
     return new AlertDialog(
-      backgroundColor: Theme.of(context).brightness == Brightness.light
-          ? Colors.white
-          : Colors.grey.shade900,
+      backgroundColor: Colors.transparent,
       content: _SaveFilePage(
         returnSaveStatus: (bool status) {
           this.returnSaveStatus(status);
@@ -41,7 +39,9 @@ class _SaveFilePageState extends State<_SaveFilePage> {
   SaveFileWriter creator;
   String warningMessage = '';
   String fileName = '';
-
+  double _cornerRadius = 35;
+  double _height = 300;
+  double _width = 475;
   @override
   void initState() {
     super.initState();
@@ -99,120 +99,166 @@ class _SaveFilePageState extends State<_SaveFilePage> {
     }
   }
 
+  Widget _buildTitle() {
+    return Container(
+      width: double.infinity,
+      height: 60,
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(_cornerRadius),
+          topRight: Radius.circular(_cornerRadius),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "Load saved session",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputTextField() {
+    return TextField(
+      controller: _controller,
+      textAlign: TextAlign.left,
+      maxLines: 1,
+      onSubmitted: (String value) {
+        _saveFile(value);
+      },
+      decoration: new InputDecoration(
+        hintText: "Enter you savefile name here",
+        labelText: "Filename:",
+        labelStyle: new TextStyle(color: const Color(0xFF424242)),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: IconButton(
+          icon: Icon(Icons.send),
+          color: Theme.of(context).primaryColor,
+          focusColor: Theme.of(context).primaryColor,
+          disabledColor: Theme.of(context).primaryColor,
+          onPressed: (() {
+            _saveFile(this._controller.text);
+          }),
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).primaryColor),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).primaryColor),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).primaryColor),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSubTextFieldRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(
+          flex: 2,
+          child: TextButton(
+            onPressed: () {
+              _generateNameAutomatically();
+            },
+            child: Text('Generate automatically'),
+          ),
+        ),
+        Flexible(flex: 1, child: Container()),
+        Flexible(
+          flex: 2,
+          fit: FlexFit.tight,
+          child: Text(
+            this.warningMessage,
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              color: Colors.red,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildButton() {
+    return Row(
+      children: [
+        Flexible(flex: 5, child: Container()),
+        Flexible(
+          flex: 2,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).primaryColor),
+            ),
+            child: Text('Cancel'),
+          ),
+        ),
+        Flexible(flex: 5, child: Container()),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250,
-      width: 475,
+      height: this._height,
+      width: this._width,
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Colors.grey.shade900,
+        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Flexible(
             flex: 2,
-            child: Text(
-              "Save current simulation's state",
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-              ),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-              textAlign: TextAlign.center,
-            ),
+            fit: FlexFit.tight,
+            child: _buildTitle(),
           ),
           Flexible(
-            flex: 3,
+            flex: 2,
             child: Container(),
           ),
           Flexible(
             flex: 4,
-            child: TextField(
-              controller: _controller,
-              textAlign: TextAlign.left,
-              maxLines: 1,
-              onSubmitted: (String value) {
-                _saveFile(value);
-              },
-              decoration: new InputDecoration(
-                hintText: "Enter you savefile name here",
-                labelText: "Filename:",
-                labelStyle: new TextStyle(color: const Color(0xFF424242)),
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.send),
-                  color: Theme.of(context).primaryColor,
-                  focusColor: Theme.of(context).primaryColor,
-                  disabledColor: Theme.of(context).primaryColor,
-                  onPressed: (() {
-                    _saveFile(this._controller.text);
-                  }),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                ),
+            child: Container(
+              width: this._width * 0.8,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildInputTextField(),
+                  _buildSubTextFieldRow(),
+                ],
               ),
             ),
           ),
+          Flexible(flex: 1, child: Container()),
           Flexible(
             flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                  flex: 2,
-                  fit: FlexFit.tight,
-                  child: TextButton(
-                    onPressed: () {
-                      _generateNameAutomatically();
-                    },
-                    child: Text('Generate automatically'),
-                  ),
-                ),
-                Flexible(flex: 1, child: Container()),
-                Flexible(
-                  flex: 2,
-                  fit: FlexFit.tight,
-                  child: Text(
-                    this.warningMessage,
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: Colors.red,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: _buildButton(),
           ),
-          Flexible(flex: 2, child: Container()),
           Flexible(
-            flex: 2,
-            child: Row(
-              children: [
-                Flexible(flex: 5, child: Container()),
-                Flexible(
-                  flex: 2,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).primaryColor),
-                    ),
-                    child: Text('Cancel'),
-                  ),
-                ),
-                Flexible(flex: 5, child: Container()),
-              ],
-            ),
+            flex: 1,
+            child: Container(),
           ),
         ],
       ),

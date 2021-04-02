@@ -120,7 +120,16 @@ class KanbanBoardState extends State<KanbanBoard> {
                       child: Container(
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
+                          gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            stops: [0.0, 0.8],
+                            tileMode: TileMode.clamp,
+                            colors: [
+                              Colors.blueAccent.shade200,
+                              Colors.blueAccent.shade400,
+                            ],
+                          ),
                           border:
                               Border.all(color: Theme.of(context).primaryColor),
                           borderRadius: BorderRadius.only(
