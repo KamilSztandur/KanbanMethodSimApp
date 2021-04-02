@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
 import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
-import 'package:kanbansim/features/main_page/widgets/story_logs/story_notification.dart';
 import 'package:kanbansim/features/main_page/widgets/story_logs/story_panel.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
+import 'package:kanbansim/features/notifications/story_notification.dart';
 import 'package:kanbansim/features/scroll_bar.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';

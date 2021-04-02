@@ -14,6 +14,7 @@ class StoryNotification {
   final BuildContext context;
   final EventType type;
   final String message;
+  double height;
 
   StoryNotification({
     @required this.type,
@@ -66,11 +67,13 @@ class StoryNotification {
   }
 
   void show() {
+    this.height = this.message.length > 55 ? 100.0 : 75.0;
+
     showOverlayNotification(
       (context) {
         return SizedBox(
-          height: 75,
-          width: 300,
+          height: this.height,
+          width: 500,
           child: Card(
             margin: const EdgeInsets.symmetric(horizontal: 4),
             color: Theme.of(context).scaffoldBackgroundColor,
@@ -95,10 +98,11 @@ class StoryNotification {
                 title: Text(_getTitle()),
                 subtitle: Text(this.message),
                 trailing: IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      OverlaySupportEntry.of(context).dismiss();
-                    }),
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    OverlaySupportEntry.of(context).dismiss();
+                  },
+                ),
               ),
             ),
           ),

@@ -18,7 +18,7 @@ class StoryPanel extends StatelessWidget {
     for (int i = 0; i < length; i++) {
       tiles.add(
         ListTile(
-          title: Text(messages[i]),
+          title: SelectableText(messages[i]),
           tileColor: Theme.of(context).primaryColor.withOpacity(
                 i % 2 == 0 ? 0.2 : 0.0,
               ),
