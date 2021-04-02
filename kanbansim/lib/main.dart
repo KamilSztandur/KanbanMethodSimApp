@@ -9,22 +9,29 @@ void main() {
 }
 
 class KanbanSimApp extends StatefulWidget {
+  static _KanbanSimAppState of(BuildContext context) =>
+      context.findAncestorStateOfType<_KanbanSimAppState>();
+
   @override
-  State<StatefulWidget> createState() => KanbanSimAppState();
+  _KanbanSimAppState createState() => _KanbanSimAppState();
 }
 
-class KanbanSimAppState extends State<KanbanSimApp> {
+class _KanbanSimAppState extends State<KanbanSimApp> {
   final _scaffoldKey = GlobalKey();
   bool _darkTheme = false;
   Locale _locale;
 
-  void setLocale(Locale value) {
+  void switchLanguage() {
     setState(() {
-      _locale = value;
+      if (this._locale == null || this._locale.languageCode == 'en') {
+        _locale = Locale.fromSubtags(languageCode: 'pl');
+      } else {
+        _locale = Locale.fromSubtags(languageCode: 'en');
+      }
     });
   }
 
-  void _switchBrightness() {
+  void switchTheme() {
     setState(() {
       this._darkTheme = !this._darkTheme;
     });
@@ -63,9 +70,6 @@ class KanbanSimAppState extends State<KanbanSimApp> {
             resizeToAvoidBottomInset: false,
             body: MainPage(
               scaffoldKey: _scaffoldKey,
-              switchTheme: () {
-                _switchBrightness();
-              },
             ),
           ),
         ),

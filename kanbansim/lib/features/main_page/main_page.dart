@@ -7,15 +7,15 @@ import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
 import 'package:kanbansim/features/scroll_bar.dart';
+import 'package:kanbansim/main.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
 
 class MainPage extends StatefulWidget {
-  final VoidCallback switchTheme;
   final scaffoldKey;
 
-  MainPage({this.scaffoldKey, @required this.switchTheme});
+  MainPage({this.scaffoldKey});
 
   @override
   MainPageState createState() => MainPageState(scaffoldKey: scaffoldKey);
@@ -81,9 +81,6 @@ class MainPageState extends State<MainPage> {
         setState(() {
           this.allTasks.addRandomTasksForAllColumns();
         });
-      },
-      switchTheme: () {
-        this.widget.switchTheme();
       },
     );
   }

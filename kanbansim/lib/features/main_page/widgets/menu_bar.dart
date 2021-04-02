@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
 import 'package:kanbansim/features/input_output_popups/save_file_popup.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
+import 'package:kanbansim/main.dart';
 import 'package:pluto_menu_bar/pluto_menu_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainMenuBar extends StatelessWidget {
   final VoidCallback addRandomTasks;
   final VoidCallback clearAllTasks;
-  final VoidCallback switchTheme;
   final Function(String) loadSimStateFromFilePath;
   final VoidCallback saveSimStateIntoFile;
 
@@ -20,7 +21,6 @@ class MainMenuBar extends StatelessWidget {
     Key key,
     @required this.addRandomTasks,
     @required this.clearAllTasks,
-    @required this.switchTheme,
     @required this.loadSimStateFromFilePath,
     @required this.saveSimStateIntoFile,
   }) : super(key: key);
@@ -41,19 +41,6 @@ class MainMenuBar extends StatelessWidget {
   Widget build(BuildContext context) {
     _initializeFilePickerPopup();
     _initializeFileSaverPopup();
-
-    /*
-    LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          stops: [0.0, 0.8],
-          tileMode: TileMode.clamp,
-          colors: [
-            Color.fromRGBO(20, 136, 204, 1.0),
-            Color.fromRGBO(80, 196, 254, 1.0),
-          ],
-        ),
-    */
 
     return Container(
       height: 45,
@@ -144,16 +131,27 @@ class MainMenuBar extends StatelessWidget {
             },
           ),
           MenuItem(
-            title: 'Switch theme',
+            title: "Switch theme",
             icon: Theme.of(context).brightness == Brightness.light
                 ? Icons.brightness_2_outlined
                 : Icons.wb_sunny_outlined,
             onTap: () {
-              this.switchTheme();
-
+              KanbanSimApp.of(context).switchTheme();
               SubtleMessage.messageWithContext(
                 context,
                 "Theme switched successfully.",
+              );
+            },
+          ),
+          MenuItem(
+            title: AppLocalizations.of(context).langSwitch,
+            icon: Icons.language_outlined,
+            onTap: () {
+              KanbanSimApp.of(context).switchLanguage();
+
+              SubtleMessage.messageWithContext(
+                context,
+                "Language switched successfully.",
               );
             },
           ),
