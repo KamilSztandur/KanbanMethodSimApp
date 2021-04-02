@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SubtleMessage {
   static void messageWithContext(BuildContext context, String text) {
@@ -15,7 +16,7 @@ class SubtleMessage {
         backgroundColor: Theme.of(context).primaryColor,
         action: SnackBarAction(
             textColor: Colors.white,
-            label: "Close",
+            label: AppLocalizations.of(context).close,
             onPressed: () {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
             }),
@@ -31,26 +32,5 @@ class SubtleMessage {
     double displayTimeInSeconds = charsAmount / averageReadingSpeedPerSecond;
 
     return displayTimeInSeconds.ceil();
-  }
-
-  static void message(final scaffoldKey, String text) {
-    scaffoldKey.currentState.hideCurrentSnackBar();
-    scaffoldKey.currentState.showSnackBar(
-      SnackBar(
-        content: Text(
-          text,
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        duration: Duration(seconds: _countDisplayTime(text)),
-        action: SnackBarAction(
-            textColor: Colors.white,
-            label: "Close",
-            onPressed: () {
-              scaffoldKey.currentState.hideCurrentSnackBar();
-            }),
-      ),
-    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DayStatus extends StatefulWidget {
   final VoidCallback dayHasChanged;
@@ -69,7 +70,7 @@ class DayStatusState extends State<DayStatus> {
             children: [
               SizedBox(height: 5),
               Text(
-                "Day",
+                AppLocalizations.of(context).day,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -102,8 +103,10 @@ class DayStatusState extends State<DayStatus> {
                             SubtleMessage.messageWithContext(
                               context,
                               isSuccessful
-                                  ? "Switched to previous day!"
-                                  : "Previous day's limit reached.",
+                                  ? AppLocalizations.of(context)
+                                      .switchToPreviousDaySuccess
+                                  : AppLocalizations.of(context)
+                                      .previousDaysLimitReached,
                             );
                           },
                         ),
@@ -143,8 +146,10 @@ class DayStatusState extends State<DayStatus> {
                             SubtleMessage.messageWithContext(
                               context,
                               isSuccessful
-                                  ? "Switched to next day!"
-                                  : "Next day's limit reached.",
+                                  ? AppLocalizations.of(context)
+                                      .switchToNextDaySuccess
+                                  : AppLocalizations.of(context)
+                                      .nextDaysLimitReached,
                             );
                           },
                         ),

@@ -1,0 +1,105 @@
+{
+    "close": "Zamknij",
+    "cancel": "Anuluj",
+
+
+    "newSession": "Nowa sesja",
+    "createEmptySession": "Stwórz nową sesję",
+    "selectTemplate": "Wybierz szablon",
+    "saveSession": "Zapisz sesję",
+    "loadSession": "Wczytaj sesję",
+    "addRandomTasks": "Dodaj losowe zadania",
+    "resetSession": "Wyczyść sesję",
+    "themeSwitch": "Przełącz motyw",
+    "langSwitch": "Zmień język",
+    "polishLang": "Język polski",
+    "englishLang": "Język angielski",
+    "help": "Pomoc",
+    "info": "Informacje",
+    "quit": "Wyjście",
+
+    "newSessionNotif": "Tworzenie nowej sesji...",
+    "selectingTemplateNotif": "Wybieranie szablonu...",
+    "addRandomTasksSuccess": "Pomyślne dodanie losowych zadań.",
+    "resetSessionSuccess": "Pomyślnie zresetowano stan sesji.",
+    "themeSwitchSuccess": "Pomyślnie przełączono motyw.",
+    "langSwitchSuccess": "Pomyślnie przełączono język.",
+    "openingHelpGuide": "Otwieranie pomocy...",
+    "applicationLegalese": "Dozwolony użytek edukacyjny.\nUtworzone przez Kamil Sztandur.\nKontakt: kamil.sztandur@vp.pl.",
+    "applicationName": "Kanban Method's simulator",
+
+
+    "productivity": "Produktywność",
+    "day": "Dzień",
+    "locks": "Blokady",
+    "userInfo": "Status członka",
+    "locksArePresent": "TAK",
+    "noLocksArePresent": "NIE",
+
+    "switchToNextDaySuccess": "Pomyślnie przełączono na następny dzień.",
+    "switchToPreviousDaySuccess": "Pomyślnie przełączono na poprzedni dzień.",
+    "previousDaysLimitReached": "Nie udało się przełączyć dnia na poprzedni. Osiągnięto limit.",
+    "nextDaysLimitReached": "Nie udało się przełączyć dnia na następny. Osiągnięto limit.",
+
+
+    "availableTasks": "DOSTĘPNE ZADANIA",
+    "stageOneTasks": "ZADANIA PIERWSZEGO ETAPU",
+    "inProgressTasks": "W TRAKCIE",
+    "doneTasks": "ZROBIONE",
+    "stageTwoTasks": "ZADANIA DRUGIEGO ETAPU",
+    "finishedTasks": "UKONCZONE ZADANIA",
+
+
+    "createNewTask": "STWÓRZ NOWE ZADANIE",
+    "setTitle": "Wybierz tytuł",
+    "assignTaskTo": "Przypisz to zadanie do",
+    "setTaskTypeAs": "Ustaw typ zadania jako",
+    "setRequiredProductivity": "Ustaw wymaganą produktywność",
+    "setDeadline": "Ustaw dzień upłynięcia terminu wykonania zadania",
+    "deadlineAvailabilityNotice": "Dostępne tylko dla zadań z ustaloną datą!",
+    "enterDeadlineDayNumber": "Wprowadź numer dnia",
+    "enterTaskTitleHere": "Wpisz tutaj tytuł zadania",
+    "create": "Stwórz",
+    "standard": "Standardowe",
+    "expedite": "Pilne",
+    "fixedDate": "Z ustaloną datą",
+
+    "taskCreationSuccess": "Zadanie utworzone pomyślnie!",
+    
+
+    "loadSavefile": "WCZYTAJ ZAPISANĄ SESJĘ",
+    "loadingFailed": "Wczytywanie nie powiodło się.",
+    "fileCorruptedNotice": "Plik uszkodzony bądź usunięty.",
+    "loadFile": "Wczytaj",
+
+    "selectFileToLoad": "Wybierz plik zapisu",
+    "availableSaves": "Dostępne pliki zapisu",
+
+
+    "simulation": "Symulacja",
+    "filenameTaken": "Taki zapis już istnieje.",
+    "invalidFilename": "Nieprawidłowa nazwa.",
+    "savingSuccess": "został zapisany pomyślnie.",
+    "saveCurrentSession": "ZAPISZ AKTUALNĄ SESJĘ",
+    "enterSaveNameHere": "Wpisz tutaj nazwę pliku zapisu",
+    "filenameLabel": "Plik",
+    "generateAutomatically": "Wygeneruj automatycznie",
+
+
+    "assignUserToUnlockTask": "WYZNACZ KOGOŚ DO ODBLOKOWANIA",
+    "productivityRequired": "wymagana produktywność",
+    "empty": "Brak",
+    "assignUserNotice": "Jeżeli Twojego członka zespołu nie ma na liście, to znaczy, że jest właścicielem tego zadania lub nie ma wystarczającej produktywności.",
+    "unlock": "Odblokuj",
+    "unlockSuccess": "odblokowane pomyślnie!",
+
+    "newTaskAppeared": "Pojawiło się nowe zadanie",
+    "taskLocked": "Zadanie zostało zablokowane",
+    "notice": "Powiadomienie",
+    "errorNotice": "Wystąpił błąd aplikacji",
+    "elementDeleted": "Element został usunięty",
+
+    "events": "Wydarzenia",
+    "copyLogsToClipboardhint": "Skopiuj historie wydarzeń do schowka.",
+    "logsCopiedSuccessfully": "Historia wydarzeń została pomyślnie skopiowana do schowka."
+}

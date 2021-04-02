@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StoryPanel extends StatelessWidget {
   final List<String> messages;
@@ -64,7 +65,7 @@ class StoryPanel extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Events',
+                  AppLocalizations.of(context).events,
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontSize: 20,
@@ -75,7 +76,7 @@ class StoryPanel extends StatelessWidget {
                   icon: Icon(Icons.copy_outlined),
                   iconSize: 17,
                   color: Theme.of(context).primaryColor,
-                  tooltip: "Copy events logs to clipboard.",
+                  tooltip: AppLocalizations.of(context).copyLogsToClipboardhint,
                   onPressed: () {
                     Clipboard.setData(
                       ClipboardData(
@@ -85,7 +86,7 @@ class StoryPanel extends StatelessWidget {
 
                     SubtleMessage.messageWithContext(
                       context,
-                      "Logs copied to clipboard successfully.",
+                      AppLocalizations.of(context).logsCopiedSuccessfully,
                     );
                   },
                 ),

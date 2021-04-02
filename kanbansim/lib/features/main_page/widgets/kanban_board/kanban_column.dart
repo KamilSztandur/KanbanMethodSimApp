@@ -114,7 +114,7 @@ class KanbanColumnState extends State<KanbanColumn> {
           softWrap: false,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 25,
+            fontSize: 22,
             color: Colors.white,
           ),
         ),

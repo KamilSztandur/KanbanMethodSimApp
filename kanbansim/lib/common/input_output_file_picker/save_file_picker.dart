@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -33,9 +33,9 @@ class SaveFilePicker {
     Directory savesDirectory = getSaveFilesDirectory();
 
     String path = await FilesystemPicker.open(
-      title: 'Select save file to load',
+      title: AppLocalizations.of(context).selectFileToLoad,
       context: context,
-      rootName: 'Available saves:',
+      rootName: "${AppLocalizations.of(context).availableSaves}:",
       rootDirectory: savesDirectory,
       fsType: FilesystemType.file,
       folderIconColor: Theme.of(context).primaryColor,

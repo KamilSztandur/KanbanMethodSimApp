@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
 import 'package:kanbansim/features/input_output_popups/save_file_popup.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
+import 'package:kanbansim/main.dart';
 import 'package:pluto_menu_bar/pluto_menu_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainMenuBar extends StatelessWidget {
   final VoidCallback addRandomTasks;
   final VoidCallback clearAllTasks;
-  final VoidCallback switchTheme;
   final Function(String) loadSimStateFromFilePath;
   final VoidCallback saveSimStateIntoFile;
 
@@ -20,7 +21,6 @@ class MainMenuBar extends StatelessWidget {
     Key key,
     @required this.addRandomTasks,
     @required this.clearAllTasks,
-    @required this.switchTheme,
     @required this.loadSimStateFromFilePath,
     @required this.saveSimStateIntoFile,
   }) : super(key: key);
@@ -42,19 +42,6 @@ class MainMenuBar extends StatelessWidget {
     _initializeFilePickerPopup();
     _initializeFileSaverPopup();
 
-    /*
-    LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          stops: [0.0, 0.8],
-          tileMode: TileMode.clamp,
-          colors: [
-            Color.fromRGBO(20, 136, 204, 1.0),
-            Color.fromRGBO(80, 196, 254, 1.0),
-          ],
-        ),
-    */
-
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -72,33 +59,33 @@ class MainMenuBar extends StatelessWidget {
         textStyle: TextStyle(color: Colors.white),
         menus: [
           MenuItem(
-            title: 'New session',
+            title: AppLocalizations.of(context).newSession,
             icon: Icons.create_outlined,
             children: [
               MenuItem(
-                title: 'Create empty',
+                title: AppLocalizations.of(context).createEmptySession,
                 icon: Icons.create_new_folder_outlined,
                 onTap: () {
                   SubtleMessage.messageWithContext(
                     context,
-                    'Creating empty kanban...',
+                    AppLocalizations.of(context).createEmptySession,
                   );
                 },
               ),
               MenuItem(
-                title: 'Select template',
+                title: AppLocalizations.of(context).selectTemplate,
                 icon: Icons.file_copy_outlined,
                 onTap: () {
                   SubtleMessage.messageWithContext(
                     context,
-                    'Selecting session\'s template...',
+                    AppLocalizations.of(context).selectingTemplateNotif,
                   );
                 },
               ),
             ],
           ),
           MenuItem(
-            title: 'Save current session',
+            title: AppLocalizations.of(context).saveSession,
             icon: Icons.save_outlined,
             onTap: () {
               showDialog(
@@ -109,7 +96,7 @@ class MainMenuBar extends StatelessWidget {
             },
           ),
           MenuItem(
-            title: 'Load session',
+            title: AppLocalizations.of(context).loadSession,
             icon: Icons.read_more_outlined,
             onTap: () {
               showDialog(
@@ -120,69 +107,97 @@ class MainMenuBar extends StatelessWidget {
             },
           ),
           MenuItem(
-            title: 'Add random tasks',
+            title: AppLocalizations.of(context).addRandomTasks,
             icon: Icons.library_add_outlined,
             onTap: () {
               this.addRandomTasks();
 
               SubtleMessage.messageWithContext(
                 context,
-                "Sucessfully added few random tasks.",
+                AppLocalizations.of(context).addRandomTasksSuccess,
               );
             },
           ),
           MenuItem(
-            title: 'Clear all columns',
+            title: AppLocalizations.of(context).resetSession,
             icon: Icons.delete_forever_outlined,
             onTap: () {
               this.clearAllTasks();
 
               SubtleMessage.messageWithContext(
                 context,
-                "Sucessfully cleared all tasks.",
+                AppLocalizations.of(context).resetSessionSuccess,
               );
             },
           ),
           MenuItem(
-            title: 'Switch theme',
+            title: AppLocalizations.of(context).themeSwitch,
             icon: Theme.of(context).brightness == Brightness.light
                 ? Icons.brightness_2_outlined
                 : Icons.wb_sunny_outlined,
             onTap: () {
-              this.switchTheme();
-
+              KanbanSimApp.of(context).switchTheme();
               SubtleMessage.messageWithContext(
                 context,
-                "Theme switched successfully.",
+                AppLocalizations.of(context).themeSwitchSuccess,
               );
             },
           ),
           MenuItem(
-            title: 'Help',
+            title: AppLocalizations.of(context).langSwitch,
+            icon: Icons.language_outlined,
+            children: [
+              MenuItem(
+                title: AppLocalizations.of(context).englishLang,
+                onTap: () {
+                  KanbanSimApp.of(context).switchLanguageTo("english");
+                  SubtleMessage.messageWithContext(
+                    context,
+                    AppLocalizations.of(context).langSwitchSuccess,
+                  );
+                },
+                children: [],
+              ),
+              MenuItem(
+                title: AppLocalizations.of(context).polishLang,
+                onTap: () {
+                  KanbanSimApp.of(context).switchLanguageTo("polish");
+
+                  SubtleMessage.messageWithContext(
+                    context,
+                    AppLocalizations.of(context).langSwitchSuccess,
+                  );
+                },
+                children: [],
+              ),
+            ],
+          ),
+          MenuItem(
+            title: AppLocalizations.of(context).help,
             icon: Icons.help_outline,
             onTap: () {
               SubtleMessage.messageWithContext(
                 context,
-                "Opening help guide...",
+                AppLocalizations.of(context).openingHelpGuide,
               );
             },
           ),
           MenuItem(
-            title: 'Info',
+            title: AppLocalizations.of(context).info,
             icon: Icons.info_outline_rounded,
             onTap: () {
               showAboutDialog(
                 context: context,
-                applicationVersion: '0.1.6',
+                applicationVersion: '0.7.6',
                 applicationIcon: Icon(Icons.info_outline_rounded),
                 applicationLegalese:
-                    'For education purposes only.\nDeveloped by Kamil Sztandur.\nContact: kamil.sztandur@vp.pl.',
-                applicationName: "Kanban Method's simulator",
+                    AppLocalizations.of(context).applicationLegalese,
+                applicationName: AppLocalizations.of(context).applicationName,
               );
             },
           ),
           MenuItem(
-            title: 'Quit',
+            title: AppLocalizations.of(context).quit,
             icon: Icons.exit_to_app,
             onTap: () => exit(0),
           ),

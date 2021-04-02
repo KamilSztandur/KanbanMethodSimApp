@@ -13,7 +13,6 @@ dependencies:
   vs_scrollbar: ^0.2.0
   pluto_menu_bar: ^0.1.4
   filesystem_picker: ^1.0.4
-  intl: ^0.16.1
   google_fonts: any
   window_size:
     git:
@@ -23,13 +22,19 @@ dependencies:
   file_picker_cross: any
   flutter:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-flutter:
-  uses-material-design: true
+flutter_intl:
+  main_locale: en_US
+  enabled: true
 
+flutter:
+  generate: true
+  uses-material-design: true

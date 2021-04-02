@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/TaskType.dart';
@@ -113,12 +113,12 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Create new task",
+            AppLocalizations.of(context).createNewTask,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 40,
+              fontSize: 30,
             ),
           ),
         ],
@@ -132,7 +132,7 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSubTitle("Set title:"),
+          _buildSubTitle(AppLocalizations.of(context).setTitle + ":"),
           TextField(
             maxLength: 20,
             controller: _controllerTitle,
@@ -144,7 +144,7 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
               });
             },
             decoration: new InputDecoration(
-              hintText: "Enter your task title here",
+              hintText: AppLocalizations.of(context).enterTaskTitleHere,
               labelStyle: new TextStyle(color: const Color(0xFF424242)),
               floatingLabelBehavior: FloatingLabelBehavior.always,
               enabledBorder: UnderlineInputBorder(
@@ -173,11 +173,11 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
         RichText(
           textAlign: TextAlign.left,
           text: TextSpan(
-            text: 'Set task deadline day\'s number:\n',
+            text: '${AppLocalizations.of(context).setDeadline}:\n',
             style: DefaultTextStyle.of(context).style,
             children: <TextSpan>[
               TextSpan(
-                text: 'Available only for Fixed Date tasks!',
+                text: AppLocalizations.of(context).deadlineAvailabilityNotice,
                 style: TextStyle(color: Colors.red),
               ),
             ],
@@ -197,7 +197,7 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: TextInputType.number,
             decoration: new InputDecoration(
-              hintText: "Enter deadline day number",
+              hintText: AppLocalizations.of(context).enterDeadlineDayNumber,
               labelStyle: new TextStyle(color: const Color(0xFF424242)),
               floatingLabelBehavior: FloatingLabelBehavior.always,
               enabledBorder: UnderlineInputBorder(
@@ -227,7 +227,7 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSubTitle("Asign task to:"),
+          _buildSubTitle(AppLocalizations.of(context).assignTaskTo + ":"),
           DropdownButton<String>(
             value: _selectedUser,
             icon: const Icon(Icons.arrow_drop_down),
@@ -266,7 +266,7 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSubTitle("Set task type as:"),
+          _buildSubTitle(AppLocalizations.of(context).setTaskTypeAs + ":"),
           DropdownButton<String>(
             value: _selectedType,
             icon: const Icon(Icons.arrow_drop_down),
@@ -285,7 +285,7 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
             items: types.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value),
+                child: Text(_getTranslatedTaskTypeName(value)),
               );
             }).toList(),
           ),
@@ -339,7 +339,8 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildSubTitle("Set productivity to required:"),
+          _buildSubTitle(
+              AppLocalizations.of(context).setRequiredProductivity + ":"),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -436,10 +437,10 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
                 Navigator.of(context).pop();
                 SubtleMessage.messageWithContext(
                   context,
-                  'Task "${_controllerTitle.text}" created successfully!',
+                  '${_controllerTitle.text}: ${AppLocalizations.of(context).taskCreationSuccess}',
                 );
               },
-              child: Text("Create"),
+              child: Text(AppLocalizations.of(context).create),
               style: ElevatedButton.styleFrom(
                 primary: _readyToCreate ? Colors.green : Colors.transparent,
                 onPrimary: Colors.white,
@@ -458,7 +459,7 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Cancel"),
+            child: Text(AppLocalizations.of(context).cancel),
           ),
         ),
         Flexible(
@@ -477,6 +478,25 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
       return false;
     } else {
       return true;
+    }
+  }
+
+  String _getTranslatedTaskTypeName(String type) {
+    switch (type) {
+      case "Standard":
+        return AppLocalizations.of(context).standard;
+        break;
+
+      case "Expedite":
+        return AppLocalizations.of(context).expedite;
+        break;
+
+      case "FixedDate":
+        return AppLocalizations.of(context).fixedDate;
+        break;
+
+      default:
+        return AppLocalizations.of(context).standard;
     }
   }
 
