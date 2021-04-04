@@ -4,22 +4,28 @@ import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:expandable/expandable.dart';
 
-class StoryPanel extends StatelessWidget {
+class StoryPanel extends StatefulWidget {
   final List<String> messages;
-  final ScrollController _scrollController = new ScrollController();
 
   StoryPanel({Key key, @required this.messages})
       : assert(messages != null),
         super(key: key);
 
+  @override
+  StoryPanelState createState() => StoryPanelState();
+}
+
+class StoryPanelState extends State<StoryPanel> {
+  ScrollController _scrollController = new ScrollController();
+
   List<ListTile> _getTiles(BuildContext context) {
     List<ListTile> tiles = <ListTile>[];
 
-    int length = this.messages.length;
+    int length = this.widget.messages.length;
     for (int i = 0; i < length; i++) {
       tiles.add(
         ListTile(
-          title: SelectableText(messages[i]),
+          title: SelectableText(this.widget.messages[i]),
           tileColor: Theme.of(context).primaryColor.withOpacity(
                 i % 2 == 0 ? 0.2 : 0.0,
               ),
@@ -32,9 +38,9 @@ class StoryPanel extends StatelessWidget {
 
   String _getLogsAsString() {
     String logs = "";
-    messages.forEach(
-      (message) => logs += ("$message\n"),
-    );
+    this.widget.messages.forEach(
+          (message) => logs += ("$message\n"),
+        );
 
     return logs;
   }
@@ -93,6 +99,7 @@ class StoryPanel extends StatelessWidget {
               ),
             ),
             child: Scrollbar(
+              controller: _scrollController,
               child: ListView(
                 controller: _scrollController,
                 children: _getTiles(context),
