@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:expandable/expandable.dart';
 
 class StoryPanel extends StatelessWidget {
   final List<String> messages;
-  ScrollController _scrollController = new ScrollController();
+  final ScrollController _scrollController = new ScrollController();
 
   StoryPanel({Key key, @required this.messages})
       : assert(messages != null),
@@ -38,85 +39,107 @@ class StoryPanel extends StatelessWidget {
     return logs;
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildHeadline(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          AppLocalizations.of(context).events,
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.copy_outlined),
+          iconSize: 17,
+          color: Theme.of(context).primaryColor,
+          tooltip: AppLocalizations.of(context).copyLogsToClipboardhint,
+          onPressed: () {
+            Clipboard.setData(
+              ClipboardData(
+                text: _getLogsAsString(),
+              ),
+            );
+
+            SubtleMessage.messageWithContext(
+              context,
+              AppLocalizations.of(context).logsCopiedSuccessfully,
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLogs(BuildContext context) {
     return Container(
       width: (MediaQuery.of(context).size.width),
-      height: (MediaQuery.of(context).size.height) * 0.17,
+      height: (MediaQuery.of(context).size.height) * 0.75,
       padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
-        border: Border.all(
-          width: 2.0,
-          color: Colors.black.withOpacity(
-            Theme.of(context).brightness == Brightness.light ? 0.3 : 0.5,
-          ),
-        ),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(15.0),
-          topRight: Radius.circular(15.0),
-        ),
-      ),
       child: Column(
         children: [
-          Flexible(
-            flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  AppLocalizations.of(context).events,
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.copy_outlined),
-                  iconSize: 17,
-                  color: Theme.of(context).primaryColor,
-                  tooltip: AppLocalizations.of(context).copyLogsToClipboardhint,
-                  onPressed: () {
-                    Clipboard.setData(
-                      ClipboardData(
-                        text: _getLogsAsString(),
-                      ),
-                    );
-
-                    SubtleMessage.messageWithContext(
-                      context,
-                      AppLocalizations.of(context).logsCopiedSuccessfully,
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-          Flexible(flex: 1, child: Container()),
-          Flexible(
-            flex: 10,
-            child: Container(
-              height: (MediaQuery.of(context).size.height) * 0.13,
-              decoration: BoxDecoration(
-                color: Theme.of(context).accentColor.withOpacity(0.2),
-                border: Border.all(
-                  color: Theme.of(context).primaryColor,
-                ),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5.0),
-                  topRight: Radius.circular(5.0),
-                ),
+          Container(
+            height: (MediaQuery.of(context).size.height) * 0.7,
+            decoration: BoxDecoration(
+              color: Theme.of(context).accentColor.withOpacity(0.2),
+              border: Border.all(
+                color: Theme.of(context).primaryColor,
               ),
-              child: Scrollbar(
-                child: ListView(
-                  controller: _scrollController,
-                  children: _getTiles(context),
-                ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(5.0),
+                topRight: Radius.circular(5.0),
+              ),
+            ),
+            child: Scrollbar(
+              child: ListView(
+                controller: _scrollController,
+                children: _getTiles(context),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpandableNotifier(
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Theme.of(context).accentColor
+                      : Theme.of(context).scaffoldBackgroundColor,
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
+                ),
+                child: ScrollOnExpand(
+                  scrollOnExpand: true,
+                  scrollOnCollapse: false,
+                  child: ExpandablePanel(
+                    theme: const ExpandableThemeData(
+                      headerAlignment: ExpandablePanelHeaderAlignment.center,
+                    ),
+                    header: _buildHeadline(context),
+                    expanded: _buildLogs(context),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
