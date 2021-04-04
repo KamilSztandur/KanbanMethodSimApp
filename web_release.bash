@@ -26,7 +26,7 @@ cd ..
 echo 'Finished.'
 
 echo 'Pushing changes into github pages...'
-git switch -c release-web-demo
+git switch release-web-demo
 #git push origin
 echo 'Finished.'
 
