@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Build and run web app
 echo 'Starting...'
@@ -31,7 +31,9 @@ git add docs
 git stash
 git checkout release-web-demo
 git stash apply
-git add docs
+mv docs/* .
+rm -r docs
+git add *
 git commit -m "Latest release [$(date +"%D %T")]"
 git push
 git checkout master
