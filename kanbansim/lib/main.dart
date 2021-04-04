@@ -3,6 +3,7 @@ import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:expandable/expandable.dart';
 
 void main() {
   runApp(KanbanSimApp());
@@ -75,8 +76,14 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
             backgroundColor: Colors.transparent,
             key: _scaffoldKey,
             resizeToAvoidBottomInset: false,
-            body: MainPage(
-              scaffoldKey: _scaffoldKey,
+            body: ExpandableTheme(
+              data: const ExpandableThemeData(
+                iconColor: Colors.blue,
+                useInkWell: true,
+              ),
+              child: MainPage(
+                scaffoldKey: _scaffoldKey,
+              ),
             ),
           ),
         ),

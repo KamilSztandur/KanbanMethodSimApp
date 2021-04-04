@@ -92,8 +92,9 @@ class MainPageState extends State<MainPage> {
       },
       clearAllTasks: () {
         setState(() {
-          this.allTasks.clearAllTasks();
+          _clearAllTasks();
           _restoreUsersProductivities();
+          _clearAllLogs();
         });
       },
       addRandomTasks: () {
@@ -102,6 +103,14 @@ class MainPageState extends State<MainPage> {
         });
       },
     );
+  }
+
+  void _clearAllTasks() {
+    this.allTasks.clearAllTasks();
+  }
+
+  void _clearAllLogs() {
+    this.messages = <String>[];
   }
 
   void _initializeKanbanBoard() {
@@ -274,13 +283,12 @@ class MainPageState extends State<MainPage> {
           ),
         ),
         Container(
-          height: (MediaQuery.of(context).size.height) * 0.65,
+          height: (MediaQuery.of(context).size.height) * 0.755,
           child: ScrollBar(
             child: kanbanBoard,
           ),
         ),
         storyPanel,
-        SizedBox(width: 10),
       ],
     );
   }
