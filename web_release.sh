@@ -33,6 +33,7 @@ git checkout release-web-demo
 git stash apply
 mv docs/* .
 rm -r docs
+rm -r kanbansim
 git add *
 git commit -m "Latest release [$(date +"%D %T")]"
 git push
