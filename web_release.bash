@@ -25,4 +25,10 @@ sed -i "s/'main.dart.js';/'KanbanMethodSimApp\/main.dart.js';/g" index.html
 cd ..
 echo 'Finished.'
 
+echo 'Pushing changes into github pages...'
+git switch -c release-web-demo
+#git push origin
+echo 'Finished.'
+
+
 echo 'Script finished.'
