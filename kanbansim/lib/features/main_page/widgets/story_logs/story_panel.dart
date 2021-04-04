@@ -62,6 +62,7 @@ class StoryPanelState extends State<StoryPanel> {
           iconSize: 17,
           color: Theme.of(context).primaryColor,
           tooltip: AppLocalizations.of(context).copyLogsToClipboardhint,
+          splashColor: Colors.transparent,
           onPressed: () {
             Clipboard.setData(
               ClipboardData(
