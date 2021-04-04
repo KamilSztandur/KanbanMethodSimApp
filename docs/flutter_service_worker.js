@@ -8,7 +8,11 @@ const RESOURCES = {
 "assets/fonts/MaterialIcons-Regular.otf": "1288c9e28052e028aba623321f7826ac",
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 "assets/NOTICES": "3e5a5caadb29db703b9831764a25f3ec",
+=======
+"assets/NOTICES": "f5736d7ed053d6169fcb544ae655b993",
+>>>>>>> Stashed changes
 =======
 "assets/NOTICES": "f5736d7ed053d6169fcb544ae655b993",
 >>>>>>> Stashed changes
@@ -19,6 +23,7 @@ const RESOURCES = {
 "favicon.png": "83fdeef958e241bf047e1a5eef3331e0",
 "icons/Icon-192.png": "a803adfe215a81eaa5fef0a3c5393a1c",
 "icons/Icon-512.png": "ed1337c4ea280dc26ae4fbaa5e7deb21",
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 "index.html": "769e581fd65bb5b6ca1a87f1e2da01f8",
@@ -32,6 +37,11 @@ const RESOURCES = {
 =======
 "index.html": "ca584d754450ec9300821d599a1b1403",
 "/": "ca584d754450ec9300821d599a1b1403",
+"main.dart.js": "0d5357e5a04b1d65743d158055b06ac9",
+>>>>>>> Stashed changes
+=======
+"index.html": "fb583eba04adaea6df67f83818be1df8",
+"/": "fb583eba04adaea6df67f83818be1df8",
 "main.dart.js": "0d5357e5a04b1d65743d158055b06ac9",
 >>>>>>> Stashed changes
 "manifest.json": "5906502537ec8fb4135157c712dd663c",
