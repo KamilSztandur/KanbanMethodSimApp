@@ -29,12 +29,13 @@ echo 'Finished.'
 echo 'Pushing changes into github pages...'
 git add docs
 git stash
-git checkout release-web-demoo
+git checkout release-web-demo
 git stash apply
 git add docs
-git commit -m 'Add latest release [$(date +'%H:%M %d/%m/%Y')]'
-git push
-git checkout master
+current_date=$(date +'%H:%M %d/%m/%Y')
+git commit -m 'Add latest release [$(current_date)]'
+#git push
+#git checkout master
 echo 'Finished.'
 
 
