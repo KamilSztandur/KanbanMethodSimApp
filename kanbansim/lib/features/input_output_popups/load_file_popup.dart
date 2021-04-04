@@ -1,8 +1,10 @@
 import 'dart:io';
-
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
-import 'package:kanbansim/common/input_output_file_picker/save_file_picker.dart';
+import 'package:kanbansim/common/input_output_file_picker/input/filepicker_interface.dart';
+import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker.dart';
+import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker_web.dart';
 import 'package:kanbansim/features/notifications/feedback_popup.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -42,20 +44,30 @@ class _LoadFilePage extends StatefulWidget {
 
 class _LoadFilePageState extends State<_LoadFilePage> {
   bool _readyToSubmit;
-  SaveFilePicker _picker;
+  FilePicker _picker;
   double _cornerRadius = 35;
   double _height = 250;
   double _width = 400;
 
   void _initializePicker() {
-    _picker = SaveFilePicker(
-      context: context,
-      returnPickedFilePath: (String filePath) {
-        setState(() {
-          this.widget.filePath = filePath;
-        });
-      },
-    );
+    if (kIsWeb) {
+      this._picker = SaveFilePickerWeb(
+        returnPickedFilePath: (String filePath) {
+          setState(() {
+            this.widget.filePath = filePath;
+          });
+        },
+      );
+    } else {
+      this._picker = SaveFilePicker(
+        context: context,
+        returnPickedFilePath: (String filePath) {
+          setState(() {
+            this.widget.filePath = filePath;
+          });
+        },
+      );
+    }
   }
 
   void _returnIfExists() {

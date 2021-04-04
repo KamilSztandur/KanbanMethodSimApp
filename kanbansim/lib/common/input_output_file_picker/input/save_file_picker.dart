@@ -1,10 +1,11 @@
-import 'dart:typed_data';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:kanbansim/common/input_output_file_picker/filepicker_interface.dart';
+import 'package:kanbansim/common/input_output_file_picker/input_output_supplier.dart';
 
-class SaveFilePicker {
+class SaveFilePicker implements FilePicker {
   final Function(String) returnPickedFilePath;
   FileTileSelectMode filePickerSelectMode = FileTileSelectMode.wholeTile;
   BuildContext context;
@@ -18,19 +19,8 @@ class SaveFilePicker {
     _selectFile();
   }
 
-  static Directory getSaveFilesDirectory() {
-    String appDirectoryPath = Directory.current.path;
-    String subSavesDirectoryPath = Platform.pathSeparator + 'saves';
-    String absoluteSavesDirPath = appDirectoryPath + subSavesDirectoryPath;
-
-    List<int> pathAsList = absoluteSavesDirPath.codeUnits;
-    Uint8List savesDirectoryRawPath = Uint8List.fromList(pathAsList);
-
-    return Directory.fromRawPath(savesDirectoryRawPath);
-  }
-
   void _selectFile() async {
-    Directory savesDirectory = getSaveFilesDirectory();
+    Directory savesDirectory = InputOutputSupplier.getSaveFilesDirectory();
 
     String path = await FilesystemPicker.open(
       title: AppLocalizations.of(context).selectFileToLoad,
