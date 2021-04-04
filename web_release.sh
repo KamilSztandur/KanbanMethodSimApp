@@ -32,10 +32,9 @@ git stash
 git checkout release-web-demo
 git stash apply
 git add docs
-current_date=$(date +'%H:%M %d/%m/%Y')
-git commit -m 'Add latest release [$(current_date)]'
-#git push
-#git checkout master
+git commit -m "Latest release [$(date +"%D %T")]"
+git push
+git checkout master
 echo 'Finished.'
 
 
