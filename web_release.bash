@@ -25,11 +25,16 @@ sed -i "s/'main.dart.js';/'KanbanMethodSimApp\/main.dart.js';/g" index.html
 cd ..
 echo 'Finished.'
 
+
 echo 'Pushing changes into github pages...'
 git add docs
-git add docs/*
-git switch release-web-demo
-#git push origin
+git stash
+git checkout release-web-demoo
+git stash apply
+git add docs
+git commit -m 'Add latest release [$(date +'%H:%M %d/%m/%Y')]'
+git push
+git checkout master
 echo 'Finished.'
 
 
