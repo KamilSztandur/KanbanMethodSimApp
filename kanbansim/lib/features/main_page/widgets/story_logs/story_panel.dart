@@ -16,7 +16,7 @@ class StoryPanel extends StatefulWidget {
 }
 
 class StoryPanelState extends State<StoryPanel> {
-  ScrollController _scrollController = new ScrollController();
+  ScrollController _scrollController = ScrollController();
 
   List<ListTile> _getTiles(BuildContext context) {
     List<ListTile> tiles = <ListTile>[];
