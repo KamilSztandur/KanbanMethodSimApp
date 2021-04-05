@@ -43,9 +43,21 @@ class _SaveFilePageState extends State<_SaveFilePage> {
   double _cornerRadius = 35;
   double _height = 300;
   double _width = 475;
+  bool _readyToSave;
+  bool _savedSuccessfully;
+
   @override
   void initState() {
+    if (_readyToSave == null) {
+      this._readyToSave = false;
+    }
+
+    if (_savedSuccessfully == null) {
+      this._savedSuccessfully = false;
+    }
+
     super.initState();
+    this.creator = SaveFileWriter();
     _controller = TextEditingController();
   }
 
@@ -80,24 +92,42 @@ class _SaveFilePageState extends State<_SaveFilePage> {
     });
   }
 
-  void _saveFile(String filename) {
-    this.creator = SaveFileWriter();
-
+  bool _checkIfFilenameIsValid(String filename) {
     if (this.creator.isNameAlreadyTaken(filename)) {
       setState(() {
         this.warningMessage = AppLocalizations.of(context).filenameTaken;
       });
+      return false;
     } else if (this.creator.hasInvalidName(filename)) {
       setState(() {
         this.warningMessage = AppLocalizations.of(context).invalidFilename;
       });
+      return false;
     } else {
+      setState(() {
+        this.warningMessage = '';
+      });
+      return true;
+    }
+  }
+
+  void _checkIfReadyToSave() {
+    setState(() {
+      this._readyToSave = _checkIfFilenameIsValid(this._controller.text);
+    });
+  }
+
+  void _saveFile(String filename) {
+    if (_checkIfFilenameIsValid(filename)) {
       this.creator.saveFileAs(filename, [1, 2, 3]);
-      Navigator.of(context).pop();
+
       SubtleMessage.messageWithContext(
         context,
         '"$filename" ${AppLocalizations.of(context).savingSuccess}',
       );
+      _savedSuccessfully = true;
+    } else {
+      _savedSuccessfully = false;
     }
   }
 
@@ -135,8 +165,14 @@ class _SaveFilePageState extends State<_SaveFilePage> {
       controller: _controller,
       textAlign: TextAlign.left,
       maxLines: 1,
+      onChanged: (String value) {
+        _checkIfReadyToSave();
+      },
       onSubmitted: (String value) {
         _saveFile(value);
+        if (_savedSuccessfully) {
+          Navigator.of(context).pop();
+        }
       },
       decoration: new InputDecoration(
         hintText: AppLocalizations.of(context).enterSaveNameHere,
@@ -150,6 +186,9 @@ class _SaveFilePageState extends State<_SaveFilePage> {
           disabledColor: Theme.of(context).primaryColor,
           onPressed: (() {
             _saveFile(this._controller.text);
+            if (_savedSuccessfully) {
+              Navigator.of(context).pop();
+            }
           }),
         ),
         enabledBorder: UnderlineInputBorder(
@@ -174,6 +213,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
           child: TextButton(
             onPressed: () {
               _generateNameAutomatically();
+              _checkIfReadyToSave();
             },
             child: Text(AppLocalizations.of(context).generateAutomatically),
           ),
@@ -194,12 +234,37 @@ class _SaveFilePageState extends State<_SaveFilePage> {
     );
   }
 
-  Widget _buildButton() {
+  Widget _buildButtons() {
     return Row(
       children: [
-        Flexible(flex: 5, child: Container()),
+        Flexible(flex: 3, fit: FlexFit.tight, child: Container()),
         Flexible(
           flex: 2,
+          fit: FlexFit.tight,
+          child: IgnorePointer(
+            ignoring: !this._readyToSave,
+            child: ElevatedButton(
+              onPressed: () {
+                _saveFile(this._controller.text);
+                if (_savedSuccessfully) {
+                  Navigator.of(context).pop();
+                }
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  this._readyToSave
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).backgroundColor,
+                ),
+              ),
+              child: Text(AppLocalizations.of(context).save),
+            ),
+          ),
+        ),
+        Flexible(flex: 2, fit: FlexFit.tight, child: Container()),
+        Flexible(
+          flex: 2,
+          fit: FlexFit.tight,
           child: ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -211,7 +276,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
             child: Text(AppLocalizations.of(context).cancel),
           ),
         ),
-        Flexible(flex: 5, child: Container()),
+        Flexible(flex: 3, fit: FlexFit.tight, child: Container()),
       ],
     );
   }
@@ -256,7 +321,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
           Flexible(flex: 1, child: Container()),
           Flexible(
             flex: 2,
-            child: _buildButton(),
+            child: _buildButtons(),
           ),
           Flexible(
             flex: 1,
