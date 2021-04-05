@@ -10,8 +10,13 @@ const RESOURCES = {
 "favicon.png": "83fdeef958e241bf047e1a5eef3331e0",
 "icons/Icon-192.png": "a803adfe215a81eaa5fef0a3c5393a1c",
 "icons/Icon-512.png": "ed1337c4ea280dc26ae4fbaa5e7deb21",
+<<<<<<< Updated upstream
 "index.html": "39aa29d481184ecca162d732de0313c3",
 "/": "39aa29d481184ecca162d732de0313c3",
+=======
+"index.html": "0a849e19cbf24792bce18c8778218360",
+"/": "0a849e19cbf24792bce18c8778218360",
+>>>>>>> Stashed changes
 "main.dart.js": "5d955cc7c1f4e6e6e4195089b3e9d89b",
 "manifest.json": "5906502537ec8fb4135157c712dd663c",
 "version.json": "af2298f529989e8ceff4133e4093118b"
