@@ -1,13 +1,9 @@
 import 'dart:io';
-import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker.dart';
-import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker_web.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kanbansim/common/input_output_file_picker/input/filepicker_interface.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 class WelcomePage extends StatefulWidget {
   final VoidCallback startedNew;
