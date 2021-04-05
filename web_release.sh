@@ -31,11 +31,10 @@ git add docs
 git add kanbansim
 git stash
 git checkout release-web-demo
-rm -r *
 git stash apply
+rm -r assets icons kanbansim
 mv docs/* .
 rm -r docs
-rm -r kanbansim
 git add *
 git commit -m "Latest release [$(date +"%D %T")]"
 git push
