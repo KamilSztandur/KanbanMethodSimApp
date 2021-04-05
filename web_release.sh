@@ -36,6 +36,7 @@ rm -r assets icons kanbansim
 mv docs/* .
 rm -r docs
 git add *
+git add docs
 git commit -m "Latest release [$(date +"%D %T")]"
 git push
 git checkout master
