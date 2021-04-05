@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
 import 'package:kanbansim/features/input_output_popups/save_file_popup.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
-import 'package:kanbansim/main.dart';
+import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:pluto_menu_bar/pluto_menu_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
