@@ -75,12 +75,12 @@
     "selectFileToLoad": "Select file to load",
     "availableSaves": "Available saves",
 
-    
+    "saveCurrentSession": "SAVE CURRENT SESSION",
+    "save": "Save",
     "simulation": "Simulation",
     "filenameTaken": "Filename already taken.",
     "invalidFilename": "Invalid filename.",
     "savingSuccess": "saved successfully.",
-    "saveCurrentSession": "SAVE CURRENT SESSION",
     "enterSaveNameHere": "Enter your savefile name here.",
     "filenameLabel": "Filename",
     "generateAutomatically": "Generate automatically",

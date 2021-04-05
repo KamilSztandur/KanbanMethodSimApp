@@ -75,12 +75,12 @@
     "selectFileToLoad": "Wybierz plik zapisu",
     "availableSaves": "Dostępne pliki zapisu",
 
-
+    "saveCurrentSession": "ZAPISZ AKTUALNĄ SESJĘ",
+    "save": "Zapisz",
     "simulation": "Symulacja",
     "filenameTaken": "Taki zapis już istnieje.",
     "invalidFilename": "Nieprawidłowa nazwa.",
     "savingSuccess": "został zapisany pomyślnie.",
-    "saveCurrentSession": "ZAPISZ AKTUALNĄ SESJĘ",
     "enterSaveNameHere": "Wpisz tutaj nazwę pliku zapisu",
     "filenameLabel": "Plik",
     "generateAutomatically": "Wygeneruj automatycznie",
