@@ -39,16 +39,6 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
               image: AssetImage("assets/background.jpg"),
               fit: BoxFit.cover,
             ),
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              stops: [0.0, 0.8],
-              tileMode: TileMode.clamp,
-              colors: [
-                this._darkTheme ? Colors.grey.shade900 : Colors.grey[300],
-                this._darkTheme ? Colors.grey.shade900 : Colors.blue.shade200,
-              ],
-            ),
           ),
           child: Scaffold(
             backgroundColor: Colors.transparent,
