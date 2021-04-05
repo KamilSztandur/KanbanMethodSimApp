@@ -28,6 +28,7 @@ echo 'Finished.'
 
 echo 'Pushing changes into github pages...'
 git add docs
+git add kanbansim
 git stash
 git checkout release-web-demo
 rm -r *
