@@ -10,3 +10,7 @@ kanbansim/windows/flutter/generated_plugin_registrant.h
 *.h
 *.cc
 *.swift
+*.cmake
+*.h
+*.cc
+*.swift
