@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/main_page.dart';
+import 'package:kanbansim/features/welcome_page/welcome_page.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,19 +17,28 @@ class KanbanSimApp extends StatefulWidget {
 
 class _KanbanSimAppState extends State<KanbanSimApp> {
   final _scaffoldKey = GlobalKey();
-  bool _darkTheme = false;
+  bool _darkTheme = true;
   Locale _locale;
+  bool _justLaunched;
 
   @override
   Widget build(BuildContext context) {
     _createSavesFolder();
     setWindowTitle("Kanban Method's Simulator");
 
+    if (_justLaunched == null) {
+      this._justLaunched = true;
+    }
+
     return OverlaySupport(
       child: MaterialApp(
         /* body */
         home: Container(
           decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/background.jpg"),
+              fit: BoxFit.cover,
+            ),
             gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
@@ -49,9 +59,22 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
                 iconColor: Colors.blue,
                 useInkWell: true,
               ),
-              child: MainPage(
-                scaffoldKey: _scaffoldKey,
-              ),
+              child: _justLaunched
+                  ? WelcomePage(
+                      scaffoldKey: _scaffoldKey,
+                      startedNew: () {
+                        setState(() {
+                          this._justLaunched = false;
+                        });
+                      },
+                      loadedExisting: (String path) {
+                        print(path);
+                        setState(() {
+                          this._justLaunched = false;
+                        });
+                      },
+                    )
+                  : MainPage(scaffoldKey: _scaffoldKey),
             ),
           ),
         ),
