@@ -26,6 +26,7 @@ dependencies:
     sdk: flutter
   intl: ^0.17.0
   expandable: ^5.0.1
+  universal_html: ^2.0.8
 
 dev_dependencies:
   flutter_test:
