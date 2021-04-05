@@ -1,4 +1,7 @@
 *.ksim
-kanbansim/windows/*
-kanbansim/linux/*
-kanbansim/macos/*
+kanbansim/windows/
+kanbansim/linux/
+kanbansim/ios/
+kanbansim/web/
+kanbansim/macos/
+kanbansim/build/
