@@ -138,7 +138,7 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
             controller: _controllerTitle,
             textAlign: TextAlign.left,
             maxLines: 1,
-            onSubmitted: (String value) {
+            onChanged: (String value) {
               setState(() {
                 this._readyToCreate = _checkIfReadyToCreate();
               });
@@ -146,7 +146,6 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
             decoration: new InputDecoration(
               hintText: AppLocalizations.of(context).enterTaskTitleHere,
               labelStyle: new TextStyle(color: const Color(0xFF424242)),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
               enabledBorder: UnderlineInputBorder(
                 borderSide:
                     BorderSide(color: Theme.of(context).primaryColor, width: 2),
@@ -189,7 +188,7 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
             maxLength: 2,
             controller: _controllerDate,
             textAlign: TextAlign.left,
-            onSubmitted: (String value) {
+            onChanged: (String value) {
               setState(() {
                 this._readyToCreate = _checkIfReadyToCreate();
               });
