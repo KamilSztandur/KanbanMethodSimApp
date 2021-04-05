@@ -30,6 +30,7 @@ echo 'Pushing changes into github pages...'
 git add docs
 git stash
 git checkout release-web-demo
+rm -r *
 git stash apply
 mv docs/* .
 rm -r docs
