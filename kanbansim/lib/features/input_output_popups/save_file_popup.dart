@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/common/input_output_file_picker/input_output_supplier.dart';
-import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer.dart';
+import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_desktop.dart';
+import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_interface.dart';
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_web.dart';
-import 'package:kanbansim/common/input_output_file_picker/output/filewriter_interface.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
@@ -41,7 +41,7 @@ class _SaveFilePage extends StatefulWidget {
 
 class _SaveFilePageState extends State<_SaveFilePage> {
   TextEditingController _controller;
-  FileWriter creator;
+  SaveFileWriterInterface creator;
   String warningMessage = '';
   String fileName = '';
   double _cornerRadius = 35;
@@ -75,7 +75,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
     if (kIsWeb) {
       this.creator = SaveFileWriterWeb();
     } else {
-      this.creator = SaveFileWriter();
+      this.creator = SaveFileWriterDesktop();
     }
   }
 

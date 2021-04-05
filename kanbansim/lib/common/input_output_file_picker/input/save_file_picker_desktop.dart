@@ -5,12 +5,12 @@ import 'package:kanbansim/common/input_output_file_picker/input/filepicker_inter
 import 'dart:io';
 import 'package:kanbansim/common/input_output_file_picker/input_output_supplier.dart';
 
-class SaveFilePicker implements FilePicker {
+class SaveFilePickerDesktop implements FilePicker {
   final Function(String) returnPickedFilePath;
   FileTileSelectMode filePickerSelectMode = FileTileSelectMode.wholeTile;
   BuildContext context;
 
-  SaveFilePicker({
+  SaveFilePickerDesktop({
     @required this.returnPickedFilePath,
     @required this.context,
   });

@@ -1,14 +1,13 @@
 import 'dart:convert';
-
 import 'package:kanbansim/common/input_output_file_picker/input_output_supplier.dart';
-import 'package:kanbansim/common/input_output_file_picker/output/filewriter_interface.dart';
-import 'dart:html';
+import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_interface.dart';
+import 'package:universal_html/html.dart' as html;
 
-class SaveFileWriterWeb implements FileWriter {
+class SaveFileWriterWeb implements SaveFileWriterInterface {
   String _formattedFilename;
-  Blob _file;
+  html.Blob _file;
   String _url;
-  AnchorElement _anchor;
+  html.AnchorElement _anchor;
 
   @override
   void saveFileAs(String filename, String content) async {
@@ -25,8 +24,8 @@ class SaveFileWriterWeb implements FileWriter {
   }
 
   void _cleanUp() {
-    document.body.children.remove(this._anchor);
-    Url.revokeObjectUrl(this._url);
+    html.document.body.children.remove(this._anchor);
+    html.Url.revokeObjectUrl(this._url);
   }
 
   void _downloadFile() {
@@ -34,19 +33,19 @@ class SaveFileWriterWeb implements FileWriter {
   }
 
   void _prepareAnchor() {
-    this._url = Url.createObjectUrlFromBlob(this._file);
+    this._url = html.Url.createObjectUrlFromBlob(this._file);
 
-    this._anchor = document.createElement('a') as AnchorElement
+    this._anchor = html.document.createElement('a') as html.AnchorElement
       ..href = this._url
       ..style.display = 'none'
       ..download = this._formattedFilename;
 
-    document.body.children.add(_anchor);
+    html.document.body.children.add(_anchor);
   }
 
   void _prepareFile(String content) {
     final bytes = utf8.encode(content);
-    this._file = Blob([bytes]);
+    this._file = html.Blob([bytes]);
   }
 
   void _prepareFilename(String filename) {

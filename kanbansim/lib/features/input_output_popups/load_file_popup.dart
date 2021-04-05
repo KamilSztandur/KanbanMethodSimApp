@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:kanbansim/common/input_output_file_picker/input/filepicker_interface.dart';
-import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker.dart';
+import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker_desktop.dart';
 import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker_web.dart';
 import 'package:kanbansim/features/notifications/feedback_popup.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -59,7 +59,7 @@ class _LoadFilePageState extends State<_LoadFilePage> {
         },
       );
     } else {
-      this._picker = SaveFilePicker(
+      this._picker = SaveFilePickerDesktop(
         context: context,
         returnPickedFilePath: (String filePath) {
           setState(() {
