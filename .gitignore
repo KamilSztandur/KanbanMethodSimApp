@@ -6,3 +6,7 @@ kanbansim/macos/Flutter/GeneratedPluginRegistrant.swift
 kanbansim/windows/flutter/generated_plugin_registrant.cc
 kanbansim/windows/flutter/generated_plugins.cmake
 kanbansim/windows/flutter/generated_plugin_registrant.h
+*.cmake
+*.h
+*.cc
+*.swift
