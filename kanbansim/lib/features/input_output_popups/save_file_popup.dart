@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kanbansim/common/input_output_file_picker/input_output_supplier.dart';
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer.dart';
+import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_web.dart';
+import 'package:kanbansim/common/input_output_file_picker/output/filewriter_interface.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -37,7 +41,7 @@ class _SaveFilePage extends StatefulWidget {
 
 class _SaveFilePageState extends State<_SaveFilePage> {
   TextEditingController _controller;
-  SaveFileWriter creator;
+  FileWriter creator;
   String warningMessage = '';
   String fileName = '';
   double _cornerRadius = 35;
@@ -57,7 +61,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
     }
 
     super.initState();
-    this.creator = SaveFileWriter();
+    _initializeWriter();
     _controller = TextEditingController();
   }
 
@@ -65,6 +69,14 @@ class _SaveFilePageState extends State<_SaveFilePage> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void _initializeWriter() {
+    if (kIsWeb) {
+      this.creator = SaveFileWriterWeb();
+    } else {
+      this.creator = SaveFileWriter();
+    }
   }
 
   String _getCurrentDateAsString() {
@@ -98,7 +110,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
         this.warningMessage = AppLocalizations.of(context).filenameTaken;
       });
       return false;
-    } else if (this.creator.hasInvalidName(filename)) {
+    } else if (InputOutputSupplier.hasInvalidName(filename)) {
       setState(() {
         this.warningMessage = AppLocalizations.of(context).invalidFilename;
       });
@@ -119,7 +131,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
 
   void _saveFile(String filename) {
     if (_checkIfFilenameIsValid(filename)) {
-      this.creator.saveFileAs(filename, [1, 2, 3]);
+      this.creator.saveFileAs(filename, "Zawartość pliku zapisu");
 
       SubtleMessage.messageWithContext(
         context,

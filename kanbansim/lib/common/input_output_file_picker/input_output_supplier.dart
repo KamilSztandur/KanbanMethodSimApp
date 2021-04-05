@@ -12,4 +12,23 @@ class InputOutputSupplier {
 
     return Directory.fromRawPath(savesDirectoryRawPath);
   }
+
+  static bool hasInvalidName(String filename) {
+    if (filename == '') {
+      return true;
+    }
+
+    return false;
+  }
+
+  static String formatFilename(String filename) {
+    String fixedFilename = filename
+        .replaceAll(':', '_')
+        .replaceAll('/', '_')
+        .replaceAll('\\', '_')
+        .replaceAll('\$', '_')
+        .replaceAll(' ', '_');
+
+    return fixedFilename;
+  }
 }
