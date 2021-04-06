@@ -1,6 +1,6 @@
-import 'dart:io';
-
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
 import 'package:kanbansim/features/input_output_popups/save_file_popup.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
@@ -173,16 +173,6 @@ class MainMenuBar extends StatelessWidget {
             ],
           ),
           MenuItem(
-            title: AppLocalizations.of(context).help,
-            icon: Icons.help_outline,
-            onTap: () {
-              SubtleMessage.messageWithContext(
-                context,
-                AppLocalizations.of(context).openingHelpGuide,
-              );
-            },
-          ),
-          MenuItem(
             title: AppLocalizations.of(context).info,
             icon: Icons.info_outline_rounded,
             onTap: () {
@@ -196,11 +186,44 @@ class MainMenuBar extends StatelessWidget {
               );
             },
           ),
-          MenuItem(
-            title: AppLocalizations.of(context).quit,
-            icon: Icons.exit_to_app,
-            onTap: () => exit(0),
-          ),
+          KanbanSimApp.of(context).isWeb()
+              ? MenuItem(
+                  title: 'Udostępnij',
+                  icon: Icons.share,
+                  onTap: () {
+                    Clipboard.setData(
+                      ClipboardData(
+                        text:
+                            "https://kamilsztandur.github.io/KanbanMethodSimApp",
+                      ),
+                    );
+                    SubtleMessage.messageWithContext(
+                      context,
+                      "Pomyślnie skopiowano do schowka!",
+                    );
+                  },
+                )
+              : MenuItem(
+                  title: 'Widok',
+                  icon: Icons.fit_screen,
+                  children: [
+                    MenuItem(
+                      title: 'Minimalizuj okno',
+                      icon: Icons.minimize,
+                      onTap: () => MinimizeWindowButton().onPressed(),
+                    ),
+                    MenuItem(
+                      title: 'Maksymalizuj okno',
+                      icon: Icons.fullscreen,
+                      onTap: () => MaximizeWindowButton().onPressed(),
+                    ),
+                    MenuItem(
+                      title: 'Opuść aplikację',
+                      icon: Icons.exit_to_app_outlined,
+                      onTap: () => CloseWindowButton().onPressed(),
+                    ),
+                  ],
+                ),
         ],
       ),
     );
