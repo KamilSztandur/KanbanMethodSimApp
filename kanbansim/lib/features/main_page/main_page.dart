@@ -283,7 +283,7 @@ class MainPageState extends State<MainPage> {
           ),
         ),
         Container(
-          height: (MediaQuery.of(context).size.height) * 0.755,
+          height: (MediaQuery.of(context).size.height) * 0.72,
           child: ScrollBar(
             child: kanbanBoard,
           ),
