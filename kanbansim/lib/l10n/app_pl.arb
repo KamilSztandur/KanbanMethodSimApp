@@ -16,6 +16,8 @@
     "englishLang": "Język angielski",
     "help": "Pomoc",
     "info": "Informacje",
+    "shareApp": "Udostępnij aplikację",
+    "appLinkCopiedSuccessfully": "Pomyślnie skopiowano link do aplikacji.",
     "quit": "Wyjście",
 
     "newSessionNotif": "Tworzenie nowej sesji...",

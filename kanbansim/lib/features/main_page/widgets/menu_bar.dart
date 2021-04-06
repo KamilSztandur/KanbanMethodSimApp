@@ -186,44 +186,21 @@ class MainMenuBar extends StatelessWidget {
               );
             },
           ),
-          KanbanSimApp.of(context).isWeb()
-              ? MenuItem(
-                  title: 'Udostępnij',
-                  icon: Icons.share,
-                  onTap: () {
-                    Clipboard.setData(
-                      ClipboardData(
-                        text:
-                            "https://kamilsztandur.github.io/KanbanMethodSimApp",
-                      ),
-                    );
-                    SubtleMessage.messageWithContext(
-                      context,
-                      "Pomyślnie skopiowano do schowka!",
-                    );
-                  },
-                )
-              : MenuItem(
-                  title: 'Widok',
-                  icon: Icons.fit_screen,
-                  children: [
-                    MenuItem(
-                      title: 'Minimalizuj okno',
-                      icon: Icons.minimize,
-                      onTap: () => MinimizeWindowButton().onPressed(),
-                    ),
-                    MenuItem(
-                      title: 'Maksymalizuj okno',
-                      icon: Icons.fullscreen,
-                      onTap: () => MaximizeWindowButton().onPressed(),
-                    ),
-                    MenuItem(
-                      title: 'Opuść aplikację',
-                      icon: Icons.exit_to_app_outlined,
-                      onTap: () => CloseWindowButton().onPressed(),
-                    ),
-                  ],
+          MenuItem(
+            title: AppLocalizations.of(context).shareApp,
+            icon: Icons.share,
+            onTap: () {
+              Clipboard.setData(
+                ClipboardData(
+                  text: "https://kamilsztandur.github.io/KanbanMethodSimApp",
                 ),
+              );
+              SubtleMessage.messageWithContext(
+                context,
+                AppLocalizations.of(context).appLinkCopiedSuccessfully,
+              );
+            },
+          )
         ],
       ),
     );
