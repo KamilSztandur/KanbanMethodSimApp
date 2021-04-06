@@ -101,12 +101,12 @@ class KanbanColumnState extends State<KanbanColumn> {
     );
   }
 
-  Column _buildTitle() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
+  Widget _buildTitle() {
+    return Container(
+      padding: EdgeInsets.all(15),
+      child: FittedBox(
+        fit: BoxFit.fitHeight,
+        child: Text(
           widget.title,
           textAlign: TextAlign.center,
           overflow: TextOverflow.fade,
@@ -118,7 +118,7 @@ class KanbanColumnState extends State<KanbanColumn> {
             color: Colors.white,
           ),
         ),
-      ],
+      ),
     );
   }
 

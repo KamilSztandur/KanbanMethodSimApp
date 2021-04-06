@@ -47,12 +47,12 @@ class KanbanBoardState extends State<KanbanBoard> {
     );
   }
 
-  Column _buildTitle(String title) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
+  Widget _buildTitle(String title) {
+    return Container(
+      padding: EdgeInsets.all(14),
+      child: FittedBox(
+        fit: BoxFit.fitHeight,
+        child: Text(
           title,
           textAlign: TextAlign.center,
           overflow: TextOverflow.fade,
@@ -60,11 +60,11 @@ class KanbanBoardState extends State<KanbanBoard> {
           softWrap: false,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 25,
+            fontSize: 22,
             color: Colors.white,
           ),
         ),
-      ],
+      ),
     );
   }
 
