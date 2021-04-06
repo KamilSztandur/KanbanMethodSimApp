@@ -43,7 +43,7 @@ class MainMenuBar extends StatelessWidget {
     _initializeFileSaverPopup();
 
     return Container(
-      height: 76,
+      height: KanbanSimApp.of(context).isWeb() ? 45 : 76,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Colors.blueAccent.withOpacity(0.8), Colors.blueAccent],
@@ -55,7 +55,7 @@ class MainMenuBar extends StatelessWidget {
       ),
       child: Column(
         children: [
-          WindowBar(),
+          KanbanSimApp.of(context).isWeb() ? Container() : WindowBar(),
           PlutoMenuBar(
             backgroundColor: Colors.blueAccent.withOpacity(0.8),
             menuIconColor: Colors.white,
