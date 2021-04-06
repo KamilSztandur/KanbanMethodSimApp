@@ -16,6 +16,8 @@
     "englishLang": "English language",
     "help": "Help",
     "info": "Info",
+    "shareApp": "Share app",
+    "appLinkCopiedSuccessfully": "URL copied to clipboard successfully.",
     "quit": "Quit",
 
     "newSessionNotif": "Creating empty session...",
