@@ -43,7 +43,7 @@ class MainMenuBar extends StatelessWidget {
     _initializeFileSaverPopup();
 
     return Container(
-      height: 80,
+      height: 76,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Colors.blueAccent.withOpacity(0.8), Colors.blueAccent],

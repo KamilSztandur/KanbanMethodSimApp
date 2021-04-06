@@ -6,7 +6,7 @@ class WindowBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 31,
+        height: 21,
         color: Colors.transparent,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
