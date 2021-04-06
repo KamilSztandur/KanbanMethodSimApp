@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:kanbansim/common/input_output_file_picker/input/filepicker_interface.dart';
@@ -7,6 +6,7 @@ import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker
 import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker_web.dart';
 import 'package:kanbansim/features/notifications/feedback_popup.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kanbansim/kanban_sim_app.dart';
 
 class LoadFilePopup {
   Function(String filePath) returnPickedFilepath;
@@ -50,7 +50,7 @@ class _LoadFilePageState extends State<_LoadFilePage> {
   double _width = 400;
 
   void _initializePicker() {
-    if (kIsWeb) {
+    if (KanbanSimApp.of(context).isWeb()) {
       this._picker = SaveFilePickerWeb(
         returnPickedFilePath: (String filePath) {
           setState(() {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
+import 'package:kanbansim/features/window_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -26,7 +27,8 @@ class WelcomePageState extends State<WelcomePage> {
     return Center(
       child: Column(
         children: [
-          Flexible(flex: 3, fit: FlexFit.tight, child: SizedBox()),
+          KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
+          Flexible(flex: 2, child: SizedBox()),
           Flexible(
             flex: 13,
             fit: FlexFit.tight,
@@ -50,14 +52,16 @@ class WelcomePageState extends State<WelcomePage> {
             ),
           ),
           Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-          Flexible(
-            flex: 2,
-            fit: FlexFit.tight,
-            child: _buildButton(
-              AppLocalizations.of(context).quit,
-              () => _quitButtonPressed(),
-            ),
-          ),
+          KanbanSimApp.of(context).isWeb()
+              ? Center()
+              : Flexible(
+                  flex: 2,
+                  fit: FlexFit.tight,
+                  child: _buildButton(
+                    AppLocalizations.of(context).quit,
+                    () => _quitButtonPressed(),
+                  ),
+                ),
           Flexible(flex: 2, fit: FlexFit.tight, child: SizedBox()),
           _buildLangSwitchButton(),
           Flexible(
@@ -134,25 +138,6 @@ class WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  void _newSessionButtonPressed() {
-    this.widget.startedNew();
-  }
-
-  void _loadButtonPressed() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => LoadFilePopup(
-        returnPickedFilepath: (String filePath) {
-          this.widget.loadedExisting(filePath);
-        },
-      ).show(context),
-    );
-  }
-
-  void _quitButtonPressed() {
-    exit(0);
-  }
-
   Widget _buildLangSwitchButton() {
     Color buttonsColor = Colors.white;
 
@@ -192,5 +177,24 @@ class WelcomePageState extends State<WelcomePage> {
         ),
       ],
     );
+  }
+
+  void _newSessionButtonPressed() {
+    this.widget.startedNew();
+  }
+
+  void _loadButtonPressed() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => LoadFilePopup(
+        returnPickedFilepath: (String filePath) {
+          this.widget.loadedExisting(filePath);
+        },
+      ).show(context),
+    );
+  }
+
+  void _quitButtonPressed() {
+    exit(0);
   }
 }

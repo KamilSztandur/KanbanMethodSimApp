@@ -3,10 +3,10 @@ import 'package:kanbansim/common/input_output_file_picker/input_output_supplier.
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_desktop.dart';
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_interface.dart';
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_web.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kanbansim/kanban_sim_app.dart';
 
 class SaveFilePopup {
   Function(bool) returnSaveStatus;
@@ -72,7 +72,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
   }
 
   void _initializeWriter() {
-    if (kIsWeb) {
+    if (KanbanSimApp.of(context).isWeb()) {
       this.creator = SaveFileWriterWeb();
     } else {
       this.creator = SaveFileWriterDesktop();
