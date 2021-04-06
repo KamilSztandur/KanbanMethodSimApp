@@ -190,6 +190,22 @@ class MainMenuBar extends StatelessWidget {
                   );
                 },
               ),
+              MenuItem(
+                title: AppLocalizations.of(context).shareApp,
+                icon: Icons.share,
+                onTap: () {
+                  Clipboard.setData(
+                    ClipboardData(
+                      text:
+                          "https://kamilsztandur.github.io/KanbanMethodSimApp",
+                    ),
+                  );
+                  SubtleMessage.messageWithContext(
+                    context,
+                    AppLocalizations.of(context).appLinkCopiedSuccessfully,
+                  );
+                },
+              ),
             ],
           ),
         ],
