@@ -9,13 +9,13 @@ const RESOURCES = {
 "assets/assets/logo.png": "f0090e44e5cb2ab831d7880411763f19",
 "assets/FontManifest.json": "7b2a36307916a9721811788013e65289",
 "assets/fonts/MaterialIcons-Regular.otf": "1288c9e28052e028aba623321f7826ac",
-"assets/NOTICES": "7093806333ea75552ed374e36d24b25b",
+"assets/NOTICES": "082d33619a09d3bb795ca4bc42ffb3b6",
 "favicon.png": "83fdeef958e241bf047e1a5eef3331e0",
 "icons/Icon-192.png": "a803adfe215a81eaa5fef0a3c5393a1c",
 "icons/Icon-512.png": "ed1337c4ea280dc26ae4fbaa5e7deb21",
-"index.html": "de189d2d853afe5e193e66c3635497ac",
-"/": "de189d2d853afe5e193e66c3635497ac",
-"main.dart.js": "030e50818e873c1300bb215a7457386f",
+"index.html": "6c593dfdc78726708c5fa3d62e86bcb9",
+"/": "6c593dfdc78726708c5fa3d62e86bcb9",
+"main.dart.js": "210fa9f733f6d5487e0a9c35c721e7ed",
 "manifest.json": "5906502537ec8fb4135157c712dd663c",
 "version.json": "af2298f529989e8ceff4133e4093118b"
 };
