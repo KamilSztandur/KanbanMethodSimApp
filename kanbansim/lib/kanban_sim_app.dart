@@ -1,3 +1,4 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:kanbansim/features/welcome_page/welcome_page.dart';
@@ -5,6 +6,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:expandable/expandable.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
 
 class KanbanSimApp extends StatefulWidget {
@@ -44,27 +46,31 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
             backgroundColor: Colors.transparent,
             key: _scaffoldKey,
             resizeToAvoidBottomInset: false,
-            body: ExpandableTheme(
-              data: const ExpandableThemeData(
-                iconColor: Colors.blue,
-                useInkWell: true,
+            body: WindowBorder(
+              color: Color(0xFF805306),
+              width: 1,
+              child: ExpandableTheme(
+                data: const ExpandableThemeData(
+                  iconColor: Colors.blue,
+                  useInkWell: true,
+                ),
+                child: _justLaunched
+                    ? WelcomePage(
+                        scaffoldKey: _scaffoldKey,
+                        startedNew: () {
+                          setState(() {
+                            this._justLaunched = false;
+                          });
+                        },
+                        loadedExisting: (String path) {
+                          print(path);
+                          setState(() {
+                            this._justLaunched = false;
+                          });
+                        },
+                      )
+                    : MainPage(scaffoldKey: _scaffoldKey),
               ),
-              child: _justLaunched
-                  ? WelcomePage(
-                      scaffoldKey: _scaffoldKey,
-                      startedNew: () {
-                        setState(() {
-                          this._justLaunched = false;
-                        });
-                      },
-                      loadedExisting: (String path) {
-                        print(path);
-                        setState(() {
-                          this._justLaunched = false;
-                        });
-                      },
-                    )
-                  : MainPage(scaffoldKey: _scaffoldKey),
             ),
           ),
         ),
@@ -96,6 +102,10 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
     } else {
       savesFolder.create(recursive: true);
     }
+  }
+
+  bool isWeb() {
+    return kIsWeb;
   }
 
   void switchLanguageTo(String language) {
