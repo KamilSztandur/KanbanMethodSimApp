@@ -45,22 +45,26 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
             backgroundColor: Colors.transparent,
             key: _scaffoldKey,
             resizeToAvoidBottomInset: false,
-            body: _justLaunched
-                ? WelcomePage(
-                    scaffoldKey: _scaffoldKey,
-                    startedNew: () {
-                      setState(() {
-                        this._justLaunched = false;
-                      });
-                    },
-                    loadedExisting: (String path) {
-                      print(path);
-                      setState(() {
-                        this._justLaunched = false;
-                      });
-                    },
-                  )
-                : MainPage(scaffoldKey: _scaffoldKey),
+            body: WindowBorder(
+              color: Theme.of(context).primaryColor,
+              width: 1,
+              child: _justLaunched
+                  ? WelcomePage(
+                      scaffoldKey: _scaffoldKey,
+                      startedNew: () {
+                        setState(() {
+                          this._justLaunched = false;
+                        });
+                      },
+                      loadedExisting: (String path) {
+                        print(path);
+                        setState(() {
+                          this._justLaunched = false;
+                        });
+                      },
+                    )
+                  : MainPage(scaffoldKey: _scaffoldKey),
+            ),
           ),
         ),
 
