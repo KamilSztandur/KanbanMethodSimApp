@@ -16,44 +16,57 @@ class StoryPanel extends StatefulWidget {
 }
 
 class StoryPanelState extends State<StoryPanel> {
-  ScrollController _scrollController = ScrollController();
-
-  List<ListTile> _getTiles(BuildContext context) {
-    List<ListTile> tiles = <ListTile>[];
-
-    int length = this.widget.messages.length;
-    for (int i = 0; i < length; i++) {
-      tiles.add(
-        ListTile(
-          title: SelectableText(
-            this.widget.messages[i],
+  @override
+  Widget build(BuildContext context) {
+    return ExpandableNotifier(
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Theme.of(context).accentColor
+                      : Theme.of(context).scaffoldBackgroundColor,
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
+                ),
+                child: ScrollOnExpand(
+                  scrollOnExpand: true,
+                  scrollOnCollapse: false,
+                  child: ExpandablePanel(
+                    theme: const ExpandableThemeData(
+                      headerAlignment: ExpandablePanelHeaderAlignment.center,
+                    ),
+                    collapsed: Container(),
+                    header: _Headline(messages: this.widget.messages),
+                    expanded: _Logs(messages: this.widget.messages),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-      );
-      tiles.add(
-        ListTile(
-          title: Container(
-            height: 1,
-            width: MediaQuery.of(context).size.height,
-            color: Theme.of(context).hintColor,
-          ),
-        ),
-      );
-    }
-
-    return tiles;
+      ),
+    );
   }
+}
 
-  String _getLogsAsString() {
-    String logs = "";
-    this.widget.messages.forEach(
-          (message) => logs += ("$message\n"),
-        );
+class _Headline extends StatelessWidget {
+  final List<String> messages;
 
-    return logs;
-  }
+  _Headline({Key key, @required this.messages})
+      : assert(messages != null),
+        super(key: key);
 
-  Widget _buildHeadline(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -88,7 +101,26 @@ class StoryPanelState extends State<StoryPanel> {
     );
   }
 
-  Widget _buildLogs(BuildContext context) {
+  String _getLogsAsString() {
+    String logs = "";
+    this.messages.forEach(
+          (message) => logs += ("$message\n"),
+        );
+
+    return logs;
+  }
+}
+
+class _Logs extends StatelessWidget {
+  ScrollController _scrollController = ScrollController();
+  final List<String> messages;
+
+  _Logs({Key key, @required this.messages})
+      : assert(messages != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: (MediaQuery.of(context).size.width),
       height: (MediaQuery.of(context).size.height) * 0.75,
@@ -120,43 +152,29 @@ class StoryPanelState extends State<StoryPanel> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ExpandableNotifier(
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.light
-                      ? Theme.of(context).accentColor
-                      : Theme.of(context).scaffoldBackgroundColor,
-                  border: Border.all(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5.0),
-                  ),
-                ),
-                child: ScrollOnExpand(
-                  scrollOnExpand: true,
-                  scrollOnCollapse: false,
-                  child: ExpandablePanel(
-                    theme: const ExpandableThemeData(
-                      headerAlignment: ExpandablePanelHeaderAlignment.center,
-                    ),
-                    header: _buildHeadline(context),
-                    expanded: _buildLogs(context),
-                  ),
-                ),
-              ),
-            ],
+  List<ListTile> _getTiles(BuildContext context) {
+    List<ListTile> tiles = <ListTile>[];
+
+    int length = this.messages.length;
+    for (int i = 0; i < length; i++) {
+      tiles.add(
+        ListTile(
+          title: SelectableText(
+            this.messages[i],
           ),
         ),
-      ),
-    );
+      );
+      tiles.add(
+        ListTile(
+          title: Container(
+            height: 1,
+            width: MediaQuery.of(context).size.height,
+            color: Theme.of(context).hintColor,
+          ),
+        ),
+      );
+    }
+
+    return tiles;
   }
 }
