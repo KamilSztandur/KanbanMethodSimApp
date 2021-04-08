@@ -2,7 +2,7 @@ import 'package:kanbansim/common/input_output_file_picker/input_output_supplier.
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_interface.dart';
 import 'dart:io';
 
-class SaveFileWriterDesktop implements SaveFileWriterInterface {
+class SaveFileWriterDesktop implements SaveFileWriter {
   @override
   void saveFileAs(String filename, String content) async {
     File saveFile = File(

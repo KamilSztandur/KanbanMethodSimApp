@@ -3,7 +3,7 @@ import 'package:kanbansim/common/input_output_file_picker/input_output_supplier.
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_interface.dart';
 import 'package:universal_html/html.dart' as html;
 
-class SaveFileWriterWeb implements SaveFileWriterInterface {
+class SaveFileWriterWeb implements SaveFileWriter {
   String _formattedFilename;
   html.Blob _file;
   String _url;

@@ -41,7 +41,7 @@ class _SaveFilePage extends StatefulWidget {
 
 class _SaveFilePageState extends State<_SaveFilePage> {
   TextEditingController _controller;
-  SaveFileWriterInterface creator;
+  SaveFileWriter creator;
   String warningMessage = '';
   String fileName = '';
   double _cornerRadius = 35;
