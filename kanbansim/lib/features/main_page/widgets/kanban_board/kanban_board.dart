@@ -9,8 +9,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class KanbanBoard extends StatefulWidget {
   final Function taskUnlocked;
   final Function getUsers;
-  final AllTasksContainer allTasks;
   final Function(Task) taskCreated;
+  final AllTasksContainer allTasks;
   final Function(Task) deleteMe;
 
   KanbanBoard({
@@ -47,34 +47,6 @@ class KanbanBoardState extends State<KanbanBoard> {
     );
   }
 
-  Widget _buildTitle(String title) {
-    return Container(
-      padding: EdgeInsets.all(14),
-      child: FittedBox(
-        fit: BoxFit.fitHeight,
-        child: Text(
-          title,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.fade,
-          maxLines: 1,
-          softWrap: false,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCreateNewTaskButton() {
-    return CreateTaskButton(
-      getUsers: this.widget.getUsers,
-      taskCreated: this.widget.taskCreated,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -94,7 +66,10 @@ class KanbanBoardState extends State<KanbanBoard> {
                 title: AppLocalizations.of(context).availableTasks,
                 isInternal: false,
                 tasks: _parseTaskCardsList(widget.allTasks.idleTasksColumn),
-                additionalWidget: _buildCreateNewTaskButton(),
+                additionalWidget: _NewTaskButton(
+                  taskCreated: this.widget.taskCreated,
+                  getUsers: this.widget.getUsers,
+                ),
               ),
             ],
           ),
@@ -105,103 +80,12 @@ class KanbanBoardState extends State<KanbanBoard> {
         ),
         Flexible(
           flex: 40,
-          child: Container(
-            alignment: Alignment.center,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            stops: [0.0, 0.8],
-                            tileMode: TileMode.clamp,
-                            colors: [
-                              Colors.blueAccent.shade200,
-                              Colors.blueAccent.shade400,
-                            ],
-                          ),
-                          border:
-                              Border.all(color: Theme.of(context).primaryColor),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(100.0),
-                            topRight: Radius.circular(100.0),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.4),
-                              spreadRadius: 1,
-                              blurRadius: 1,
-                              offset: Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: _buildTitle(
-                            AppLocalizations.of(context).stageOneTasks),
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10.0),
-                      bottomRight: Radius.circular(10.0),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.4),
-                        spreadRadius: 1,
-                        blurRadius: 1,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Flexible(
-                            flex: 20,
-                            child: KanbanColumn(
-                              title:
-                                  AppLocalizations.of(context).inProgressTasks,
-                              isInternal: true,
-                              tasks: _parseTaskCardsList(
-                                widget.allTasks.stageOneInProgressTasksColumn,
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            flex: 20,
-                            child: KanbanColumn(
-                              title: AppLocalizations.of(context).doneTasks,
-                              isInternal: true,
-                              tasks: _parseTaskCardsList(
-                                widget.allTasks.stageOneDoneTasksColumn,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 15),
-              ],
-            ),
+          child: _StageOneTasksDoubleColumn(
+            inProgressTasks: widget.allTasks.stageOneInProgressTasksColumn,
+            doneTasks: widget.allTasks.stageOneDoneTasksColumn,
+            parseTaskCardsList: (List<Task> tasks) {
+              return this._parseTaskCardsList(tasks);
+            },
           ),
         ),
         Flexible(
@@ -233,6 +117,162 @@ class KanbanBoardState extends State<KanbanBoard> {
           child: SizedBox(),
         ),
       ],
+    );
+  }
+}
+
+class _Title extends StatelessWidget {
+  final String title;
+
+  _Title({Key key, @required this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(14),
+      child: FittedBox(
+        fit: BoxFit.fitHeight,
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.fade,
+          maxLines: 1,
+          softWrap: false,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NewTaskButton extends StatelessWidget {
+  final Function getUsers;
+  final Function(Task) taskCreated;
+
+  _NewTaskButton({
+    Key key,
+    @required this.taskCreated,
+    @required this.getUsers,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CreateTaskButton(
+      getUsers: this.getUsers,
+      taskCreated: this.taskCreated,
+    );
+  }
+}
+
+class _StageOneTasksDoubleColumn extends StatelessWidget {
+  final Function(List<Task>) parseTaskCardsList;
+  final List<Task> inProgressTasks;
+  final List<Task> doneTasks;
+
+  _StageOneTasksDoubleColumn({
+    Key key,
+    @required this.parseTaskCardsList,
+    @required this.inProgressTasks,
+    @required this.doneTasks,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                flex: 1,
+                fit: FlexFit.tight,
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      stops: [0.0, 0.8],
+                      tileMode: TileMode.clamp,
+                      colors: [
+                        Colors.blueAccent.shade200,
+                        Colors.blueAccent.shade400,
+                      ],
+                    ),
+                    border: Border.all(color: Theme.of(context).primaryColor),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(100.0),
+                      topRight: Radius.circular(100.0),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.4),
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child:
+                      _Title(title: AppLocalizations.of(context).stageOneTasks),
+                ),
+              ),
+            ],
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10.0),
+                bottomRight: Radius.circular(10.0),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.4),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      flex: 20,
+                      child: KanbanColumn(
+                        title: AppLocalizations.of(context).inProgressTasks,
+                        isInternal: true,
+                        tasks: this.parseTaskCardsList(this.inProgressTasks),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 20,
+                      child: KanbanColumn(
+                        title: AppLocalizations.of(context).doneTasks,
+                        isInternal: true,
+                        tasks: this.parseTaskCardsList(this.doneTasks),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 15),
+        ],
+      ),
     );
   }
 }
