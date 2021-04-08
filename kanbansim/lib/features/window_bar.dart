@@ -17,7 +17,7 @@ class WindowBar extends StatelessWidget {
                   Expanded(
                     child: MoveWindow(),
                   ),
-                  _appleButtons(),
+                  _windowButtons(),
                 ],
               ),
             ),
@@ -28,7 +28,7 @@ class WindowBar extends StatelessWidget {
   }
 }
 
-class _appleButtons extends StatelessWidget {
+class _windowButtons extends StatelessWidget {
   WindowButtonColors _getMinimizeButtonColors(BuildContext context) {
     return WindowButtonColors(
       mouseOver: Colors.orangeAccent.shade200,

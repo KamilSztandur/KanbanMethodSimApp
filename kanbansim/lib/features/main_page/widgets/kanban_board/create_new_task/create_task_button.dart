@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_task/task_creator_window.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_task/task_creator_popup/task_creator_popup.dart';
 import 'package:kanbansim/models/Task.dart';
 
 class CreateTaskButton extends StatelessWidget {

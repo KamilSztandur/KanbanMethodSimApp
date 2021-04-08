@@ -55,36 +55,53 @@ class LocksStatusState extends State<LocksStatus> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 5),
-              Text(
-                AppLocalizations.of(context).locks,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
+              _Title(),
               SizedBox(height: 10),
-              Container(
-                alignment: Alignment.center,
-                width: 75,
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  color:
-                      this._areThereAnyLocks ? Colors.redAccent : Colors.green,
-                ),
-                child: Text(
-                  this._areThereAnyLocks
-                      ? AppLocalizations.of(context).locksArePresent
-                      : AppLocalizations.of(context).noLocksArePresent,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              _LocksMonitor(areThereAnyLocks: this._areThereAnyLocks),
               SizedBox(height: 10),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _Title extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      AppLocalizations.of(context).locks,
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Theme.of(context).primaryColor,
+      ),
+    );
+  }
+}
+
+class _LocksMonitor extends StatelessWidget {
+  final bool areThereAnyLocks;
+
+  _LocksMonitor({@required this.areThereAnyLocks});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      width: 75,
+      height: 50,
+      decoration: BoxDecoration(
+        border: Border.all(),
+        color: this.areThereAnyLocks ? Colors.redAccent : Colors.green,
+      ),
+      child: Text(
+        this.areThereAnyLocks
+            ? AppLocalizations.of(context).locksArePresent
+            : AppLocalizations.of(context).noLocksArePresent,
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        textAlign: TextAlign.center,
       ),
     );
   }

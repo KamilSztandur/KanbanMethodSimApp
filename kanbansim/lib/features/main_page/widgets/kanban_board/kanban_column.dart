@@ -21,93 +21,113 @@ class KanbanColumn extends StatefulWidget {
 
 class KanbanColumnState extends State<KanbanColumn> {
   @override
-  Widget build(BuildContext context) => _buildKanbanColumn();
-
-  Column _buildKanbanColumn() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    stops: [0.0, 0.8],
-                    tileMode: TileMode.clamp,
-                    colors: [
-                      Colors.blueAccent.shade200,
-                      Colors.blueAccent.shade400,
-                    ],
-                  ),
-                  borderRadius: this.widget.isInternal
-                      ? BorderRadius.zero
-                      : BorderRadius.only(
-                          topLeft: Radius.circular(100.0),
-                          topRight: Radius.circular(100.0),
-                        ),
-                ),
-                child: _buildTitle(),
-              ),
+  Widget build(BuildContext context) => Column(
+        children: [
+          _HeadLine(title: widget.title, isInternal: widget.isInternal),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height * 0.35,
             ),
-          ],
-        ),
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height * 0.35,
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).primaryColor),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10.0),
-                bottomRight: Radius.circular(10.0),
-              ),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.1, 1.0],
-                tileMode: TileMode.clamp,
-                colors: [
-                  Theme.of(context).brightness == Brightness.light
-                      ? Theme.of(context).accentColor
-                      : Theme.of(context).bottomAppBarColor,
-                  Theme.of(context).brightness == Brightness.light
-                      ? Theme.of(context).backgroundColor
-                      : Theme.of(context).accentColor,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Theme.of(context).primaryColor),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10.0),
+                  bottomRight: Radius.circular(10.0),
+                ),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0.1, 1.0],
+                  tileMode: TileMode.clamp,
+                  colors: [
+                    Theme.of(context).brightness == Brightness.light
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).bottomAppBarColor,
+                    Theme.of(context).brightness == Brightness.light
+                        ? Theme.of(context).backgroundColor
+                        : Theme.of(context).accentColor,
+                  ],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.4),
+                    spreadRadius: 1,
+                    blurRadius: 1,
+                    offset: Offset(0, 3),
+                  ),
                 ],
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.4),
-                  spreadRadius: 1,
-                  blurRadius: 1,
-                  offset: Offset(0, 3),
-                ),
-              ],
+              child: _TaskColumn(
+                tasks: widget.tasks,
+                additionalWidget: widget.additionalWidget,
+              ),
             ),
-            child: Column(
-              children: _buildTaskColumn(),
+          ),
+        ],
+      );
+}
+
+class _HeadLine extends StatelessWidget {
+  final String title;
+  final bool isInternal;
+
+  _HeadLine({
+    Key key,
+    @required this.title,
+    @required this.isInternal,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          flex: 1,
+          fit: FlexFit.tight,
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                stops: [0.0, 0.8],
+                tileMode: TileMode.clamp,
+                colors: [
+                  Colors.blueAccent.shade200,
+                  Colors.blueAccent.shade400,
+                ],
+              ),
+              borderRadius: this.isInternal
+                  ? BorderRadius.zero
+                  : BorderRadius.only(
+                      topLeft: Radius.circular(100.0),
+                      topRight: Radius.circular(100.0),
+                    ),
             ),
+            child: _Title(title: this.title),
           ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildTitle() {
+class _Title extends StatelessWidget {
+  final String title;
+
+  _Title({Key key, @required this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(15),
       child: FittedBox(
         fit: BoxFit.fitHeight,
         child: Text(
-          widget.title,
+          this.title,
           textAlign: TextAlign.center,
           overflow: TextOverflow.fade,
           maxLines: 1,
@@ -121,14 +141,28 @@ class KanbanColumnState extends State<KanbanColumn> {
       ),
     );
   }
+}
 
-  List<Widget> _buildTaskColumn() {
+class _TaskColumn extends StatelessWidget {
+  final List<TaskCard> tasks;
+  final Widget additionalWidget;
+
+  _TaskColumn({
+    Key key,
+    @required this.tasks,
+    @required this.additionalWidget,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     List<Widget> taskColumn = <Widget>[];
     taskColumn = _addHorizontalParentFitGuard(taskColumn);
     taskColumn = _addAdditionalWidget(taskColumn);
     taskColumn = _buildTaskList(taskColumn);
 
-    return taskColumn;
+    return Column(
+      children: taskColumn,
+    );
   }
 
   List<Widget> _addHorizontalParentFitGuard(List<Widget> column) {
@@ -145,8 +179,8 @@ class KanbanColumnState extends State<KanbanColumn> {
   }
 
   List<Widget> _addAdditionalWidget(List<Widget> column) {
-    if (this.widget.additionalWidget != null) {
-      column.add(this.widget.additionalWidget);
+    if (this.additionalWidget != null) {
+      column.add(this.additionalWidget);
       column.add(SizedBox(height: 15));
     }
 
@@ -154,7 +188,7 @@ class KanbanColumnState extends State<KanbanColumn> {
   }
 
   List<Widget> _buildTaskList(List<Widget> column) {
-    int n = widget.tasks.length;
+    int n = this.tasks.length;
 
     if (n % 2 == 0) {
       for (int i = 0; i < n; i++) {
@@ -163,9 +197,9 @@ class KanbanColumnState extends State<KanbanColumn> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              widget.tasks[i],
+              this.tasks[i],
               SizedBox(width: 15),
-              widget.tasks[++i],
+              this.tasks[++i],
             ],
           ),
         );
@@ -179,14 +213,14 @@ class KanbanColumnState extends State<KanbanColumn> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                widget.tasks[i],
+                this.tasks[i],
                 SizedBox(width: 15),
-                widget.tasks[++i],
+                this.tasks[++i],
               ],
             ),
           );
         } else {
-          column.add(widget.tasks[i]);
+          column.add(this.tasks[i]);
         }
         column.add(SizedBox(height: 15));
       }

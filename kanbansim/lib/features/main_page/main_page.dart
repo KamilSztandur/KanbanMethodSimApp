@@ -161,8 +161,8 @@ class MainPageState extends State<MainPage> {
     dayStatus = DayStatus(
       MIN_DAY: 1,
       MAX_DAY: 15,
-      dayHasChanged: () {
-        // TODO
+      dayHasChanged: (int daysPassed) {
+        print("Passed days: $daysPassed");
       },
     );
 

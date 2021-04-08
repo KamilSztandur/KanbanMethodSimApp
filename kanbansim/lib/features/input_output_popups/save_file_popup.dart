@@ -3,7 +3,8 @@ import 'package:kanbansim/common/input_output_file_picker/input_output_supplier.
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_desktop.dart';
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_interface.dart';
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_web.dart';
-import 'package:intl/intl.dart';
+import 'package:kanbansim/features/input_output_popups/filename_reader_widget.dart';
+
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
@@ -40,15 +41,13 @@ class _SaveFilePage extends StatefulWidget {
 }
 
 class _SaveFilePageState extends State<_SaveFilePage> {
-  TextEditingController _controller;
-  SaveFileWriterInterface creator;
+  SaveFileWriter creator;
   String warningMessage = '';
   String fileName = '';
   double _cornerRadius = 35;
   double _height = 300;
   double _width = 475;
   bool _readyToSave;
-  bool _savedSuccessfully;
 
   @override
   void initState() {
@@ -56,19 +55,8 @@ class _SaveFilePageState extends State<_SaveFilePage> {
       this._readyToSave = false;
     }
 
-    if (_savedSuccessfully == null) {
-      this._savedSuccessfully = false;
-    }
-
     super.initState();
     _initializeWriter();
-    _controller = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   void _initializeWriter() {
@@ -77,31 +65,6 @@ class _SaveFilePageState extends State<_SaveFilePage> {
     } else {
       this.creator = SaveFileWriterDesktop();
     }
-  }
-
-  String _getCurrentDateAsString() {
-    DateTime currentTime = DateTime.now();
-    String currentHour = '';
-
-    if (currentTime.hour < 10) {
-      currentHour += "0";
-    }
-    currentHour += currentTime.hour.toString() + ".";
-
-    if (currentTime.minute < 10) {
-      currentHour += "0";
-    }
-    currentHour += currentTime.minute.toString();
-
-    DateFormat formatter = DateFormat('dd-MM-yyyy');
-    return currentHour + " " + formatter.format(currentTime);
-  }
-
-  void _generateNameAutomatically() {
-    setState(() {
-      this._controller.text = "${AppLocalizations.of(context).simulation} " +
-          _getCurrentDateAsString();
-    });
   }
 
   bool _checkIfFilenameIsValid(String filename) {
@@ -125,7 +88,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
 
   void _checkIfReadyToSave() {
     setState(() {
-      this._readyToSave = _checkIfFilenameIsValid(this._controller.text);
+      this._readyToSave = _checkIfFilenameIsValid(this.fileName);
     });
   }
 
@@ -137,21 +100,104 @@ class _SaveFilePageState extends State<_SaveFilePage> {
         context,
         '"$filename" ${AppLocalizations.of(context).savingSuccess}',
       );
-      _savedSuccessfully = true;
-    } else {
-      _savedSuccessfully = false;
     }
   }
 
-  Widget _buildTitle() {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: this._height,
+      width: this._width,
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Colors.grey.shade900,
+        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Flexible(
+            flex: 2,
+            fit: FlexFit.tight,
+            child: _Headline(cornerRadius: this._cornerRadius),
+          ),
+          Flexible(
+            flex: 2,
+            child: Container(),
+          ),
+          Flexible(
+            flex: 4,
+            child: Container(
+              width: this._width * 0.8,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FilenameReaderWidget(
+                    checkIfReadyToSave: (String value) {
+                      setState(() {
+                        fileName = value;
+                      });
+                      _checkIfReadyToSave();
+                    },
+                    saveFile: (String value) {
+                      setState(() {
+                        fileName = value;
+                      });
+                      _checkIfReadyToSave();
+
+                      if (_readyToSave) {
+                        _saveFile(fileName);
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    getWarningMessage: () => this.warningMessage,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Flexible(flex: 1, child: Container()),
+          Flexible(
+            flex: 2,
+            child: _Buttons(
+              readyToSave: _readyToSave,
+              saveFile: () {
+                _checkIfReadyToSave();
+
+                if (_readyToSave) {
+                  _saveFile(fileName);
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ),
+          Flexible(
+            flex: 1,
+            child: Container(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Headline extends StatelessWidget {
+  final double cornerRadius;
+
+  _Headline({Key key, @required this.cornerRadius}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       height: 60,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(_cornerRadius),
-          topRight: Radius.circular(_cornerRadius),
+          topLeft: Radius.circular(cornerRadius),
+          topRight: Radius.circular(cornerRadius),
         ),
       ),
       child: Column(
@@ -171,82 +217,20 @@ class _SaveFilePageState extends State<_SaveFilePage> {
       ),
     );
   }
+}
 
-  Widget _buildInputTextField() {
-    return TextField(
-      controller: _controller,
-      textAlign: TextAlign.left,
-      maxLines: 1,
-      onChanged: (String value) {
-        _checkIfReadyToSave();
-      },
-      onSubmitted: (String value) {
-        _saveFile(value);
-        if (_savedSuccessfully) {
-          Navigator.of(context).pop();
-        }
-      },
-      decoration: new InputDecoration(
-        hintText: AppLocalizations.of(context).enterSaveNameHere,
-        labelText: "${AppLocalizations.of(context).filenameLabel}:",
-        labelStyle: new TextStyle(color: const Color(0xFF424242)),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: IconButton(
-          icon: Icon(Icons.send),
-          color: Theme.of(context).primaryColor,
-          focusColor: Theme.of(context).primaryColor,
-          disabledColor: Theme.of(context).primaryColor,
-          onPressed: (() {
-            _saveFile(this._controller.text);
-            if (_savedSuccessfully) {
-              Navigator.of(context).pop();
-            }
-          }),
-        ),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).primaryColor),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).primaryColor),
-        ),
-        border: UnderlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).primaryColor),
-        ),
-      ),
-    );
-  }
+class _Buttons extends StatelessWidget {
+  final Function saveFile;
+  final bool readyToSave;
 
-  Widget _buildSubTextFieldRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Flexible(
-          flex: 4,
-          child: TextButton(
-            onPressed: () {
-              _generateNameAutomatically();
-              _checkIfReadyToSave();
-            },
-            child: Text(AppLocalizations.of(context).generateAutomatically),
-          ),
-        ),
-        Flexible(flex: 1, child: Container()),
-        Flexible(
-          flex: 4,
-          fit: FlexFit.tight,
-          child: Text(
-            this.warningMessage,
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  _Buttons({
+    Key key,
+    @required this.readyToSave,
+    @required this.saveFile,
+  }) : super(key: key);
 
-  Widget _buildButtons() {
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Flexible(flex: 3, fit: FlexFit.tight, child: Container()),
@@ -254,17 +238,12 @@ class _SaveFilePageState extends State<_SaveFilePage> {
           flex: 2,
           fit: FlexFit.tight,
           child: IgnorePointer(
-            ignoring: !this._readyToSave,
+            ignoring: !this.readyToSave,
             child: ElevatedButton(
-              onPressed: () {
-                _saveFile(this._controller.text);
-                if (_savedSuccessfully) {
-                  Navigator.of(context).pop();
-                }
-              },
+              onPressed: () => this.saveFile(),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
-                  this._readyToSave
+                  this.readyToSave
                       ? Theme.of(context).primaryColor
                       : Theme.of(context).backgroundColor,
                 ),
@@ -290,57 +269,6 @@ class _SaveFilePageState extends State<_SaveFilePage> {
         ),
         Flexible(flex: 3, fit: FlexFit.tight, child: Container()),
       ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: this._height,
-      width: this._width,
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.light
-            ? Colors.white
-            : Colors.grey.shade900,
-        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Flexible(
-            flex: 2,
-            fit: FlexFit.tight,
-            child: _buildTitle(),
-          ),
-          Flexible(
-            flex: 2,
-            child: Container(),
-          ),
-          Flexible(
-            flex: 4,
-            child: Container(
-              width: this._width * 0.8,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildInputTextField(),
-                  _buildSubTextFieldRow(),
-                ],
-              ),
-            ),
-          ),
-          Flexible(flex: 1, child: Container()),
-          Flexible(
-            flex: 2,
-            child: _buildButtons(),
-          ),
-          Flexible(
-            flex: 1,
-            child: Container(),
-          ),
-        ],
-      ),
     );
   }
 }
