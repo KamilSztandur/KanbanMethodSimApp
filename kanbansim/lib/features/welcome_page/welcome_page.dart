@@ -32,23 +32,23 @@ class WelcomePageState extends State<WelcomePage> {
           Flexible(
             flex: 13,
             fit: FlexFit.tight,
-            child: _buildLogo(),
+            child: _Logo(),
           ),
           Flexible(
             flex: 2,
             fit: FlexFit.tight,
-            child: _buildButton(
-              AppLocalizations.of(context).createEmptySession,
-              () => _newSessionButtonPressed(),
+            child: _MenuButton(
+              text: AppLocalizations.of(context).createEmptySession,
+              action: () => _newSessionButtonPressed(),
             ),
           ),
           Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
           Flexible(
             flex: 2,
             fit: FlexFit.tight,
-            child: _buildButton(
-              AppLocalizations.of(context).loadSession,
-              () => _loadButtonPressed(),
+            child: _MenuButton(
+              text: AppLocalizations.of(context).loadSession,
+              action: () => _loadButtonPressed(),
             ),
           ),
           Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
@@ -57,17 +57,17 @@ class WelcomePageState extends State<WelcomePage> {
               : Flexible(
                   flex: 2,
                   fit: FlexFit.tight,
-                  child: _buildButton(
-                    AppLocalizations.of(context).quit,
-                    () => _quitButtonPressed(),
+                  child: _MenuButton(
+                    text: AppLocalizations.of(context).quit,
+                    action: () => _quitButtonPressed(),
                   ),
                 ),
           Flexible(flex: 2, fit: FlexFit.tight, child: SizedBox()),
-          _buildLangSwitchButton(),
+          _LangSwitchButtons(),
           Flexible(
             flex: 2,
             fit: FlexFit.tight,
-            child: _buildAuthorNotice(),
+            child: _AuthorsNotice(),
           ),
           Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
         ],
@@ -75,14 +75,106 @@ class WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  Widget _buildLogo() {
+  void _newSessionButtonPressed() {
+    this.widget.startedNew();
+  }
+
+  void _loadButtonPressed() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => LoadFilePopup(
+        returnPickedFilepath: (String filePath) {
+          this.widget.loadedExisting(filePath);
+        },
+      ).show(context),
+    );
+  }
+
+  void _quitButtonPressed() {
+    exit(0);
+  }
+}
+
+class _Logo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Image(
       height: MediaQuery.of(context).size.height * 0.5,
       image: AssetImage('assets/logo.png'),
     );
   }
+}
 
-  Widget _buildButton(String text, Function action) {
+class _AuthorsNotice extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      AppLocalizations.of(context).applicationLegalese,
+      overflow: TextOverflow.fade,
+      maxLines: 2,
+      style: TextStyle(color: Colors.white),
+      softWrap: false,
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
+class _LangSwitchButtons extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    Color buttonsColor = Colors.white;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            primary: buttonsColor,
+            side: BorderSide(
+              color: buttonsColor,
+            ),
+          ),
+          child: Text(
+            "PL",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () => KanbanSimApp.of(context).switchLanguageTo("polish"),
+        ),
+        SizedBox(width: 20),
+        OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            primary: buttonsColor,
+            side: BorderSide(
+              color: buttonsColor,
+            ),
+          ),
+          child: Text(
+            "EN",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () => KanbanSimApp.of(context).switchLanguageTo("english"),
+        ),
+      ],
+    );
+  }
+}
+
+class _MenuButton extends StatelessWidget {
+  final Function action;
+  final String text;
+
+  _MenuButton({
+    Key key,
+    @required this.text,
+    @required this.action,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return RaisedButton(
       onPressed: action,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
@@ -125,76 +217,5 @@ class WelcomePageState extends State<WelcomePage> {
         ),
       ),
     );
-  }
-
-  Widget _buildAuthorNotice() {
-    return Text(
-      AppLocalizations.of(context).applicationLegalese,
-      overflow: TextOverflow.fade,
-      maxLines: 2,
-      style: TextStyle(color: Colors.white),
-      softWrap: false,
-      textAlign: TextAlign.center,
-    );
-  }
-
-  Widget _buildLangSwitchButton() {
-    Color buttonsColor = Colors.white;
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            primary: buttonsColor,
-            side: BorderSide(
-              color: buttonsColor,
-            ),
-          ),
-          child: Text(
-            "PL",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          onPressed: () => KanbanSimApp.of(context).switchLanguageTo("polish"),
-        ),
-        SizedBox(width: 20),
-        OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            primary: buttonsColor,
-            side: BorderSide(
-              color: buttonsColor,
-            ),
-          ),
-          child: Text(
-            "EN",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          onPressed: () => KanbanSimApp.of(context).switchLanguageTo("english"),
-        ),
-      ],
-    );
-  }
-
-  void _newSessionButtonPressed() {
-    this.widget.startedNew();
-  }
-
-  void _loadButtonPressed() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => LoadFilePopup(
-        returnPickedFilepath: (String filePath) {
-          this.widget.loadedExisting(filePath);
-        },
-      ).show(context),
-    );
-  }
-
-  void _quitButtonPressed() {
-    exit(0);
   }
 }
