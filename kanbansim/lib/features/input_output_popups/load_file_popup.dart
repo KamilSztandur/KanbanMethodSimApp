@@ -1,12 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:kanbansim/common/input_output_file_picker/input/filepicker_interface.dart';
-import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker_desktop.dart';
-import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker_web.dart';
+import 'package:kanbansim/features/input_output_popups/file_picker_widget.dart';
 import 'package:kanbansim/features/notifications/feedback_popup.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:kanbansim/kanban_sim_app.dart';
 
 class LoadFilePopup {
   Function(String filePath) returnPickedFilepath;
@@ -30,7 +27,6 @@ class LoadFilePopup {
 class _LoadFilePage extends StatefulWidget {
   final Function(String) returnPickedFilePath;
   String filePath;
-  FilePickerCross filePickerCross;
 
   _LoadFilePage({
     Key key,
@@ -49,53 +45,75 @@ class _LoadFilePageState extends State<_LoadFilePage> {
   double _height = 250;
   double _width = 400;
 
-  void _initializePicker() {
-    if (KanbanSimApp.of(context).isWeb()) {
-      this._picker = SaveFilePickerWeb(
-        returnPickedFilePath: (String filePath) {
-          setState(() {
-            this.widget.filePath = filePath;
-          });
-        },
-      );
-    } else {
-      this._picker = SaveFilePickerDesktop(
-        context: context,
-        returnPickedFilePath: (String filePath) {
-          setState(() {
-            this.widget.filePath = filePath;
-          });
-        },
-      );
-    }
-  }
+  @override
+  Widget build(BuildContext context) {
+    _readyToSubmit = this.widget.filePath != null;
 
-  void _returnIfExists() {
-    File saveFile = File(widget.filePath);
-    if (saveFile.existsSync()) {
-      this.widget.returnPickedFilePath(this.widget.filePath);
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => FeedbackPopUp.show(
-          context,
-          AppLocalizations.of(context).loadingFailed,
-          AppLocalizations.of(context).fileCorruptedNotice,
-        ),
-      );
-      this.widget.returnPickedFilePath(null);
-    }
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Colors.grey.shade900,
+        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
+      ),
+      height: this._height,
+      width: this._width,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Flexible(
+            flex: 3,
+            fit: FlexFit.tight,
+            child: _Headline(
+              cornerRadius: this._cornerRadius,
+            ),
+          ),
+          Flexible(flex: 3, child: Container()),
+          Flexible(
+            flex: 2,
+            child: FilePickerWidget(
+              filePath: this.widget.filePath,
+              pathIsPicked: (String path) {
+                setState(() {
+                  this.widget.filePath = path;
+                });
+              },
+              width: _width,
+            ),
+          ),
+          Flexible(flex: 3, child: Container()),
+          Flexible(
+            flex: 2,
+            child: _Buttons(
+              filePath: this.widget.filePath,
+              isReadyToSubmit: _readyToSubmit,
+              returnPickedFilePath: (String path) =>
+                  this.widget.returnPickedFilePath(path),
+            ),
+          ),
+          Flexible(flex: 1, child: Container()),
+        ],
+      ),
+    );
   }
+}
 
-  Widget _buildTitle() {
+class _Headline extends StatelessWidget {
+  final double cornerRadius;
+
+  _Headline({Key key, @required this.cornerRadius}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       height: 60,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(_cornerRadius),
-          topRight: Radius.circular(_cornerRadius),
+          topLeft: Radius.circular(cornerRadius),
+          topRight: Radius.circular(cornerRadius),
         ),
       ),
       child: Column(
@@ -115,55 +133,22 @@ class _LoadFilePageState extends State<_LoadFilePage> {
       ),
     );
   }
+}
 
-  Widget _buildFilePickerWidget() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          height: 35,
-          width: this._width * 0.7,
-          decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).primaryColor),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.filePath == null ? '' : widget.filePath,
-                textAlign: TextAlign.left,
-                overflow: TextOverflow.fade,
-                maxLines: 1,
-                softWrap: false,
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).primaryColor),
-            color: Theme.of(context).primaryColor,
-          ),
-          child: IconButton(
-            icon: Icon(Icons.file_upload),
-            color: Theme.of(context).brightness == Brightness.light
-                ? Colors.white
-                : Colors.grey.shade900,
-            onPressed: () {
-              _picker.pickSaveFile();
-            },
-          ),
-        ),
-      ],
-    );
-  }
+class _Buttons extends StatelessWidget {
+  final bool isReadyToSubmit;
+  final Function returnPickedFilePath;
+  final String filePath;
 
-  Widget _buildButtons() {
+  _Buttons({
+    Key key,
+    @required this.filePath,
+    @required this.isReadyToSubmit,
+    @required this.returnPickedFilePath,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Flexible(flex: 3, fit: FlexFit.tight, child: Container()),
@@ -171,15 +156,15 @@ class _LoadFilePageState extends State<_LoadFilePage> {
           flex: 2,
           fit: FlexFit.tight,
           child: IgnorePointer(
-            ignoring: !this._readyToSubmit,
+            ignoring: !this.isReadyToSubmit,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                _returnIfExists();
+                _returnIfExists(context);
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
-                  this._readyToSubmit
+                  this.isReadyToSubmit
                       ? Theme.of(context).primaryColor
                       : Theme.of(context).backgroundColor,
                 ),
@@ -208,48 +193,20 @@ class _LoadFilePageState extends State<_LoadFilePage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    _initializePicker();
-    _readyToSubmit = this.widget.filePath != null;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.light
-            ? Colors.white
-            : Colors.grey.shade900,
-        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-      ),
-      height: this._height,
-      width: this._width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Flexible(
-            flex: 3,
-            fit: FlexFit.tight,
-            child: _buildTitle(),
-          ),
-          Flexible(
-            flex: 3,
-            child: Container(),
-          ),
-          Flexible(
-            flex: 2,
-            child: _buildFilePickerWidget(),
-          ),
-          Flexible(flex: 3, child: Container()),
-          Flexible(
-            flex: 2,
-            child: _buildButtons(),
-          ),
-          Flexible(
-            flex: 1,
-            child: Container(),
-          ),
-        ],
-      ),
-    );
+  void _returnIfExists(BuildContext context) {
+    File saveFile = File(this.filePath);
+    if (saveFile.existsSync()) {
+      this.returnPickedFilePath(this.filePath);
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => FeedbackPopUp.show(
+          context,
+          AppLocalizations.of(context).loadingFailed,
+          AppLocalizations.of(context).fileCorruptedNotice,
+        ),
+      );
+      this.returnPickedFilePath(null);
+    }
   }
 }
