@@ -35,7 +35,7 @@ class _ConfirmTaskDeletionWindow extends StatelessWidget {
     double _cornerRadius = 35;
 
     return Container(
-      height: 240,
+      height: 250,
       width: 400,
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.light
@@ -61,7 +61,8 @@ class _ConfirmTaskDeletionWindow extends StatelessWidget {
                 ),
                 Flexible(flex: 2, child: Container()),
                 Flexible(
-                  flex: 2,
+                  flex: 3,
+                  fit: FlexFit.tight,
                   child: _Buttons(deleteTask: this.deleteTask),
                 ),
                 Flexible(flex: 2, child: Container()),
@@ -85,7 +86,8 @@ class _TextLabel extends StatelessWidget {
       text: TextSpan(
         children: <TextSpan>[
           TextSpan(
-            text: 'Czy na pewno chcesz usunąć zadanie ',
+            text:
+                "${AppLocalizations.of(context).areYouSureYouWantToDeleteTask} ",
             style: TextStyle(
               color: Theme.of(context).textTheme.headline6.color,
               fontSize: 18,
@@ -134,7 +136,7 @@ class _Headline extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "USUWANIE ZADANIA",
+            AppLocalizations.of(context).taskDeletionTitle,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -173,7 +175,10 @@ class _Buttons extends StatelessWidget {
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
               ),
-              child: Text("Usuń"),
+              child: Text(
+                AppLocalizations.of(context).delete,
+                textAlign: TextAlign.center,
+              ),
             )),
         Flexible(flex: 1, fit: FlexFit.tight, child: Container()),
         Flexible(
@@ -187,7 +192,10 @@ class _Buttons extends StatelessWidget {
               backgroundColor: MaterialStateProperty.all<Color>(
                   Theme.of(context).primaryColor),
             ),
-            child: Text("Nie usuwaj"),
+            child: Text(
+              AppLocalizations.of(context).cancel,
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
         Flexible(flex: 2, fit: FlexFit.tight, child: Container()),
