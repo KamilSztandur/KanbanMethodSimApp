@@ -1,13 +1,16 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card_window/assign_productivity_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card_window/confirm_task_deletion_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card_window/lock_status_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_progress.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskCardPopup {
+  final Function(Task, User, int) productivityAssigned;
   final Function taskUnlocked;
   final Function deleteTask;
   final Function getUsers;
@@ -15,6 +18,7 @@ class TaskCardPopup {
 
   TaskCardPopup({
     @required this.getUsers,
+    @required this.productivityAssigned,
     @required this.taskUnlocked,
     @required this.deleteTask,
     @required this.taskCardColor,
@@ -31,12 +35,14 @@ class TaskCardPopup {
         taskUnlocked: this.taskUnlocked,
         deleteTask: this.deleteTask,
         getUsers: this.getUsers,
+        productivityAssigned: this.productivityAssigned,
       ),
     );
   }
 }
 
 class _TaskCardPage extends StatefulWidget {
+  final Function(Task, User, int) productivityAssigned;
   final Function deleteTask;
   final Function taskUnlocked;
   final Function getUsers;
@@ -47,6 +53,7 @@ class _TaskCardPage extends StatefulWidget {
     Key key,
     @required this.task,
     @required this.deleteTask,
+    @required this.productivityAssigned,
     @required this.taskCardColor,
     @required this.getUsers,
     @required this.taskUnlocked,
@@ -152,7 +159,16 @@ class _TaskCardPageState extends State<_TaskCardPage> {
                 task: this.widget.task,
                 deleteTask: this.widget.deleteTask,
               ),
-              SizedBox(width: 650),
+              SizedBox(width: 550),
+              _AssignProductivityButton(
+                task: this.widget.task,
+                getUsers: this.widget.getUsers,
+                productivityAssigned: (Task task, User user, int value) {
+                  setState(() {
+                    this.widget.productivityAssigned(task, user, value);
+                  });
+                },
+              ),
             ],
           ),
         ],
@@ -194,7 +210,9 @@ class _LockIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: task.isLocked() ? "Click here to unlock task" : "Task unlocked",
+      message: task.isLocked()
+          ? AppLocalizations.of(context).clickHereToUnlock
+          : AppLocalizations.of(context).taskUnlocked,
       child: IgnorePointer(
         ignoring: !task.isLocked(),
         child: IconButton(
@@ -239,7 +257,8 @@ class _UserIcon extends StatelessWidget {
             height: 90,
             width: 90,
             child: Tooltip(
-              message: "${owner.getName()} is owner of this task.",
+              message:
+                  "${owner.getName()} ${AppLocalizations.of(context).isOwnerOfThisTask}",
               child: Center(
                 child: Icon(
                   Icons.account_circle_outlined,
@@ -269,6 +288,61 @@ class _CloseButton extends StatelessWidget {
   }
 }
 
+class _AssignProductivityButton extends StatelessWidget {
+  final Function(Task, User, int) productivityAssigned;
+  final Function getUsers;
+  final Task task;
+
+  _AssignProductivityButton({
+    Key key,
+    @required this.productivityAssigned,
+    @required this.getUsers,
+    @required this.task,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: new BoxDecoration(
+        shape: BoxShape.circle,
+      ),
+      child: ClipOval(
+        child: Material(
+          color: task.isLocked() ? Colors.grey : Colors.blue,
+          child: InkWell(
+            hoverColor: task.isLocked() ? Colors.grey : Colors.purple,
+            child: SizedBox(
+              height: 90,
+              width: 90,
+              child: Tooltip(
+                message: task.isLocked()
+                    ? AppLocalizations.of(context).unlockThisTaskFirst
+                    : AppLocalizations.of(context).assignProductivity,
+                child: Icon(
+                  Icons.assignment_ind_outlined,
+                  color: Colors.white,
+                  size: 65,
+                ),
+              ),
+            ),
+            onTap: () {
+              if (!task.isLocked()) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AssignProductivityPopup(
+                    getUsers: this.getUsers,
+                    productivityAssigned: this.productivityAssigned,
+                  ).show(context, task),
+                );
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _DeleteTaskButton extends StatelessWidget {
   final Function deleteTask;
   final Task task;
@@ -294,7 +368,7 @@ class _DeleteTaskButton extends StatelessWidget {
               height: 90,
               width: 90,
               child: Tooltip(
-                message: "Usuń zadanie",
+                message: AppLocalizations.of(context).deleteTask,
                 child: Icon(
                   Icons.delete_forever_outlined,
                   color: Colors.white,

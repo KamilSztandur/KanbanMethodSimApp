@@ -146,6 +146,14 @@ class MainPageState extends State<MainPage> {
           this.locksStatus.checkForLocks();
         });
       },
+      productivityAssigned: (Task task, User user, int value) {
+        setState(() {
+          task.investProductivityFrom(
+            user,
+            value,
+          );
+        });
+      },
     );
   }
 

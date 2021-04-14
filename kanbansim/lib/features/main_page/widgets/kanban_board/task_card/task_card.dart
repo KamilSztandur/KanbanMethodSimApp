@@ -3,8 +3,10 @@ import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_status.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/TaskType.dart';
+import 'package:kanbansim/models/User.dart';
 
 class TaskCard extends StatelessWidget {
+  final Function(Task, User, int) productivityAssigned;
   final Function taskUnlocked;
   final Function getUsers;
   Function(Task) deleteMe;
@@ -13,6 +15,7 @@ class TaskCard extends StatelessWidget {
 
   TaskCard({
     @required this.task,
+    @required this.productivityAssigned,
     @required this.deleteMe,
     @required this.getUsers,
     @required this.taskUnlocked,
@@ -54,6 +57,7 @@ class TaskCard extends StatelessWidget {
             taskUnlocked: this.taskUnlocked,
             taskCardColor: this._taskCardColor,
             deleteTask: () => deleteMe(this.task),
+            productivityAssigned: this.productivityAssigned,
           ).show(
             context,
             task,
