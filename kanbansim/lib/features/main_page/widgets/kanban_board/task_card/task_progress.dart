@@ -13,7 +13,7 @@ class TaskProgress extends StatelessWidget {
   TaskProgress({Key key, @required this.task, @required this.mode})
       : super(key: key);
 
-  List<Widget> _buildFormattedTasksList(BuildContext context) {
+  List<Widget> _getFormattedTasksList(BuildContext context) {
     List<Widget> tasksRow = <Widget>[];
 
     tasksRow.add(
@@ -79,7 +79,7 @@ class TaskProgress extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: _buildFormattedTasksList(context),
+              children: _getFormattedTasksList(context),
             ),
           ),
         ),

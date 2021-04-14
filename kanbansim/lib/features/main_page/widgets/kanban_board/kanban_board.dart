@@ -5,8 +5,10 @@ import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kanbansim/models/User.dart';
 
 class KanbanBoard extends StatefulWidget {
+  final Function(Task, User, int) productivityAssigned;
   final Function taskUnlocked;
   final Function getUsers;
   final Function(Task) taskCreated;
@@ -18,6 +20,7 @@ class KanbanBoard extends StatefulWidget {
     @required this.allTasks,
     @required this.taskCreated,
     @required this.deleteMe,
+    @required this.productivityAssigned,
     @required this.taskUnlocked,
     @required this.getUsers,
   }) : super(key: key);
@@ -44,6 +47,7 @@ class KanbanBoardState extends State<KanbanBoard> {
       deleteMe: this.widget.deleteMe,
       getUsers: this.widget.getUsers,
       taskUnlocked: this.widget.taskUnlocked,
+      productivityAssigned: this.widget.productivityAssigned,
     );
   }
 

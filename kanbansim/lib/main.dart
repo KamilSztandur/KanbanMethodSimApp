@@ -7,6 +7,7 @@ void main() {
 
   doWhenWindowReady(() {
     final initialSize = Size(1300, 650);
+
     appWindow.minSize = initialSize;
     appWindow.size = initialSize;
     appWindow.alignment = Alignment.center;

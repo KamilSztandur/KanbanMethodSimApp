@@ -103,5 +103,29 @@
 
     "events": "Events",
     "copyLogsToClipboardhint": "Copy events logs to clipboard.",
-    "logsCopiedSuccessfully": "Logs copied to clipboard successfully."
+    "logsCopiedSuccessfully": "Logs copied to clipboard successfully.",
+
+
+    "unlockThisTaskFirst": "Unlock this task first.",
+    "assignProductivity": "Assign productivity.",
+    "deleteTask": "Delete this task.",
+    "isOwnerOfThisTask": "is owner of this task.",
+    "clickHereToUnlock": "click here to unlock this task.",
+    "taskUnlocked": "Task is unlocked.",
+
+    "cannotAssignProductivityFromThisUser": "Cannot assign productivity from this user.",
+    "productivityAvailableFromThisUser": "Productivity available from this user",
+    "productivitiyNeededToFinishThisTask": "Productivity required to finish this task",
+    "maxProductivityAvailableToAsign": "Max productivity available to asign",
+    "productivityCost": "Cost",
+    "productivityDoubleCostInfo": "Double cost: This person is not owner of this task.",
+
+    "assignProductivityTitle": "ASSIGN PRODUCTIVITY",
+    "assignUser": "Assign user",
+    "assign": "Assign",
+
+    "areYouSureYouWantToDeleteTask": "Are you sure you want to delete task ",
+    "taskDeletionTitle": "TASK DELETION",
+    "delete": "Delete",
+    "doNotDelete": "Do not delete"
 }

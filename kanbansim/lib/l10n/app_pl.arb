@@ -103,5 +103,29 @@
 
     "events": "Wydarzenia",
     "copyLogsToClipboardhint": "Skopiuj historie wydarzeń do schowka.",
-    "logsCopiedSuccessfully": "Historia wydarzeń została pomyślnie skopiowana do schowka."
+    "logsCopiedSuccessfully": "Historia wydarzeń została pomyślnie skopiowana do schowka.",
+
+    
+    "unlockThisTaskFirst": "Najpierw odblokuj to zadanie.",
+    "assignProductivity": "Przydziel produktywność.",
+    "deleteTask": "Usuń zadanie.",
+    "isOwnerOfThisTask": "jest właścicielem tego zadania.",
+    "clickHereToUnlock": "Kliknij, aby odblokować zadanie.",
+    "taskUnlocked": "Zadanie odblokowane.",
+
+    "cannotAssignProductivityFromThisUser": "Nie można przydzielić produktywności od tego członka zespołu.",
+    "productivityAvailableFromThisUser": "Dostępna produktywność u tego członka zespołu",
+    "productivitiyNeededToFinishThisTask": "Potrzebna produktywność do ukończenia zadania",
+    "maxProductivityAvailableToAsign": "Dostępna produktywność do przypisania",
+    "productivityCost": "Koszt",
+    "productivityDoubleCostInfo": "Koszt podwójny: Osoba nie jest właścicielem zadania",
+
+    "assignProductivityTitle": "PRZYDZIEL PRODUKTYWNOŚĆ",
+    "assignUser": "Wyznacz członka zespołu",
+    "assign": "Przydziel",
+
+    "areYouSureYouWantToDeleteTask": "Czy na pewno chcesz usunąć zadanie",
+    "taskDeletionTitle": "USUWANIE ZADANIA",
+    "delete": "Usuń",
+    "doNotDelete": "Nie usuwaj"
 }

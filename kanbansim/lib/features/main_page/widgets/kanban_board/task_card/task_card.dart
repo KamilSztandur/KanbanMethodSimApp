@@ -1,11 +1,12 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card_window/task_card_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_status.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/TaskType.dart';
+import 'package:kanbansim/models/User.dart';
 
 class TaskCard extends StatelessWidget {
+  final Function(Task, User, int) productivityAssigned;
   final Function taskUnlocked;
   final Function getUsers;
   Function(Task) deleteMe;
@@ -14,6 +15,7 @@ class TaskCard extends StatelessWidget {
 
   TaskCard({
     @required this.task,
+    @required this.productivityAssigned,
     @required this.deleteMe,
     @required this.getUsers,
     @required this.taskUnlocked,
@@ -21,23 +23,6 @@ class TaskCard extends StatelessWidget {
 
   int getID() {
     return this.task.getID();
-  }
-
-  Color _getRandomColor() {
-    List<Color> colors = <Color>[];
-
-    colors.add(Color.fromRGBO(255, 231, 156, 1.0)); // Default
-    colors.add(Color.fromRGBO(247, 100, 115, 1.0)); // Red
-    colors.add(Color.fromRGBO(238, 88, 141, 1.0)); // Pink
-    colors.add(Color.fromRGBO(245, 237, 123, 1.0)); // Yellow
-    colors.add(Color.fromRGBO(158, 208, 115, 1.0)); // Green
-    colors.add(Color.fromRGBO(86, 179, 226, 1.0)); // Blue
-    colors.add(Color.fromRGBO(247, 147, 105, 1.0)); // Orange
-    colors.add(Color.fromRGBO(206, 149, 232, 1.0)); // Purple
-
-    int randomColorsIndex = Random().nextInt(colors.length);
-
-    return colors[randomColorsIndex];
   }
 
   Color _getTaskTypeColor(TaskType type) {
@@ -71,13 +56,14 @@ class TaskCard extends StatelessWidget {
             getUsers: this.getUsers,
             taskUnlocked: this.taskUnlocked,
             taskCardColor: this._taskCardColor,
+            deleteTask: () => deleteMe(this.task),
+            productivityAssigned: this.productivityAssigned,
           ).show(
             context,
             task,
           ),
         );
       },
-      onLongPress: () => deleteMe(this.task),
       child: Container(
         padding: EdgeInsets.all(0.0),
         width: 100,
