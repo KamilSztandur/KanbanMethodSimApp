@@ -161,7 +161,10 @@ class _LockStatusState extends State<_LockStatus> {
   Widget _buildDropDownList() {
     List<String> names = _getAvailableUsersNames();
     if (names.length != 0) {
-      _selectedValue = names[0];
+      if (_selectedValue == null) {
+        _selectedValue = names[0];
+      }
+
       this._readyToUnlock = true;
     } else {
       String empty = AppLocalizations.of(context).empty;
@@ -171,7 +174,7 @@ class _LockStatusState extends State<_LockStatus> {
     }
 
     return DropdownButton<String>(
-      value: names[0],
+      value: _selectedValue,
       icon: const Icon(Icons.account_circle_outlined),
       iconSize: 24,
       isExpanded: true,
