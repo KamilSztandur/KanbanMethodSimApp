@@ -34,7 +34,7 @@ class UserSelectorState extends State<UserSelector> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SubTitle(
-            title: AppLocalizations.of(context).assignTaskTo + ":",
+            title: "${AppLocalizations.of(context).assignUser}:",
           ),
           DropdownButton<String>(
             value: _selectedUser,
