@@ -25,8 +25,22 @@ class Task {
     this.owner = owner;
     this._productivityRequiredToUnlock = 0;
     this._type = type;
+  }
 
-    blockTaskRandomly();
+  void loadAdditionalDataFromSavefile(int taskID, List<User> parts, int prod) {
+    this._taskID = taskID;
+    this.progress._parts = parts;
+    this._productivityRequiredToUnlock = prod;
+
+    int fulfilledPartsAmount = 0;
+    int n = parts.length;
+    for (int i = 0; i < n; i++) {
+      if (parts[i] != null) {
+        fulfilledPartsAmount++;
+      }
+    }
+
+    this.progress._fulfilledPartsAmount = fulfilledPartsAmount;
   }
 
   TaskType getTaskType() {
@@ -162,6 +176,18 @@ class _TaskProgress {
   }
 
   Color getUserColor(int index) {
-    return this._parts[index].getColor();
+    if (this._parts[index] == null) {
+      return Colors.transparent;
+    } else {
+      return this._parts[index].getColor();
+    }
+  }
+
+  int getUserID(int index) {
+    if (this._parts[index] == null) {
+      return -1;
+    } else {
+      return this._parts[index].getID();
+    }
   }
 }

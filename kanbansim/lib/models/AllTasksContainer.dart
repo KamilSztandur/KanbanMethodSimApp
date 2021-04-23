@@ -168,6 +168,10 @@ class AllTasksContainer {
       );
     }
 
+    if (task.getTaskType() == TaskType.FixedDate) {
+      task.setDeadlineDay(3);
+    }
+
     return task;
   }
 

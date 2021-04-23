@@ -18,6 +18,11 @@ class User {
     this._productivity = maxProductivity;
   }
 
+  void loadAdditionalDataFromSavefile(int id, int productivity) {
+    this._id = id;
+    this._productivity = productivity;
+  }
+
   bool decreaseProductivity(int amount) {
     if (amount > this._productivity) {
       return false;

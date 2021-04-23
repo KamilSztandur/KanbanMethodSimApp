@@ -6,9 +6,6 @@
     [DAY_NUMBER] currentDayNumber
 [END_SIMSTATE]
 
-/* LISTS */
-
-// Users list object
 [BEGIN_USERS_LIST]
     [BEGIN_USER]
         ...
@@ -21,10 +18,9 @@
     [END_USER]
 [END_USERS_LIST]
 
-/* Task Lists objects */
+
 [BEGIN_TASK_LISTS]
-    // IDLE TASKS
-    [BEGIN_IDLE_TASK_COLUMN]
+    [BEGIN_IDLE_TASKS_COLUMN]
         [BEGIN_TASK]
             ...
         [END_TASK]
@@ -34,10 +30,9 @@
         [BEGIN_TASK]
             ...
         [END_TASK]
-    [END_IDLE_TASK_COLUMN]
+    [END_IDLE_TASKS_COLUMN]
 
-    // STAGE ONE IN PROGRESS TASKS
-    [BEGIN_STAGE_ONE_IN_PROGRESS_COLUMN]
+    [BEGIN_STAGE_ONE_IN_PROGRESS_TASKS_COLUMN]
         [BEGIN_TASK]
             ...
         [END_TASK]
@@ -47,10 +42,9 @@
         [BEGIN_TASK]
             ...
         [END_TASK]
-    [END_STAGE_ONE_IN_PROGRESS_COLUMN]
+    [END_STAGE_ONE_IN_PROGRESS_TASKS_COLUMN]
 
-    // STAGE ONE DONE TASKS
-    [BEGIN_STAGE_ONE_DONE_COLUMN]
+    [BEGIN_STAGE_ONE_DONE_TASKS_COLUMN]
         [BEGIN_TASK]
             ...
         [END_TASK]
@@ -60,10 +54,9 @@
         [BEGIN_TASK]
             ...
         [END_TASK]
-    [END_STAGE_ONE_DONE_COLUMN]
+    [END_STAGE_ONE_DONE_TASKS_COLUMN]
 
-    // STAGE TWO TASKS
-    [BEGIN_STAGE_TWO_COLUMN]
+    [BEGIN_STAGE_TWO_TASKS_COLUMN]
         [BEGIN_TASK]
             ...
         [END_TASK]
@@ -73,10 +66,9 @@
         [BEGIN_TASK]
             ...
         [END_TASK]
-    [END_STAGE_TWO_COLUMN]
+    [END_STAGE_TWO_TASKS_COLUMN]
 
-    // FINISHED TASKS 
-    [BEGIN_FINISHED_COLUMN]
+    [BEGIN_FINISHED_TASKS_COLUMN]
         [BEGIN_TASK]
             ...
         [END_TASK]
@@ -86,7 +78,7 @@
         [BEGIN_TASK]
             ...
         [END_TASK]
-    [END_FINISHED_COLUMN]
+    [END_FINISHED_TASKS_COLUMN]
 [END_TASK_LISTS]
 /* ============================================================= */
 
@@ -94,29 +86,30 @@
 /* MODELS */
 
 // User object
-[BEGIN_USER]
-    [ID] userID
-    [NAME] username
-    [COLOR] (R, G, B)
-    [MAX_PRODUCTIVITY] maxProductivity
-    [PRODUCTIVITY] productivity
-[END_USER]
+    [BEGIN_USER]
+        [ID] userID
+        [NAME] username
+        [COLOR] (R, G, B)
+        [MAX_PRODUCTIVITY] maxProductivity
+        [PRODUCTIVITY] productivity
+    [END_USER]
 
 
 // Task object
-[BEGIN_TASK]
-    [TITLE] taskTitle
-    [TASKTYPE] taskType
-    [TASK_ID] taskID
-    [OWNER_ID] ownerID
-    [PROD_REQ_TO_UNLOCK] prodReqToUnlock
-    [DEADLINE] deadlineDayNumber
-    [BEGIN_TASKPROGRESS] // If ID == -1, part is unfulfilled.
-        [PART] userID[0]
-        [PART] userID[1]
-        [PART] userID[2]
-        [PART] userID[3]
-        [PART] userID[4]
-    [END_TASKPROGRESS]
-[END_TASK]
+    [BEGIN_TASK]
+        [TITLE] {taskTitle}
+        [TASKTYPE] taskType
+        [TASK_ID] taskID
+        [OWNER_ID] ownerID
+        [PROD_REQ_TO_UNLOCK] prodReqToUnlock
+        [PROD_REQ_TO_COMPLETE] prodReqToComplete
+        [DEADLINE] deadlineDayNumber
+        [BEGIN_TASKPROGRESS] // If ID == -1, part is unfulfilled.
+            [PART] userID[0]
+            [PART] userID[1]
+            [PART] userID[2]
+            [PART] userID[3]
+            [PART] userID[4]
+        [END_TASKPROGRESS]
+    [END_TASK]
 /* ============================================================= */
