@@ -85,6 +85,8 @@ class WelcomePageState extends State<WelcomePage> {
       builder: (BuildContext context) => LoadFilePopup(
         returnPickedFilepath: (String filePath) {
           this.widget.loadedExisting(filePath);
+        }, returnPickedFileContent: (String data) {
+          //TODO
         },
       ).show(context),
     );

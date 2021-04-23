@@ -122,7 +122,17 @@ class MainPageState extends State<MainPage> {
         });
       }, 
       getAllTasks: () => this.allTasks, 
-      getAllUsers: () => this.users,
+      getAllUsers: () => this.users, loadSimStateFromFileContent: (String data) {
+        SavefileReader reader = SavefileReader();
+        setState((){
+          this.users = reader.readUsers(data);
+          this.allTasks.idleTasksColumn = reader.readIdleTasks(data);
+          this.allTasks.stageOneInProgressTasksColumn = reader.readStageOneInProgressTasks(data);
+          this.allTasks.stageOneDoneTasksColumn = reader.readStageOneDoneTasks(data);
+          this.allTasks.stageTwoTasksColumn = reader.readStageTwoTasks(data);
+          this.allTasks.finishedTasksColumn = reader.readFinishedTasks(data);
+        });
+      },
     );
   }
 

@@ -12,6 +12,7 @@ class MainMenuBar extends StatelessWidget {
   final VoidCallback addRandomTasks;
   final VoidCallback clearAllTasks;
   final Function(String) loadSimStateFromFilePath;
+  final Function(String) loadSimStateFromFileContent;
   final VoidCallback saveSimStateIntoFile;
   final Function getAllUsers;
   final Function getAllTasks;
@@ -21,6 +22,7 @@ class MainMenuBar extends StatelessWidget {
     @required this.addRandomTasks,
     @required this.clearAllTasks,
     @required this.loadSimStateFromFilePath,
+    @required this.loadSimStateFromFileContent,
     @required this.saveSimStateIntoFile,
     @required this.getAllTasks,
     @required this.getAllUsers,
@@ -47,6 +49,7 @@ class MainMenuBar extends StatelessWidget {
             clearAllTasks: this.clearAllTasks,
             saveSimStateIntoFile: this.saveSimStateIntoFile,
             loadSimStateFromFilePath: this.loadSimStateFromFilePath,
+            loadSimStateFromFileContent: this.loadSimStateFromFileContent,
             getAllUsers: this.getAllUsers,
             getAllTasks: this.getAllTasks,
           ),
@@ -60,6 +63,7 @@ class _ToolBar extends StatelessWidget {
   final VoidCallback addRandomTasks;
   final VoidCallback clearAllTasks;
   final Function(String) loadSimStateFromFilePath;
+  final Function(String) loadSimStateFromFileContent;
   final VoidCallback saveSimStateIntoFile;
   final Function getAllUsers;
   final Function getAllTasks;
@@ -73,6 +77,7 @@ class _ToolBar extends StatelessWidget {
     @required this.addRandomTasks,
     @required this.clearAllTasks,
     @required this.loadSimStateFromFilePath,
+    @required this.loadSimStateFromFileContent,
     @required this.saveSimStateIntoFile,
     @required this.getAllTasks,
     @required this.getAllUsers,
@@ -83,6 +88,9 @@ class _ToolBar extends StatelessWidget {
       returnPickedFilepath: (String filePath) {
         this.loadSimStateFromFilePath(filePath);
       },
+      returnPickedFileContent: (String content) {
+        this.loadSimStateFromFileContent(content);
+      }
     );
   }
 
