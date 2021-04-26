@@ -12,14 +12,20 @@ class MainMenuBar extends StatelessWidget {
   final VoidCallback addRandomTasks;
   final VoidCallback clearAllTasks;
   final Function(String) loadSimStateFromFilePath;
+  final Function(String) loadSimStateFromFileContent;
   final VoidCallback saveSimStateIntoFile;
-
+  final Function getAllUsers;
+  final Function getAllTasks;
+  
   MainMenuBar({
     Key key,
     @required this.addRandomTasks,
     @required this.clearAllTasks,
     @required this.loadSimStateFromFilePath,
+    @required this.loadSimStateFromFileContent,
     @required this.saveSimStateIntoFile,
+    @required this.getAllTasks,
+    @required this.getAllUsers,
   }) : super(key: key);
 
   @override
@@ -43,6 +49,9 @@ class MainMenuBar extends StatelessWidget {
             clearAllTasks: this.clearAllTasks,
             saveSimStateIntoFile: this.saveSimStateIntoFile,
             loadSimStateFromFilePath: this.loadSimStateFromFilePath,
+            loadSimStateFromFileContent: this.loadSimStateFromFileContent,
+            getAllUsers: this.getAllUsers,
+            getAllTasks: this.getAllTasks,
           ),
         ],
       ),
@@ -54,7 +63,11 @@ class _ToolBar extends StatelessWidget {
   final VoidCallback addRandomTasks;
   final VoidCallback clearAllTasks;
   final Function(String) loadSimStateFromFilePath;
+  final Function(String) loadSimStateFromFileContent;
   final VoidCallback saveSimStateIntoFile;
+  final Function getAllUsers;
+  final Function getAllTasks;
+
 
   LoadFilePopup pickFilePopup;
   SaveFilePopup saveFilePopup;
@@ -64,7 +77,10 @@ class _ToolBar extends StatelessWidget {
     @required this.addRandomTasks,
     @required this.clearAllTasks,
     @required this.loadSimStateFromFilePath,
+    @required this.loadSimStateFromFileContent,
     @required this.saveSimStateIntoFile,
+    @required this.getAllTasks,
+    @required this.getAllUsers,
   }) : super(key: key);
 
   void _initializeFilePickerPopup() {
@@ -72,11 +88,17 @@ class _ToolBar extends StatelessWidget {
       returnPickedFilepath: (String filePath) {
         this.loadSimStateFromFilePath(filePath);
       },
+      returnPickedFileContent: (String content) {
+        this.loadSimStateFromFileContent(content);
+      }
     );
   }
 
   void _initializeFileSaverPopup() {
-    saveFilePopup = SaveFilePopup();
+    saveFilePopup = SaveFilePopup(
+      getAllTasks: this.getAllTasks,
+      getAllUsers: this.getAllUsers, 
+    );
   }
 
   @override

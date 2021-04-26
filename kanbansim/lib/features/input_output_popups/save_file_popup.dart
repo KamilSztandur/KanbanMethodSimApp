@@ -3,37 +3,42 @@ import 'package:kanbansim/common/input_output_file_picker/input_output_supplier.
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_desktop.dart';
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_interface.dart';
 import 'package:kanbansim/common/input_output_file_picker/output/save_file_writer_web.dart';
+import 'package:kanbansim/common/savefile_parsers/savefile_creator.dart';
 import 'package:kanbansim/features/input_output_popups/filename_reader_widget.dart';
 
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
+import 'package:kanbansim/models/AllTasksContainer.dart';
 
 class SaveFilePopup {
-  Function(bool) returnSaveStatus;
+  final Function getAllUsers;
+  final Function getAllTasks;
 
   SaveFilePopup({
-    this.returnSaveStatus,
+    @required this.getAllTasks,
+    @required this.getAllUsers,
   });
 
   Widget show(BuildContext context) {
     return new AlertDialog(
       backgroundColor: Colors.transparent,
       content: _SaveFilePage(
-        returnSaveStatus: (bool status) {
-          this.returnSaveStatus(status);
-        },
+        getAllTasks: this.getAllTasks,
+        getAllUsers: this.getAllUsers,
       ),
     );
   }
 }
 
 class _SaveFilePage extends StatefulWidget {
-  final Function(bool) returnSaveStatus;
+  final Function getAllUsers;
+  final Function getAllTasks;
 
   _SaveFilePage({
     Key key,
-    @required this.returnSaveStatus,
+    @required this.getAllTasks,
+    @required this.getAllUsers,
   }) : super(key: key);
 
   @override
@@ -94,13 +99,29 @@ class _SaveFilePageState extends State<_SaveFilePage> {
 
   void _saveFile(String filename) {
     if (_checkIfFilenameIsValid(filename)) {
-      this.creator.saveFileAs(filename, "Zawartość pliku zapisu");
-
+      String savefileContent = _getDataAsString();
+      this.creator.saveFileAs(filename, savefileContent);
+    
       SubtleMessage.messageWithContext(
         context,
         '"$filename" ${AppLocalizations.of(context).savingSuccess}',
       );
     }
+  }
+
+  String _getDataAsString() {
+    SavefileCreator creator = SavefileCreator();
+    creator.setUsersList(this.widget.getAllUsers());
+    
+    AllTasksContainer allTasks = this.widget.getAllTasks();
+    creator.addTasksListsWithTitle(allTasks.idleTasksColumn, "idle");
+    creator.addTasksListsWithTitle(allTasks.stageOneInProgressTasksColumn, "stage one in progress");
+    creator.addTasksListsWithTitle(allTasks.stageOneDoneTasksColumn, "stage one done");
+    creator.addTasksListsWithTitle(allTasks.stageTwoTasksColumn, "stage two");
+    creator.addTasksListsWithTitle(allTasks.finishedTasksColumn, "finished");
+
+    String data = creator.convertDataToString();
+    return data;
   }
 
   @override

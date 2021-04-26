@@ -6,6 +6,7 @@ import 'package:kanbansim/kanban_sim_app.dart';
 
 class FilePickerWidget extends StatefulWidget {
   final Function(String) pathIsPicked;
+  final Function(String) contentIsPicked;
   String filePath;
   FilePicker filePicker;
   double width;
@@ -15,6 +16,7 @@ class FilePickerWidget extends StatefulWidget {
     @required this.width,
     @required this.filePath,
     @required this.pathIsPicked,
+    @required this.contentIsPicked,
   }) : super(key: key);
 
   @override
@@ -86,6 +88,7 @@ class FilePickerWidgetState extends State<FilePickerWidget> {
 
           this.widget.pathIsPicked(this.widget.filePath);
         },
+        returnPickedFileContent: (String fileContent) => this.widget.contentIsPicked(fileContent),
       );
     } else {
       this.widget.filePicker = SaveFilePickerDesktop(
