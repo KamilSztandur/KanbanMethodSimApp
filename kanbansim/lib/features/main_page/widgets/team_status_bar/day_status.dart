@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DayStatus extends StatelessWidget {
   final Function(int) dayHasChanged;
+  final Function getCurrentDay;
   final int MAX_DAY;
   final int MIN_DAY;
   int _daysPassed;
@@ -13,12 +14,17 @@ class DayStatus extends StatelessWidget {
     @required this.MAX_DAY,
     @required this.MIN_DAY,
     @required this.dayHasChanged,
+    @required this.getCurrentDay,
   }) : super(key: key);
+
+  void updateCurrentDay(int day) {
+    this._daysPassed = day;
+  }
 
   @override
   Widget build(BuildContext context) {
     if (_daysPassed == 0 || _daysPassed == null) {
-      this._daysPassed = 1;
+      this._daysPassed = this.getCurrentDay();
     }
 
     return Center(

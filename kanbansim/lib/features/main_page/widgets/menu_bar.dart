@@ -13,7 +13,7 @@ class MainMenuBar extends StatelessWidget {
   final VoidCallback clearAllTasks;
   final Function(String) loadSimStateFromFilePath;
   final Function(String) loadSimStateFromFileContent;
-  final VoidCallback saveSimStateIntoFile;
+  final Function getCurrentDay;
   final Function getAllUsers;
   final Function getAllTasks;
   
@@ -23,7 +23,7 @@ class MainMenuBar extends StatelessWidget {
     @required this.clearAllTasks,
     @required this.loadSimStateFromFilePath,
     @required this.loadSimStateFromFileContent,
-    @required this.saveSimStateIntoFile,
+    @required this.getCurrentDay,
     @required this.getAllTasks,
     @required this.getAllUsers,
   }) : super(key: key);
@@ -47,7 +47,7 @@ class MainMenuBar extends StatelessWidget {
           _ToolBar(
             addRandomTasks: this.addRandomTasks,
             clearAllTasks: this.clearAllTasks,
-            saveSimStateIntoFile: this.saveSimStateIntoFile,
+            getCurrentDay: this.getCurrentDay,
             loadSimStateFromFilePath: this.loadSimStateFromFilePath,
             loadSimStateFromFileContent: this.loadSimStateFromFileContent,
             getAllUsers: this.getAllUsers,
@@ -64,7 +64,7 @@ class _ToolBar extends StatelessWidget {
   final VoidCallback clearAllTasks;
   final Function(String) loadSimStateFromFilePath;
   final Function(String) loadSimStateFromFileContent;
-  final VoidCallback saveSimStateIntoFile;
+  final Function getCurrentDay;
   final Function getAllUsers;
   final Function getAllTasks;
 
@@ -78,7 +78,7 @@ class _ToolBar extends StatelessWidget {
     @required this.clearAllTasks,
     @required this.loadSimStateFromFilePath,
     @required this.loadSimStateFromFileContent,
-    @required this.saveSimStateIntoFile,
+    @required this.getCurrentDay,
     @required this.getAllTasks,
     @required this.getAllUsers,
   }) : super(key: key);
@@ -96,6 +96,7 @@ class _ToolBar extends StatelessWidget {
 
   void _initializeFileSaverPopup() {
     saveFilePopup = SaveFilePopup(
+      getCurrentDay: this.getCurrentDay,
       getAllTasks: this.getAllTasks,
       getAllUsers: this.getAllUsers, 
     );
