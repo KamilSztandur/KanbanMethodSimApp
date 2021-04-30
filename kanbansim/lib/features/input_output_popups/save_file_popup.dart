@@ -10,12 +10,15 @@ import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
+import 'package:kanbansim/models/Task.dart';
 
 class SaveFilePopup {
+  final Function getCurrentDay;
   final Function getAllUsers;
   final Function getAllTasks;
 
   SaveFilePopup({
+    @required this.getCurrentDay,
     @required this.getAllTasks,
     @required this.getAllUsers,
   });
@@ -24,6 +27,7 @@ class SaveFilePopup {
     return new AlertDialog(
       backgroundColor: Colors.transparent,
       content: _SaveFilePage(
+        getCurrentDay: this.getCurrentDay,
         getAllTasks: this.getAllTasks,
         getAllUsers: this.getAllUsers,
       ),
@@ -32,11 +36,13 @@ class SaveFilePopup {
 }
 
 class _SaveFilePage extends StatefulWidget {
+  final Function getCurrentDay;
   final Function getAllUsers;
   final Function getAllTasks;
 
   _SaveFilePage({
     Key key,
+    @required this.getCurrentDay,
     @required this.getAllTasks,
     @required this.getAllUsers,
   }) : super(key: key);
@@ -119,6 +125,10 @@ class _SaveFilePageState extends State<_SaveFilePage> {
     creator.addTasksListsWithTitle(allTasks.stageOneDoneTasksColumn, "stage one done");
     creator.addTasksListsWithTitle(allTasks.stageTwoTasksColumn, "stage two");
     creator.addTasksListsWithTitle(allTasks.finishedTasksColumn, "finished");
+
+    int currentSimDay = this.widget.getCurrentDay();
+    int latestTaskID = Task.dummy().getLatestTaskID();
+    creator.setSimStateData(currentSimDay, latestTaskID);
 
     String data = creator.convertDataToString();
     return data;

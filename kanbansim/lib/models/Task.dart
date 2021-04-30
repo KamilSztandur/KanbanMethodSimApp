@@ -4,7 +4,7 @@ import 'package:kanbansim/models/TaskType.dart';
 import 'package:kanbansim/models/User.dart';
 
 class Task {
-  static int _tasksNumber = 1;
+  static int _latestTaskID = 1;
   int _taskID;
   String _title;
   User owner;
@@ -14,9 +14,13 @@ class Task {
   TaskType _type;
   int _deadlineDay;
 
+  Task.dummy() {
+    // 
+  }
+
   Task(String title, int productivityRequired, User owner, TaskType type) {
-    this._taskID = _tasksNumber;
-    _tasksNumber++;
+    this._taskID = _latestTaskID;
+    _latestTaskID++;
 
     this._title = title;
     this.progress = _TaskProgress(
@@ -25,6 +29,15 @@ class Task {
     this.owner = owner;
     this._productivityRequiredToUnlock = 0;
     this._type = type;
+    blockTaskRandomly();
+  }
+
+  int getLatestTaskID() {
+    return _latestTaskID;
+  }
+
+  void setLatestTaskID(int latestTaskID) {
+    _latestTaskID = latestTaskID;
   }
 
   void loadAdditionalDataFromSavefile(int taskID, List<User> parts, int prod) {

@@ -1,3 +1,4 @@
+import 'package:kanbansim/common/savefile_parsers/simstate_parser.dart';
 import 'package:kanbansim/common/savefile_parsers/tasks_lists_list_parser.dart';
 import 'package:kanbansim/common/savefile_parsers/users_list_parser.dart';
 import 'package:kanbansim/models/Task.dart';
@@ -6,6 +7,7 @@ import 'package:kanbansim/models/User.dart';
 class SavefileCreator {
   List<User> _users;
   Map<String, List<Task>> _lists;
+  int _currentSimDay, _latestTaskID;
 
   SavefileCreator() {
     _users = <User>[];
@@ -24,6 +26,11 @@ class SavefileCreator {
     }
   }
 
+  void setSimStateData(int currentSimDay, int latestTaskID) {
+    this._currentSimDay = currentSimDay;
+    this._latestTaskID = latestTaskID;
+  }
+
   void clearUsersList() {
     this._users = <User>[];
   }
@@ -34,10 +41,19 @@ class SavefileCreator {
 
   String convertDataToString() {
     String data = "";
+    data = _writeSimState(data);
+    data = _writeBlankLine(data);
     data = _writeUsers(data);
     data = _writeBlankLine(data);
     data = _writeTasks(data);
 
+    return data;
+  }
+
+  String _writeSimState(String data) {
+    SimStateParser parser = SimStateParser();
+    data += parser.parseSimStateDataToString(
+        this._currentSimDay, this._latestTaskID);
     return data;
   }
 

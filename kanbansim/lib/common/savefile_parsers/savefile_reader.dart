@@ -1,3 +1,4 @@
+import 'package:kanbansim/common/savefile_parsers/simstate_parser.dart';
 import 'package:kanbansim/common/savefile_parsers/tasks_lists_list_parser.dart';
 import 'package:kanbansim/common/savefile_parsers/users_list_parser.dart';
 import 'package:kanbansim/models/Task.dart';
@@ -44,6 +45,16 @@ class SavefileReader {
   List<Task> readCustomListWithTitle(String data, String title) {
     TasksListsListParser taskListsParser = TasksListsListParser(() => _users);
     return taskListsParser.getTaskListFromDataString(data, title);
+  }
+
+  int getCurrentDayFromString(String data) {
+    SimStateParser simStateParser = SimStateParser();
+    return simStateParser.getCurrentDayFromString(data);
+  }
+
+  int getLatestTaskID(String data) {
+    SimStateParser simStateParser = SimStateParser();
+    return simStateParser.getLatestTaskID(data);
   }
 
   void _readAndUpdateUsers(String data) {
