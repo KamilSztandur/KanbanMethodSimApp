@@ -95,7 +95,6 @@ class MainPageState extends State<MainPage> {
           SavefileReader reader = SavefileReader();
 
           setState(() {
-            this.currentDay = reader.getCurrentDayFromString(data);
             this.users = reader.readUsers(data);
             this.allTasks.idleTasksColumn = reader.readIdleTasks(data);
             this.allTasks.stageOneInProgressTasksColumn =
@@ -105,21 +104,22 @@ class MainPageState extends State<MainPage> {
             this.allTasks.stageTwoTasksColumn = reader.readStageTwoTasks(data);
             this.allTasks.finishedTasksColumn = reader.readFinishedTasks(data);
             Task.dummy().setLatestTaskID(reader.getLatestTaskID(data));
+
+            this.currentDay = reader.getCurrentDayFromString(data);
+            this.dayStatus.updateCurrentDay(this.currentDay);
           });
         });
 
         SubtleMessage.messageWithContext(
             context, "Pomyślnie załadowano plik zapisu.}");
       },
-      getCurrentDay: () {
-        print(this.currentDay);
-        return this.currentDay;
-      },
+      getCurrentDay: () => this.currentDay,
       clearAllTasks: () {
         setState(() {
           _clearAllTasks();
           _restoreUsersProductivities();
           _clearAllLogs();
+          this.currentDay = 1;
         });
       },
       addRandomTasks: () {
@@ -131,8 +131,8 @@ class MainPageState extends State<MainPage> {
       getAllUsers: () => this.users,
       loadSimStateFromFileContent: (String data) {
         SavefileReader reader = SavefileReader();
+
         setState(() {
-          this.currentDay = reader.getCurrentDayFromString(data);
           this.users = reader.readUsers(data);
           this.allTasks.idleTasksColumn = reader.readIdleTasks(data);
           this.allTasks.stageOneInProgressTasksColumn =
@@ -142,6 +142,9 @@ class MainPageState extends State<MainPage> {
           this.allTasks.stageTwoTasksColumn = reader.readStageTwoTasks(data);
           this.allTasks.finishedTasksColumn = reader.readFinishedTasks(data);
           Task.dummy().setLatestTaskID(reader.getLatestTaskID(data));
+
+          this.currentDay = reader.getCurrentDayFromString(data);
+          this.dayStatus.updateCurrentDay(this.currentDay);
         });
       },
     );
@@ -208,7 +211,7 @@ class MainPageState extends State<MainPage> {
   }
 
   void _initializeStatusBar() {
-    if(this.currentDay == null) {
+    if (this.currentDay == null) {
       this.currentDay = 1;
     }
 
@@ -219,6 +222,7 @@ class MainPageState extends State<MainPage> {
         this.currentDay = daysPassed;
         print("Passed days: $daysPassed");
       },
+      getCurrentDay: () => this.currentDay,
     );
 
     locksStatus = LocksStatus(
