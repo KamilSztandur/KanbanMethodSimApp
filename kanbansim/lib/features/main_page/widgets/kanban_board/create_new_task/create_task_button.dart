@@ -3,11 +3,15 @@ import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_tas
 import 'package:kanbansim/models/Task.dart';
 
 class CreateTaskButton extends StatelessWidget {
+  final Function getCurrentDay;
+  final Function getMaxSimDay;
   final Function getUsers;
   final Function(Task) taskCreated;
 
   CreateTaskButton({
     Key key,
+    @required this.getMaxSimDay,
+    @required this.getCurrentDay,
     @required this.taskCreated,
     @required this.getUsers,
   }) : super(key: key);
@@ -31,6 +35,8 @@ class CreateTaskButton extends StatelessWidget {
             showDialog(
               context: context,
               builder: (BuildContext context) => TaskCreatorPopup(
+                getCurrentDay: this.getCurrentDay,
+                getMaxSimDay: this.getMaxSimDay,
                 getUsers: this.getUsers,
                 taskCreated: this.taskCreated,
               ).show(context),

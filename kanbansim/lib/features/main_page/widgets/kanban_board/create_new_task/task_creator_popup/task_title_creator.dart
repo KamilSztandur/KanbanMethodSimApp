@@ -69,6 +69,7 @@ class _TaskTitleCreatorState extends State<TaskTitleCreator> {
                   onPressed: () {
                     setState(() {
                       _generateNameAutomatically();
+                      this.widget.updateTitle(_controller.text);
                     });
                   },
                   child:

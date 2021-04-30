@@ -10,6 +10,8 @@ import 'package:kanbansim/models/User.dart';
 class KanbanBoard extends StatefulWidget {
   final Function(Task, User, int) productivityAssigned;
   final Function taskUnlocked;
+  final Function getMaxSimDay;
+  final Function getCurrentDay;
   final Function getUsers;
   final Function(Task) taskCreated;
   final AllTasksContainer allTasks;
@@ -22,6 +24,8 @@ class KanbanBoard extends StatefulWidget {
     @required this.deleteMe,
     @required this.productivityAssigned,
     @required this.taskUnlocked,
+    @required this.getMaxSimDay,
+    @required this.getCurrentDay,
     @required this.getUsers,
   }) : super(key: key);
 
@@ -71,6 +75,8 @@ class KanbanBoardState extends State<KanbanBoard> {
                 isInternal: false,
                 tasks: _parseTaskCardsList(widget.allTasks.idleTasksColumn),
                 additionalWidget: _NewTaskButton(
+                  getCurrentDay: this.widget.getCurrentDay,
+                  getMaxSimDay: this.widget.getMaxSimDay,
                   taskCreated: this.widget.taskCreated,
                   getUsers: this.widget.getUsers,
                 ),
@@ -154,11 +160,15 @@ class _Title extends StatelessWidget {
 }
 
 class _NewTaskButton extends StatelessWidget {
+  final Function getCurrentDay;
+  final Function getMaxSimDay;
   final Function getUsers;
   final Function(Task) taskCreated;
 
   _NewTaskButton({
     Key key,
+    @required this.getMaxSimDay,
+    @required this.getCurrentDay,
     @required this.taskCreated,
     @required this.getUsers,
   }) : super(key: key);
@@ -166,6 +176,8 @@ class _NewTaskButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CreateTaskButton(
+      getCurrentDay: this.getCurrentDay,
+      getMaxSimDay: this.getMaxSimDay,
       getUsers: this.getUsers,
       taskCreated: this.taskCreated,
     );
