@@ -145,37 +145,6 @@ void main() {
       );
 
       test(
-        'should throw ArgumentError when invalid owner ID\'s value in given Task data (negative integer)',
-        () {
-          String testTask = "\t\t[BEGIN_TASK]\n" +
-              "\t\t\t[TITLE] {Sample task}\n" +
-              "\t\t\t[TASKTYPE] TaskType.Standard\n" +
-              "\t\t\t[TASK_ID] 0\n" +
-              "\t\t\t[OWNER_ID] -1\n" +
-              "\t\t\t[PROD_REQ_TO_UNLOCK] 0\n" +
-              "\t\t\t[PROD_REQ_TO_COMPLETE] 5\n" +
-              "\t\t\t[DEADLINE] -1\n" +
-              "\t\t\t[BEGIN_TASKPROGRESS]\n" +
-              "\t\t\t\t[PART] 0\n" +
-              "\t\t\t\t[PART] 1\n" +
-              "\t\t\t\t[PART] 1\n" +
-              "\t\t\t\t[PART] -1\n" +
-              "\t\t\t\t[PART] -1\n" +
-              "\t\t\t[END_TASKPROGRESS]\n" +
-              "\t\t[END_TASK]\n";
-
-          expect(
-            () => _taskParser.parseStringToTask(testTask),
-            throwsA(predicate(
-              (e) =>
-                  e is ArgumentError &&
-                  e.message == "Owner ID must not be negative value.",
-            )),
-          );
-        },
-      );
-
-      test(
         'should throw ArgumentError when invalid prodReqToUnlock\'s value in given Task data (negative integer)',
         () {
           String testTask = "\t\t[BEGIN_TASK]\n" +
