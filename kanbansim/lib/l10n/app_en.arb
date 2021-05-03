@@ -130,5 +130,9 @@
     "doNotDelete": "Do not delete",
 
     "couldntMoveTaskTo": "Could not move task to",
-    "tasksLimitReached": "Tasks amount in this column reached"
+    "tasksLimitReached": "Tasks amount in this column reached",
+    
+    "selectOwner": "Select",
+    "selectTasksOwner": "SELECT TASK'S OWNER",
+    "successfullySetAsOwnerOf": "successfully set as owner of"
 }

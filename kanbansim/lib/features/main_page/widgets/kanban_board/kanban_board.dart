@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_task/create_task_button.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_column.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/set_owner_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -46,8 +47,8 @@ class KanbanBoardState extends State<KanbanBoard> {
               SizedBox(height: 15),
               KanbanColumn(
                 getAllTasks: this.widget.getAllTasks,
-                onTaskDropped: (int taskID) {
-                  this._switchTasks("available", taskID);
+                onTaskDropped: (Task task) {
+                  this._switchTasks("available", task.getID());
                 },
                 title: AppLocalizations.of(context).availableTasks,
                 isInternal: false,
@@ -71,6 +72,8 @@ class KanbanBoardState extends State<KanbanBoard> {
             inProgressTasks: widget.getAllTasks().stageOneInProgressTasksColumn,
             doneTasks: widget.getAllTasks().stageOneDoneTasksColumn,
             getAllTasks: this.widget.getAllTasks,
+            ownerSet: () => setState(() {}),
+            getUsers: this.widget.getUsers,
             switchTasks: this._switchTasks,
             parseTaskCardsList: (List<Task> tasks) {
               return this._parseTaskCardsList(tasks);
@@ -87,8 +90,17 @@ class KanbanBoardState extends State<KanbanBoard> {
             title: AppLocalizations.of(context).stageTwoTasks,
             isInternal: false,
             getAllTasks: this.widget.getAllTasks,
-            onTaskDropped: (int taskID) {
-              this._switchTasks("stage two", taskID);
+            onTaskDropped: (Task task) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => SetOwnerPopup(
+                  task: task,
+                  columnName: "stage two",
+                  moveTask: this._switchTasks,
+                  getAllUsers: this.widget.getUsers,
+                  ownerSet: () => setState(() {}),
+                ).show(),
+              );
             },
             tasksLimit: 3,
             tasks:
@@ -105,8 +117,8 @@ class KanbanBoardState extends State<KanbanBoard> {
             title: AppLocalizations.of(context).finishedTasks,
             isInternal: false,
             getAllTasks: this.widget.getAllTasks,
-            onTaskDropped: (int taskID) {
-              this._switchTasks("finished", taskID);
+            onTaskDropped: (Task task) {
+              this._switchTasks("finished", task.getID());
             },
             tasks:
                 _parseTaskCardsList(widget.getAllTasks().finishedTasksColumn),
@@ -233,15 +245,19 @@ class _NewTaskButton extends StatelessWidget {
 }
 
 class _StageOneTasksDoubleColumn extends StatelessWidget {
+  final VoidCallback ownerSet;
   final Function(String, int) switchTasks;
   final Function(List<Task>) parseTaskCardsList;
   final Function getAllTasks;
+  final Function getUsers;
   final List<Task> inProgressTasks;
   final List<Task> doneTasks;
 
   _StageOneTasksDoubleColumn({
     Key key,
     @required this.getAllTasks,
+    @required this.getUsers,
+    @required this.ownerSet,
     @required this.switchTasks,
     @required this.parseTaskCardsList,
     @required this.inProgressTasks,
@@ -323,8 +339,17 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                         title: AppLocalizations.of(context).inProgressTasks,
                         isInternal: true,
                         getAllTasks: this.getAllTasks,
-                        onTaskDropped: (int taskID) {
-                          this.switchTasks("stage one in progress", taskID);
+                        onTaskDropped: (Task task) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => SetOwnerPopup(
+                              task: task,
+                              columnName: "stage one in progress",
+                              getAllUsers: this.getUsers,
+                              ownerSet: this.ownerSet,
+                              moveTask: this.switchTasks,
+                            ).show(),
+                          );
                         },
                         tasksLimit: 3,
                         tasks: this.parseTaskCardsList(this.inProgressTasks),
@@ -336,8 +361,8 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                         title: AppLocalizations.of(context).doneTasks,
                         isInternal: true,
                         getAllTasks: this.getAllTasks,
-                        onTaskDropped: (int taskID) {
-                          this.switchTasks("stage one done", taskID);
+                        onTaskDropped: (Task task) {
+                          this.switchTasks("stage one done", task.getID());
                         },
                         tasks: this.parseTaskCardsList(this.doneTasks),
                       ),

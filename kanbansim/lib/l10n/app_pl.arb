@@ -131,5 +131,9 @@
 
 
     "couldntMoveTaskTo": "Nie powiodło się przesuwanie zadania do",
-    "tasksLimitReached": "Osiągnięto limit ilości zadań w kolumnie"
+    "tasksLimitReached": "Osiągnięto limit ilości zadań w kolumnie",
+
+    "selectOwner": "Wyznacz",
+    "selectTasksOwner": "WYZNACZ WŁAŚCICIELA ZADANIA",
+    "successfullySetAsOwnerOf": "został pomyślnie wyznaczony jako właściciel zadania"
 }
