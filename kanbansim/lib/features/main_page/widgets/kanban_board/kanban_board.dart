@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_task/create_task_button.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_column.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/set_owner_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
-import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/models/User.dart';
@@ -12,12 +12,12 @@ class KanbanBoard extends StatefulWidget {
   final Function taskUnlocked;
   final Function getUsers;
   final Function(Task) taskCreated;
-  final AllTasksContainer allTasks;
+  final Function getAllTasks;
   final Function(Task) deleteMe;
 
   KanbanBoard({
     Key key,
-    @required this.allTasks,
+    @required this.getAllTasks,
     @required this.taskCreated,
     @required this.deleteMe,
     @required this.productivityAssigned,
@@ -30,6 +30,108 @@ class KanbanBoard extends StatefulWidget {
 }
 
 class KanbanBoardState extends State<KanbanBoard> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 20,
+          child: Column(
+            children: [
+              SizedBox(height: 15),
+              KanbanColumn(
+                getAllTasks: this.widget.getAllTasks,
+                onTaskDropped: (Task task) {
+                  this._switchTasks("available", task.getID());
+                },
+                title: AppLocalizations.of(context).availableTasks,
+                isInternal: false,
+                tasks:
+                    _parseTaskCardsList(widget.getAllTasks().idleTasksColumn),
+                additionalWidget: _NewTaskButton(
+                  taskCreated: this.widget.taskCreated,
+                  getUsers: this.widget.getUsers,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 40,
+          child: _StageOneTasksDoubleColumn(
+            inProgressTasks: widget.getAllTasks().stageOneInProgressTasksColumn,
+            doneTasks: widget.getAllTasks().stageOneDoneTasksColumn,
+            getAllTasks: this.widget.getAllTasks,
+            ownerSet: () => setState(() {}),
+            getUsers: this.widget.getUsers,
+            switchTasks: this._switchTasks,
+            parseTaskCardsList: (List<Task> tasks) {
+              return this._parseTaskCardsList(tasks);
+            },
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 20,
+          child: KanbanColumn(
+            title: AppLocalizations.of(context).stageTwoTasks,
+            isInternal: false,
+            getAllTasks: this.widget.getAllTasks,
+            onTaskDropped: (Task task) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => SetOwnerPopup(
+                  task: task,
+                  columnName: "stage two",
+                  moveTask: this._switchTasks,
+                  getAllUsers: this.widget.getUsers,
+                  ownerSet: () => setState(() {}),
+                ).show(),
+              );
+            },
+            tasksLimit: 3,
+            tasks:
+                _parseTaskCardsList(widget.getAllTasks().stageTwoTasksColumn),
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+        Flexible(
+          flex: 20,
+          child: KanbanColumn(
+            title: AppLocalizations.of(context).finishedTasks,
+            isInternal: false,
+            getAllTasks: this.widget.getAllTasks,
+            onTaskDropped: (Task task) {
+              this._switchTasks("finished", task.getID());
+            },
+            tasks:
+                _parseTaskCardsList(widget.getAllTasks().finishedTasksColumn),
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(),
+        ),
+      ],
+    );
+  }
+
   List<TaskCard> _parseTaskCardsList(List<Task> tasksList) {
     List<TaskCard> taskCardsList = <TaskCard>[];
 
@@ -51,77 +153,47 @@ class KanbanBoardState extends State<KanbanBoard> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Flexible(
-          flex: 1,
-          child: SizedBox(),
-        ),
-        Flexible(
-          flex: 20,
-          child: Column(
-            children: [
-              SizedBox(height: 15),
-              KanbanColumn(
-                title: AppLocalizations.of(context).availableTasks,
-                isInternal: false,
-                tasks: _parseTaskCardsList(widget.allTasks.idleTasksColumn),
-                additionalWidget: _NewTaskButton(
-                  taskCreated: this.widget.taskCreated,
-                  getUsers: this.widget.getUsers,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Flexible(
-          flex: 1,
-          child: SizedBox(),
-        ),
-        Flexible(
-          flex: 40,
-          child: _StageOneTasksDoubleColumn(
-            inProgressTasks: widget.allTasks.stageOneInProgressTasksColumn,
-            doneTasks: widget.allTasks.stageOneDoneTasksColumn,
-            parseTaskCardsList: (List<Task> tasks) {
-              return this._parseTaskCardsList(tasks);
-            },
-          ),
-        ),
-        Flexible(
-          flex: 1,
-          child: SizedBox(),
-        ),
-        Flexible(
-          flex: 20,
-          child: KanbanColumn(
-            title: AppLocalizations.of(context).stageTwoTasks,
-            isInternal: false,
-            tasks: _parseTaskCardsList(widget.allTasks.stageTwoTasksColumn),
-          ),
-        ),
-        Flexible(
-          flex: 1,
-          child: SizedBox(),
-        ),
-        Flexible(
-          flex: 20,
-          child: KanbanColumn(
-            title: AppLocalizations.of(context).finishedTasks,
-            isInternal: false,
-            tasks: _parseTaskCardsList(widget.allTasks.finishedTasksColumn),
-          ),
-        ),
-        Flexible(
-          flex: 1,
-          child: SizedBox(),
-        ),
-      ],
-    );
+  void _switchTasks(String addToListName, int taskID) {
+    List<String> columns = [
+      "available",
+      "stage one in progress",
+      "stage one done",
+      "stage two",
+      "finished",
+    ];
+
+    int n = columns.length;
+    for (int i = 0; i < n; i++) {
+      int index = _getTaskListByName(columns[i]).indexWhere(
+        (Task task) => task.getID() == taskID,
+      );
+
+      if (index != -1) {
+        setState(() {
+          Task temp = _getTaskListByName(columns[i]).removeAt(index);
+          _getTaskListByName(addToListName).add(temp);
+        });
+
+        break;
+      }
+    }
+  }
+
+  List<Task> _getTaskListByName(String name) {
+    switch (name) {
+      case "available":
+        return this.widget.getAllTasks().idleTasksColumn;
+      case "stage one in progress":
+        return this.widget.getAllTasks().stageOneInProgressTasksColumn;
+      case "stage one done":
+        return this.widget.getAllTasks().stageOneDoneTasksColumn;
+      case "stage two":
+        return this.widget.getAllTasks().stageTwoTasksColumn;
+      case "finished":
+        return this.widget.getAllTasks().finishedTasksColumn;
+      default:
+        throw ArgumentError("Invalid tasks list name.");
+    }
   }
 }
 
@@ -173,12 +245,20 @@ class _NewTaskButton extends StatelessWidget {
 }
 
 class _StageOneTasksDoubleColumn extends StatelessWidget {
+  final VoidCallback ownerSet;
+  final Function(String, int) switchTasks;
   final Function(List<Task>) parseTaskCardsList;
+  final Function getAllTasks;
+  final Function getUsers;
   final List<Task> inProgressTasks;
   final List<Task> doneTasks;
 
   _StageOneTasksDoubleColumn({
     Key key,
+    @required this.getAllTasks,
+    @required this.getUsers,
+    @required this.ownerSet,
+    @required this.switchTasks,
     @required this.parseTaskCardsList,
     @required this.inProgressTasks,
     @required this.doneTasks,
@@ -258,6 +338,20 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                       child: KanbanColumn(
                         title: AppLocalizations.of(context).inProgressTasks,
                         isInternal: true,
+                        getAllTasks: this.getAllTasks,
+                        onTaskDropped: (Task task) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => SetOwnerPopup(
+                              task: task,
+                              columnName: "stage one in progress",
+                              getAllUsers: this.getUsers,
+                              ownerSet: this.ownerSet,
+                              moveTask: this.switchTasks,
+                            ).show(),
+                          );
+                        },
+                        tasksLimit: 3,
                         tasks: this.parseTaskCardsList(this.inProgressTasks),
                       ),
                     ),
@@ -266,6 +360,10 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                       child: KanbanColumn(
                         title: AppLocalizations.of(context).doneTasks,
                         isInternal: true,
+                        getAllTasks: this.getAllTasks,
+                        onTaskDropped: (Task task) {
+                          this.switchTasks("stage one done", task.getID());
+                        },
                         tasks: this.parseTaskCardsList(this.doneTasks),
                       ),
                     ),
