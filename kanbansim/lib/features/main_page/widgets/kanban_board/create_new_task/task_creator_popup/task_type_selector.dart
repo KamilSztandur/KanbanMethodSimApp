@@ -48,7 +48,6 @@ class TaskTypeSelectorState extends State<TaskTypeSelector> {
               color: Theme.of(context).primaryColor,
             ),
             onChanged: (String newValue) {
-              print(newValue);
               setState(() {
                 _selectedType = newValue;
                 this.widget.updateSelectedType(

@@ -20,7 +20,14 @@ class TaskParser {
     TaskType type = task.getTaskType();
 
     int id = task.getID();
-    int ownerID = task.owner.getID();
+    
+    int ownerID;
+    if(task.owner == null) {
+       ownerID = -1;
+    } else {
+       ownerID = task.owner.getID();
+    }
+    
     int prodReqToUnlock = task.getProductivityRequiredToUnlock();
     int prodReqToComplete = task.progress.getNumberOfAllParts();
     int deadline = task.getDeadlineDay();
@@ -52,9 +59,6 @@ class TaskParser {
     }
 
     int ownerID = _reader.getOwnerID(data);
-    if (ownerID < 0) {
-      throw ArgumentError("Owner ID must not be negative value.");
-    }
 
     int prodReqToUnlock = _reader.getProdReqToUnlock(data);
     if (prodReqToUnlock < 0) {
@@ -79,16 +83,20 @@ class TaskParser {
   }
 
   User _getOwner(int ownerID) {
-    List<User> users = _getAllUsers();
+    if (ownerID == -1) {
+      return null;
+    } else {
+      List<User> users = _getAllUsers();
 
-    int n = users.length;
-    for (int i = 0; i < n; i++) {
-      if (ownerID == users[i].getID()) {
-        return users[i];
+      int n = users.length;
+      for (int i = 0; i < n; i++) {
+        if (ownerID == users[i].getID()) {
+          return users[i];
+        }
       }
-    }
 
-    return null;
+      return null;
+    }
   }
 }
 

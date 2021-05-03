@@ -39,6 +39,9 @@ class MainPageState extends State<MainPage> {
   AllTasksContainer allTasks;
   List<String> messages;
   List<User> users;
+
+  final int MIN_DAY = 1;
+  final int MAX_DAY = 25;
   int currentDay;
 
   void _restoreUsersProductivities() {
@@ -160,6 +163,8 @@ class MainPageState extends State<MainPage> {
 
   void _initializeKanbanBoard() {
     kanbanBoard = KanbanBoard(
+      getCurrentDay: () => this.currentDay,
+      getMaxSimDay: () => this.MAX_DAY,
       getAllTasks: () => this.allTasks,
       taskCreated: (Task task) {
         setState(() {
@@ -216,8 +221,8 @@ class MainPageState extends State<MainPage> {
     }
 
     dayStatus = DayStatus(
-      MIN_DAY: 1,
-      MAX_DAY: 15,
+      MIN_DAY: this.MIN_DAY,
+      MAX_DAY: this.MAX_DAY,
       dayHasChanged: (int daysPassed) {
         this.currentDay = daysPassed;
         print("Passed days: $daysPassed");

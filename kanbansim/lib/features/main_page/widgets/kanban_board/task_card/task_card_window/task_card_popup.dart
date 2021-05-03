@@ -256,17 +256,19 @@ class _UserIcon extends StatelessWidget {
           child: SizedBox(
             height: 90,
             width: 90,
-            child: Tooltip(
-              message:
-                  "${owner.getName()} ${AppLocalizations.of(context).isOwnerOfThisTask}",
-              child: Center(
-                child: Icon(
-                  Icons.account_circle_outlined,
-                  color: owner.getColor(),
-                  size: 70,
-                ),
-              ),
-            ),
+            child: owner == null
+                ? Container()
+                : Tooltip(
+                    message:
+                        "${owner.getName()} ${AppLocalizations.of(context).isOwnerOfThisTask}",
+                    child: Center(
+                      child: Icon(
+                        Icons.account_circle_outlined,
+                        color: owner.getColor(),
+                        size: 70,
+                      ),
+                    ),
+                  ),
           ),
         ),
       ),
@@ -302,44 +304,47 @@ class _AssignProductivityButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: new BoxDecoration(
-        shape: BoxShape.circle,
-      ),
-      child: ClipOval(
-        child: Material(
-          color: task.isLocked() ? Colors.grey : Colors.blue,
-          child: InkWell(
-            hoverColor: task.isLocked() ? Colors.grey : Colors.purple,
-            child: SizedBox(
-              height: 90,
-              width: 90,
-              child: Tooltip(
-                message: task.isLocked()
-                    ? AppLocalizations.of(context).unlockThisTaskFirst
-                    : AppLocalizations.of(context).assignProductivity,
-                child: Icon(
-                  Icons.assignment_ind_outlined,
-                  color: Colors.white,
-                  size: 65,
+    return task.owner == null
+        ? Container(width: 90)
+        : Container(
+            decoration: new BoxDecoration(
+              shape: BoxShape.circle,
+            ),
+            child: ClipOval(
+              child: Material(
+                color: task.isLocked() ? Colors.grey : Colors.blue,
+                child: InkWell(
+                  hoverColor: task.isLocked() ? Colors.grey : Colors.purple,
+                  child: SizedBox(
+                    height: 90,
+                    width: 90,
+                    child: Tooltip(
+                      message: task.isLocked()
+                          ? AppLocalizations.of(context).unlockThisTaskFirst
+                          : AppLocalizations.of(context).assignProductivity,
+                      child: Icon(
+                        Icons.assignment_ind_outlined,
+                        color: Colors.white,
+                        size: 65,
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    if (!task.isLocked()) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            AssignProductivityPopup(
+                          getUsers: this.getUsers,
+                          productivityAssigned: this.productivityAssigned,
+                        ).show(context, task),
+                      );
+                    }
+                  },
                 ),
               ),
             ),
-            onTap: () {
-              if (!task.isLocked()) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => AssignProductivityPopup(
-                    getUsers: this.getUsers,
-                    productivityAssigned: this.productivityAssigned,
-                  ).show(context, task),
-                );
-              }
-            },
-          ),
-        ),
-      ),
-    );
+          );
   }
 }
 

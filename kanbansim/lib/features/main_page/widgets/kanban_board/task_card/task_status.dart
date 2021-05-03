@@ -116,11 +116,13 @@ class _UserIcon extends StatelessWidget {
             height: 20,
             width: 20,
             child: Center(
-              child: Icon(
-                Icons.account_circle_outlined,
-                color: owner.getColor(),
-                size: 15,
-              ),
+              child: owner == null
+                  ? Container()
+                  : Icon(
+                      Icons.account_circle_outlined,
+                      color: owner.getColor(),
+                      size: 15,
+                    ),
             ),
           ),
         ),
