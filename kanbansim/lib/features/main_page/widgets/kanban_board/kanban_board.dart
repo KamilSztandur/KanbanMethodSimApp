@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_task/create_task_button.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_column.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
-import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/models/User.dart';
@@ -30,99 +29,6 @@ class KanbanBoard extends StatefulWidget {
 }
 
 class KanbanBoardState extends State<KanbanBoard> {
-  List<TaskCard> _parseTaskCardsList(List<Task> tasksList) {
-    List<TaskCard> taskCardsList = <TaskCard>[];
-
-    int length = tasksList.length;
-    for (int i = 0; i < length; i++) {
-      taskCardsList.add(_parseTaskCard(tasksList[i]));
-    }
-
-    return taskCardsList;
-  }
-
-  TaskCard _parseTaskCard(Task task) {
-    return TaskCard(
-      task: task,
-      deleteMe: this.widget.deleteMe,
-      getUsers: this.widget.getUsers,
-      taskUnlocked: this.widget.taskUnlocked,
-      productivityAssigned: this.widget.productivityAssigned,
-    );
-  }
-
-  List<Task> _getTaskListByName(String name) {
-    switch (name) {
-      case "available":
-        return this.widget.getAllTasks().idleTasksColumn;
-      case "stage one in progress":
-        return this.widget.getAllTasks().stageOneInProgressTasksColumn;
-      case "stage one done":
-        return this.widget.getAllTasks().stageOneDoneTasksColumn;
-      case "stage two":
-        return this.widget.getAllTasks().stageTwoTasksColumn;
-      case "finished":
-        return this.widget.getAllTasks().finishedTasksColumn;
-      default:
-        throw ArgumentError("Invalid tasks list name.");
-    }
-  }
-
-  void _switchTasks(String addToListName, int taskID) {
-    print("Przekładam $taskID do kolumny $addToListName...");
-    if (_containsTaskWithID("available", taskID)) {
-      print("Znalazłem go w available.");
-      _switchTask("available", addToListName, taskID);
-    } else if (_containsTaskWithID("stage one in progress", taskID)) {
-      print("Znalazłem go w stage one in progress.");
-      _switchTask("stage one in progress", addToListName, taskID);
-    } else if (_containsTaskWithID("stage one done", taskID)) {
-      print("Znalazłem go w stage one done.");
-      _switchTask("stage one done", addToListName, taskID);
-    } else if (_containsTaskWithID("stage two", taskID)) {
-      print("Znalazłem go w stage two.");
-      _switchTask("stage two", addToListName, taskID);
-    } else if (_containsTaskWithID("finished", taskID)) {
-      print("Znalazłem go w finished.");
-      _switchTask("finished", addToListName, taskID);
-    }
-  }
-
-  void _switchTask(String rmFromListName, String addToListName, int taskID) {
-    print("Przekładam $taskID z $rmFromListName do $addToListName.");
-    List<Task> rmFromList = _getTaskListByName(rmFromListName);
-    List<Task> addToList = _getTaskListByName(addToListName);
-
-    int n = rmFromList.length;
-    for (int i = 0; i < n; i++) {
-      if (rmFromList[i].getID() == taskID) {
-        print("Znalazłem $taskID na pozycji $i.");
-
-        setState(() {
-          addToList.add(rmFromList[i]);
-          rmFromList.remove(rmFromList[i]);
-        });
-
-        break;
-      }
-    }
-    print("Skończyłem.");
-  }
-
-  bool _containsTaskWithID(String listName, int taskID) {
-    List<Task> tasksList = _getTaskListByName(listName);
-
-    int n = tasksList.length;
-    for (int i = 0; i < n; i++) {
-      if (tasksList[i].getID() == taskID) {
-        print("Znalazłem $taskID na pozycji $i w $listName.");
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -211,6 +117,70 @@ class KanbanBoardState extends State<KanbanBoard> {
         ),
       ],
     );
+  }
+
+  List<TaskCard> _parseTaskCardsList(List<Task> tasksList) {
+    List<TaskCard> taskCardsList = <TaskCard>[];
+
+    int length = tasksList.length;
+    for (int i = 0; i < length; i++) {
+      taskCardsList.add(_parseTaskCard(tasksList[i]));
+    }
+
+    return taskCardsList;
+  }
+
+  TaskCard _parseTaskCard(Task task) {
+    return TaskCard(
+      task: task,
+      deleteMe: this.widget.deleteMe,
+      getUsers: this.widget.getUsers,
+      taskUnlocked: this.widget.taskUnlocked,
+      productivityAssigned: this.widget.productivityAssigned,
+    );
+  }
+
+  void _switchTasks(String addToListName, int taskID) {
+    List<String> columns = [
+      "available",
+      "stage one in progress",
+      "stage one done",
+      "stage two",
+      "finished",
+    ];
+
+    int n = columns.length;
+    for (int i = 0; i < n; i++) {
+      int index = _getTaskListByName(columns[i]).indexWhere(
+        (Task task) => task.getID() == taskID,
+      );
+
+      if (index != -1) {
+        setState(() {
+          Task temp = _getTaskListByName(columns[i]).removeAt(index);
+          _getTaskListByName(addToListName).add(temp);
+        });
+
+        break;
+      }
+    }
+  }
+
+  List<Task> _getTaskListByName(String name) {
+    switch (name) {
+      case "available":
+        return this.widget.getAllTasks().idleTasksColumn;
+      case "stage one in progress":
+        return this.widget.getAllTasks().stageOneInProgressTasksColumn;
+      case "stage one done":
+        return this.widget.getAllTasks().stageOneDoneTasksColumn;
+      case "stage two":
+        return this.widget.getAllTasks().stageTwoTasksColumn;
+      case "finished":
+        return this.widget.getAllTasks().finishedTasksColumn;
+      default:
+        throw ArgumentError("Invalid tasks list name.");
+    }
   }
 }
 

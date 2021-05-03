@@ -70,7 +70,6 @@ class KanbanColumnState extends State<KanbanColumn> {
                   );
                 },
                 onAccept: (item) {
-                  print("Przyjąłem $item");
                   if (this.widget.onTaskDropped != null) {
                     this.widget.onTaskDropped(item);
                   }
