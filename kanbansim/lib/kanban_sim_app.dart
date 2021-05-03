@@ -57,7 +57,6 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
                         });
                       },
                       loadedExisting: (String path) {
-                        print(path);
                         setState(() {
                           this._justLaunched = false;
                         });
