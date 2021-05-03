@@ -30,7 +30,7 @@ class _TasksLimitWarningWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 187,
-      width: 400,
+      width: 375,
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.light
             ? Theme.of(context).accentColor
