@@ -52,6 +52,7 @@ class KanbanBoardState extends State<KanbanBoard> {
               KanbanColumn(
                 getAllTasks: this.widget.getAllTasks,
                 onTaskDropped: (Task task) {
+                  task.owner = null;
                   this._switchTasks("available", task.getID());
                 },
                 title: AppLocalizations.of(context).availableTasks,
@@ -124,6 +125,7 @@ class KanbanBoardState extends State<KanbanBoard> {
             isInternal: false,
             getAllTasks: this.widget.getAllTasks,
             onTaskDropped: (Task task) {
+              task.owner = null;
               this._switchTasks("finished", task.getID());
             },
             tasks:
@@ -374,6 +376,7 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                         isInternal: true,
                         getAllTasks: this.getAllTasks,
                         onTaskDropped: (Task task) {
+                          task.owner = null;
                           this.switchTasks("stage one done", task.getID());
                         },
                         tasks: this.parseTaskCardsList(this.doneTasks),
