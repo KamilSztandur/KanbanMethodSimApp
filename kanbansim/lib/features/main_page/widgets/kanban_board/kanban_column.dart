@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
 
 class KanbanColumn extends StatefulWidget {
+  final Function getAllTasks;
+  final Function(int) onTaskDropped;
   final List<TaskCard> tasks;
   final String title;
   final bool isInternal;
@@ -9,9 +11,11 @@ class KanbanColumn extends StatefulWidget {
 
   KanbanColumn({
     Key key,
+    @required this.getAllTasks,
     @required this.tasks,
     @required this.title,
     @required this.isInternal,
+    this.onTaskDropped,
     this.additionalWidget,
   }) : super(key: key);
 
@@ -58,9 +62,19 @@ class KanbanColumnState extends State<KanbanColumn> {
                   ),
                 ],
               ),
-              child: _TaskColumn(
-                tasks: widget.tasks,
-                additionalWidget: widget.additionalWidget,
+              child: DragTarget<int>(
+                builder: (context, candidateItems, rejectedItems) {
+                  return _TaskColumn(
+                    tasks: widget.tasks,
+                    additionalWidget: widget.additionalWidget,
+                  );
+                },
+                onAccept: (item) {
+                  print("Przyjąłem $item");
+                  if (this.widget.onTaskDropped != null) {
+                    this.widget.onTaskDropped(item);
+                  }
+                },
               ),
             ),
           ),
@@ -197,9 +211,19 @@ class _TaskColumn extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              this.tasks[i],
+              Draggable<int>(
+                data: this.tasks[i].getID(),
+                dragAnchor: DragAnchor.pointer,
+                feedback: this.tasks[i],
+                child: this.tasks[i],
+              ),
               SizedBox(width: 15),
-              this.tasks[++i],
+              Draggable<int>(
+                data: this.tasks[++i].getID(),
+                dragAnchor: DragAnchor.pointer,
+                feedback: this.tasks[i],
+                child: this.tasks[i],
+              ),
             ],
           ),
         );
@@ -213,14 +237,31 @@ class _TaskColumn extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                this.tasks[i],
+                Draggable<int>(
+                  data: this.tasks[i].getID(),
+                  dragAnchor: DragAnchor.pointer,
+                  feedback: this.tasks[i],
+                  child: this.tasks[i],
+                ),
                 SizedBox(width: 15),
-                this.tasks[++i],
+                Draggable<int>(
+                  data: this.tasks[++i].getID(),
+                  dragAnchor: DragAnchor.pointer,
+                  feedback: this.tasks[i],
+                  child: this.tasks[i],
+                ),
               ],
             ),
           );
         } else {
-          column.add(this.tasks[i]);
+          column.add(
+            Draggable<int>(
+              data: this.tasks[i].getID(),
+              dragAnchor: DragAnchor.pointer,
+              feedback: this.tasks[i],
+              child: this.tasks[i],
+            ),
+          );
         }
         column.add(SizedBox(height: 15));
       }

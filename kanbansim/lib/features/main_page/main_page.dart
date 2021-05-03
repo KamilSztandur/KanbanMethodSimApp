@@ -160,7 +160,7 @@ class MainPageState extends State<MainPage> {
 
   void _initializeKanbanBoard() {
     kanbanBoard = KanbanBoard(
-      allTasks: this.allTasks,
+      getAllTasks: () => this.allTasks,
       taskCreated: (Task task) {
         setState(() {
           this.allTasks.idleTasksColumn.add(task);

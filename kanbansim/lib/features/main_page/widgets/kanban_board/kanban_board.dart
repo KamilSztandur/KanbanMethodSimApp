@@ -12,12 +12,12 @@ class KanbanBoard extends StatefulWidget {
   final Function taskUnlocked;
   final Function getUsers;
   final Function(Task) taskCreated;
-  final AllTasksContainer allTasks;
+  final Function getAllTasks;
   final Function(Task) deleteMe;
 
   KanbanBoard({
     Key key,
-    @required this.allTasks,
+    @required this.getAllTasks,
     @required this.taskCreated,
     @required this.deleteMe,
     @required this.productivityAssigned,
@@ -51,6 +51,78 @@ class KanbanBoardState extends State<KanbanBoard> {
     );
   }
 
+  List<Task> _getTaskListByName(String name) {
+    switch (name) {
+      case "available":
+        return this.widget.getAllTasks().idleTasksColumn;
+      case "stage one in progress":
+        return this.widget.getAllTasks().stageOneInProgressTasksColumn;
+      case "stage one done":
+        return this.widget.getAllTasks().stageOneDoneTasksColumn;
+      case "stage two":
+        return this.widget.getAllTasks().stageTwoTasksColumn;
+      case "finished":
+        return this.widget.getAllTasks().finishedTasksColumn;
+      default:
+        throw ArgumentError("Invalid tasks list name.");
+    }
+  }
+
+  void _switchTasks(String addToListName, int taskID) {
+    print("Przekładam $taskID do kolumny $addToListName...");
+    if (_containsTaskWithID("available", taskID)) {
+      print("Znalazłem go w available.");
+      _switchTask("available", addToListName, taskID);
+    } else if (_containsTaskWithID("stage one in progress", taskID)) {
+      print("Znalazłem go w stage one in progress.");
+      _switchTask("stage one in progress", addToListName, taskID);
+    } else if (_containsTaskWithID("stage one done", taskID)) {
+      print("Znalazłem go w stage one done.");
+      _switchTask("stage one done", addToListName, taskID);
+    } else if (_containsTaskWithID("stage two", taskID)) {
+      print("Znalazłem go w stage two.");
+      _switchTask("stage two", addToListName, taskID);
+    } else if (_containsTaskWithID("finished", taskID)) {
+      print("Znalazłem go w finished.");
+      _switchTask("finished", addToListName, taskID);
+    }
+  }
+
+  void _switchTask(String rmFromListName, String addToListName, int taskID) {
+    print("Przekładam $taskID z $rmFromListName do $addToListName.");
+    List<Task> rmFromList = _getTaskListByName(rmFromListName);
+    List<Task> addToList = _getTaskListByName(addToListName);
+
+    int n = rmFromList.length;
+    for (int i = 0; i < n; i++) {
+      if (rmFromList[i].getID() == taskID) {
+        print("Znalazłem $taskID na pozycji $i.");
+
+        setState(() {
+          addToList.add(rmFromList[i]);
+          rmFromList.remove(rmFromList[i]);
+        });
+
+        break;
+      }
+    }
+    print("Skończyłem.");
+  }
+
+  bool _containsTaskWithID(String listName, int taskID) {
+    List<Task> tasksList = _getTaskListByName(listName);
+
+    int n = tasksList.length;
+    for (int i = 0; i < n; i++) {
+      if (tasksList[i].getID() == taskID) {
+        print("Znalazłem $taskID na pozycji $i w $listName.");
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -67,9 +139,14 @@ class KanbanBoardState extends State<KanbanBoard> {
             children: [
               SizedBox(height: 15),
               KanbanColumn(
+                getAllTasks: this.widget.getAllTasks,
+                onTaskDropped: (int taskID) {
+                  this._switchTasks("available", taskID);
+                },
                 title: AppLocalizations.of(context).availableTasks,
                 isInternal: false,
-                tasks: _parseTaskCardsList(widget.allTasks.idleTasksColumn),
+                tasks:
+                    _parseTaskCardsList(widget.getAllTasks().idleTasksColumn),
                 additionalWidget: _NewTaskButton(
                   taskCreated: this.widget.taskCreated,
                   getUsers: this.widget.getUsers,
@@ -85,8 +162,10 @@ class KanbanBoardState extends State<KanbanBoard> {
         Flexible(
           flex: 40,
           child: _StageOneTasksDoubleColumn(
-            inProgressTasks: widget.allTasks.stageOneInProgressTasksColumn,
-            doneTasks: widget.allTasks.stageOneDoneTasksColumn,
+            inProgressTasks: widget.getAllTasks().stageOneInProgressTasksColumn,
+            doneTasks: widget.getAllTasks().stageOneDoneTasksColumn,
+            getAllTasks: this.widget.getAllTasks,
+            switchTasks: this._switchTasks,
             parseTaskCardsList: (List<Task> tasks) {
               return this._parseTaskCardsList(tasks);
             },
@@ -101,7 +180,12 @@ class KanbanBoardState extends State<KanbanBoard> {
           child: KanbanColumn(
             title: AppLocalizations.of(context).stageTwoTasks,
             isInternal: false,
-            tasks: _parseTaskCardsList(widget.allTasks.stageTwoTasksColumn),
+            getAllTasks: this.widget.getAllTasks,
+            onTaskDropped: (int taskID) {
+              this._switchTasks("stage two", taskID);
+            },
+            tasks:
+                _parseTaskCardsList(widget.getAllTasks().stageTwoTasksColumn),
           ),
         ),
         Flexible(
@@ -113,7 +197,12 @@ class KanbanBoardState extends State<KanbanBoard> {
           child: KanbanColumn(
             title: AppLocalizations.of(context).finishedTasks,
             isInternal: false,
-            tasks: _parseTaskCardsList(widget.allTasks.finishedTasksColumn),
+            getAllTasks: this.widget.getAllTasks,
+            onTaskDropped: (int taskID) {
+              this._switchTasks("finished", taskID);
+            },
+            tasks:
+                _parseTaskCardsList(widget.getAllTasks().finishedTasksColumn),
           ),
         ),
         Flexible(
@@ -173,12 +262,16 @@ class _NewTaskButton extends StatelessWidget {
 }
 
 class _StageOneTasksDoubleColumn extends StatelessWidget {
+  final Function(String, int) switchTasks;
   final Function(List<Task>) parseTaskCardsList;
+  final Function getAllTasks;
   final List<Task> inProgressTasks;
   final List<Task> doneTasks;
 
   _StageOneTasksDoubleColumn({
     Key key,
+    @required this.getAllTasks,
+    @required this.switchTasks,
     @required this.parseTaskCardsList,
     @required this.inProgressTasks,
     @required this.doneTasks,
@@ -258,6 +351,10 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                       child: KanbanColumn(
                         title: AppLocalizations.of(context).inProgressTasks,
                         isInternal: true,
+                        getAllTasks: this.getAllTasks,
+                        onTaskDropped: (int taskID) {
+                          this.switchTasks("stage one in progress", taskID);
+                        },
                         tasks: this.parseTaskCardsList(this.inProgressTasks),
                       ),
                     ),
@@ -266,6 +363,10 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                       child: KanbanColumn(
                         title: AppLocalizations.of(context).doneTasks,
                         isInternal: true,
+                        getAllTasks: this.getAllTasks,
+                        onTaskDropped: (int taskID) {
+                          this.switchTasks("stage one done", taskID);
+                        },
                         tasks: this.parseTaskCardsList(this.doneTasks),
                       ),
                     ),
