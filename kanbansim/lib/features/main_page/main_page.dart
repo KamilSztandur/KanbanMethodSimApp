@@ -225,7 +225,6 @@ class MainPageState extends State<MainPage> {
       MAX_DAY: this.MAX_DAY,
       dayHasChanged: (int daysPassed) {
         this.currentDay = daysPassed;
-        print("Passed days: $daysPassed");
       },
       getCurrentDay: () => this.currentDay,
     );
