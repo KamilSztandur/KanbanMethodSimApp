@@ -127,5 +127,13 @@
     "areYouSureYouWantToDeleteTask": "Czy na pewno chcesz usunąć zadanie",
     "taskDeletionTitle": "USUWANIE ZADANIA",
     "delete": "Usuń",
-    "doNotDelete": "Nie usuwaj"
+    "doNotDelete": "Nie usuwaj",
+
+
+    "couldntMoveTaskTo": "Nie powiodło się przesuwanie zadania do",
+    "tasksLimitReached": "Osiągnięto limit ilości zadań w kolumnie",
+
+    "selectOwner": "Wyznacz",
+    "selectTasksOwner": "WYZNACZ WŁAŚCICIELA ZADANIA",
+    "successfullySetAsOwnerOf": "został pomyślnie wyznaczony jako właściciel zadania"
 }

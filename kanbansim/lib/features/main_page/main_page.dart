@@ -165,7 +165,7 @@ class MainPageState extends State<MainPage> {
     kanbanBoard = KanbanBoard(
       getCurrentDay: () => this.currentDay,
       getMaxSimDay: () => this.MAX_DAY,
-      allTasks: this.allTasks,
+      getAllTasks: () => this.allTasks,
       taskCreated: (Task task) {
         setState(() {
           this.allTasks.idleTasksColumn.add(task);

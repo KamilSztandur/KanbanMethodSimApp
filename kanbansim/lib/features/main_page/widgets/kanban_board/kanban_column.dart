@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/tasks_limit_reached_popup.dart';
+import 'package:kanbansim/models/Task.dart';
 
 class KanbanColumn extends StatefulWidget {
+  final Function getAllTasks;
+  final Function(Task) onTaskDropped;
   final List<TaskCard> tasks;
   final String title;
+  final int tasksLimit;
   final bool isInternal;
   final Widget additionalWidget;
 
   KanbanColumn({
     Key key,
+    @required this.getAllTasks,
     @required this.tasks,
     @required this.title,
     @required this.isInternal,
+    this.tasksLimit,
+    this.onTaskDropped,
     this.additionalWidget,
   }) : super(key: key);
 
@@ -58,9 +66,30 @@ class KanbanColumnState extends State<KanbanColumn> {
                   ),
                 ],
               ),
-              child: _TaskColumn(
-                tasks: widget.tasks,
-                additionalWidget: widget.additionalWidget,
+              child: DragTarget<Task>(
+                builder: (context, candidateItems, rejectedItems) {
+                  return _TaskColumn(
+                    tasks: widget.tasks,
+                    additionalWidget: widget.additionalWidget,
+                  );
+                },
+                onAccept: (task) {
+                  int n = this.widget.tasksLimit;
+                  if (n != null && this.widget.tasks.length + 1 > n) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          TasksLimitReachedPopup().show(
+                        this.widget.title,
+                        this.widget.tasksLimit,
+                      ),
+                    );
+                  } else {
+                    if (this.widget.onTaskDropped != null) {
+                      this.widget.onTaskDropped(task);
+                    }
+                  }
+                },
               ),
             ),
           ),
@@ -197,9 +226,19 @@ class _TaskColumn extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              this.tasks[i],
+              Draggable<Task>(
+                data: this.tasks[i].task,
+                dragAnchor: DragAnchor.pointer,
+                feedback: this.tasks[i],
+                child: this.tasks[i],
+              ),
               SizedBox(width: 15),
-              this.tasks[++i],
+              Draggable<Task>(
+                data: this.tasks[++i].task,
+                dragAnchor: DragAnchor.pointer,
+                feedback: this.tasks[i],
+                child: this.tasks[i],
+              ),
             ],
           ),
         );
@@ -213,14 +252,31 @@ class _TaskColumn extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                this.tasks[i],
+                Draggable<Task>(
+                  data: this.tasks[i].task,
+                  dragAnchor: DragAnchor.pointer,
+                  feedback: this.tasks[i],
+                  child: this.tasks[i],
+                ),
                 SizedBox(width: 15),
-                this.tasks[++i],
+                Draggable<Task>(
+                  data: this.tasks[++i].task,
+                  dragAnchor: DragAnchor.pointer,
+                  feedback: this.tasks[i],
+                  child: this.tasks[i],
+                ),
               ],
             ),
           );
         } else {
-          column.add(this.tasks[i]);
+          column.add(
+            Draggable<Task>(
+              data: this.tasks[i].task,
+              dragAnchor: DragAnchor.pointer,
+              feedback: this.tasks[i],
+              child: this.tasks[i],
+            ),
+          );
         }
         column.add(SizedBox(height: 15));
       }
