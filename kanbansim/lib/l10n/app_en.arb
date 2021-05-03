@@ -127,5 +127,8 @@
     "areYouSureYouWantToDeleteTask": "Are you sure you want to delete task ",
     "taskDeletionTitle": "TASK DELETION",
     "delete": "Delete",
-    "doNotDelete": "Do not delete"
+    "doNotDelete": "Do not delete",
+
+    "couldntMoveTaskTo": "Could not move task to",
+    "tasksLimitReached": "Tasks amount in this column reached"
 }

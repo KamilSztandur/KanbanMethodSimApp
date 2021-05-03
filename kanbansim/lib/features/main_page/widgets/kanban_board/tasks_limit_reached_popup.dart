@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kanbansim/generated/l10n.dart';
 
 class TasksLimitReachedPopup {
   Widget show(String columnName, int limit) {
@@ -29,17 +30,17 @@ class _TasksLimitWarningWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 187,
-      width: 210,
+      width: 400,
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.light
-            ? Colors.white
+            ? Theme.of(context).accentColor
             : Colors.grey.shade800,
       ),
       child: ListView(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(width: 237),
               _CloseButton(),
             ],
           ),
@@ -67,7 +68,7 @@ class _TextLabel extends StatelessWidget {
       text: TextSpan(
         children: <TextSpan>[
           TextSpan(
-            text: 'Couldn\' add new task to\n\n',
+            text: '${AppLocalizations.of(context).couldntMoveTaskTo}\n\n',
             style: TextStyle(
               color: Theme.of(context).textTheme.headline6.color,
               fontSize: 14,
@@ -89,7 +90,8 @@ class _TextLabel extends StatelessWidget {
             ),
           ),
           TextSpan(
-            text: "Tasks limit reached ($limit/$limit).\n",
+            text:
+                "${AppLocalizations.of(context).tasksLimitReached} ($limit/$limit).\n",
             style: TextStyle(
               color: Theme.of(context).textTheme.headline6.color,
               fontSize: 14,
