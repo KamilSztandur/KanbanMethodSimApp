@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/tasks_limit_reached_popup.dart';
 
 class KanbanColumn extends StatefulWidget {
   final Function getAllTasks;
   final Function(int) onTaskDropped;
   final List<TaskCard> tasks;
   final String title;
+  final int tasksLimit;
   final bool isInternal;
   final Widget additionalWidget;
 
@@ -15,6 +17,7 @@ class KanbanColumn extends StatefulWidget {
     @required this.tasks,
     @required this.title,
     @required this.isInternal,
+    this.tasksLimit,
     this.onTaskDropped,
     this.additionalWidget,
   }) : super(key: key);
@@ -70,8 +73,20 @@ class KanbanColumnState extends State<KanbanColumn> {
                   );
                 },
                 onAccept: (item) {
-                  if (this.widget.onTaskDropped != null) {
-                    this.widget.onTaskDropped(item);
+                  int n = this.widget.tasksLimit;
+                  if (n != null && this.widget.tasks.length + 1 > n) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          TasksLimitReachedPopup().show(
+                        this.widget.title,
+                        this.widget.tasksLimit,
+                      ),
+                    );
+                  } else {
+                    if (this.widget.onTaskDropped != null) {
+                      this.widget.onTaskDropped(item);
+                    }
                   }
                 },
               ),

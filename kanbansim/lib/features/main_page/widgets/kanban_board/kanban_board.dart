@@ -90,6 +90,7 @@ class KanbanBoardState extends State<KanbanBoard> {
             onTaskDropped: (int taskID) {
               this._switchTasks("stage two", taskID);
             },
+            tasksLimit: 3,
             tasks:
                 _parseTaskCardsList(widget.getAllTasks().stageTwoTasksColumn),
           ),
@@ -325,6 +326,7 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                         onTaskDropped: (int taskID) {
                           this.switchTasks("stage one in progress", taskID);
                         },
+                        tasksLimit: 3,
                         tasks: this.parseTaskCardsList(this.inProgressTasks),
                       ),
                     ),
