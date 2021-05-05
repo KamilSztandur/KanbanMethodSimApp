@@ -37,7 +37,9 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
         home: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/background.jpg"),
+              image: _darkTheme
+                  ? AssetImage("assets/background.jpg")
+                  : AssetImage("assets/background_light.jpg"),
               fit: BoxFit.cover,
             ),
           ),
