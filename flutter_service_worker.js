@@ -9,13 +9,13 @@ const RESOURCES = {
 "assets/assets/logo.png": "f0090e44e5cb2ab831d7880411763f19",
 "assets/FontManifest.json": "7b2a36307916a9721811788013e65289",
 "assets/fonts/MaterialIcons-Regular.otf": "1288c9e28052e028aba623321f7826ac",
-"assets/NOTICES": "df37219038577bf4ab241c4df2de1041",
+"assets/NOTICES": "b4f3f4d971f2ca0088675d1594790f65",
 "favicon.png": "83fdeef958e241bf047e1a5eef3331e0",
 "icons/Icon-192.png": "a803adfe215a81eaa5fef0a3c5393a1c",
 "icons/Icon-512.png": "ed1337c4ea280dc26ae4fbaa5e7deb21",
-"index.html": "ff4299edf732c2ade2d1574e702c583a",
-"/": "ff4299edf732c2ade2d1574e702c583a",
-"main.dart.js": "d6679de53ef30ce0d69cd3e067746ec8",
+"index.html": "18977c671930e1905519fae1f7cb8d13",
+"/": "18977c671930e1905519fae1f7cb8d13",
+"main.dart.js": "f825bf209dd8f8d5684f83c51a501da0",
 "manifest.json": "5906502537ec8fb4135157c712dd663c",
 "version.json": "af2298f529989e8ceff4133e4093118b"
 };
@@ -35,7 +35,7 @@ self.addEventListener("install", (event) => {
   return event.waitUntil(
     caches.open(TEMP).then((cache) => {
       return cache.addAll(
-        CORE.map((value) => new Request(value + '?revision=' + RESOURCES[value], {'cache': 'reload'})));
+        CORE.map((value) => new Request(value, {'cache': 'reload'})));
     })
   );
 });
