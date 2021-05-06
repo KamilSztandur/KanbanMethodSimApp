@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/common/savefile_parsers/savefile_reader.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
@@ -11,24 +12,22 @@ import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity
 import 'package:kanbansim/features/notifications/story_notification.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:kanbansim/features/scroll_bar.dart';
+import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
-  final scaffoldKey;
+  List<User> createdUsers;
 
-  MainPage({this.scaffoldKey});
+  MainPage({Key key, @required this.createdUsers}) : super(key: key);
 
   @override
-  MainPageState createState() => MainPageState(scaffoldKey: scaffoldKey);
+  _MainPageState createState() => _MainPageState();
 }
 
-class MainPageState extends State<MainPage> {
-  MainPageState({this.scaffoldKey});
-  final scaffoldKey;
-
+class _MainPageState extends State<MainPage> {
   MainMenuBar menuBar;
   KanbanBoard kanbanBoard;
   DayStatus dayStatus;
@@ -38,16 +37,16 @@ class MainPageState extends State<MainPage> {
 
   AllTasksContainer allTasks;
   List<String> messages;
-  List<User> users;
+  List<User> currentUsers;
 
   final int MIN_DAY = 1;
   final int MAX_DAY = 25;
   int currentDay;
 
   void _restoreUsersProductivities() {
-    int n = this.users.length;
+    int n = this.currentUsers.length;
     for (int i = 0; i < n; i++) {
-      this.users[i].restoreProductivity();
+      this.currentUsers[i].restoreProductivity();
     }
   }
 
@@ -98,7 +97,7 @@ class MainPageState extends State<MainPage> {
           SavefileReader reader = SavefileReader();
 
           setState(() {
-            this.users = reader.readUsers(data);
+            this.currentUsers = reader.readUsers(data);
             this.allTasks.idleTasksColumn = reader.readIdleTasks(data);
             this.allTasks.stageOneInProgressTasksColumn =
                 reader.readStageOneInProgressTasks(data);
@@ -131,12 +130,12 @@ class MainPageState extends State<MainPage> {
         });
       },
       getAllTasks: () => this.allTasks,
-      getAllUsers: () => this.users,
+      getAllUsers: () => this.currentUsers,
       loadSimStateFromFileContent: (String data) {
         SavefileReader reader = SavefileReader();
 
         setState(() {
-          this.users = reader.readUsers(data);
+          this.currentUsers = reader.readUsers(data);
           this.allTasks.idleTasksColumn = reader.readIdleTasks(data);
           this.allTasks.stageOneInProgressTasksColumn =
               reader.readStageOneInProgressTasks(data);
@@ -189,7 +188,7 @@ class MainPageState extends State<MainPage> {
         );
       },
       getUsers: () {
-        return this.users;
+        return this.currentUsers;
       },
       taskUnlocked: () {
         setState(() {
@@ -236,45 +235,15 @@ class MainPageState extends State<MainPage> {
     );
 
     productivityBar = ProductivityBar(
-      users: this.users,
+      users: this.currentUsers,
     );
-  }
-
-  void _initializeDummyUsers() {
-    if (this.users == null) {
-      this.users = <User>[];
-
-      this.users.add(User(
-            "Kamil",
-            5,
-            Colors.blue,
-          ));
-
-      this.users.add(User(
-            "Janek",
-            5,
-            Colors.limeAccent,
-          ));
-
-      this.users.add(User(
-            "Łukasz",
-            5,
-            Colors.purpleAccent,
-          ));
-
-      this.users.add(User(
-            "Agata",
-            3,
-            Colors.orangeAccent,
-          ));
-    }
   }
 
   void _initializeAllTasksContainer() {
     if (this.allTasks == null) {
       this.allTasks = AllTasksContainer(
         () {
-          return this.users;
+          return this.currentUsers;
         },
         (Task task) {
           _eventOccured(
@@ -286,9 +255,15 @@ class MainPageState extends State<MainPage> {
     }
   }
 
+  void _initializeUsersIfNeeded() {
+    if (this.currentUsers == null) {
+      this.currentUsers = this.widget.createdUsers;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    _initializeDummyUsers();
+    _initializeUsersIfNeeded();
     _initializeAllTasksContainer();
 
     _initializeKanbanBoard();
@@ -296,63 +271,78 @@ class MainPageState extends State<MainPage> {
     _initializeStatusBar();
     _initializeStoryLogs();
 
-    return ListView(
-      children: [
-        menuBar,
-        SizedBox(width: 10),
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.1, 1.0],
-              tileMode: TileMode.clamp,
-              colors: [
-                Theme.of(context).brightness == Brightness.light
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).scaffoldBackgroundColor,
-                Theme.of(context).brightness == Brightness.light
-                    ? Theme.of(context).backgroundColor
-                    : Theme.of(context).accentColor,
-              ],
-            ),
-            border: Border.all(
-              width: 2.0,
-              color: Colors.black.withOpacity(
-                Theme.of(context).brightness == Brightness.light ? 0.3 : 0.5,
-              ),
-            ),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25),
-            ),
-          ),
-          child: Column(
+    return Container(
+      decoration: BoxDecoration(
+        image: KanbanSimApp.of(context).getBackgroundImage(),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: false,
+        body: WindowBorder(
+          color: Theme.of(context).primaryColor,
+          width: 1,
+          child: ListView(
             children: [
-              SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  dayStatus,
-                  SizedBox(width: 10),
-                  productivityBar,
-                  SizedBox(width: 10),
-                  locksStatus,
-                ],
+              menuBar,
+              SizedBox(width: 10),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.1, 1.0],
+                    tileMode: TileMode.clamp,
+                    colors: [
+                      Theme.of(context).brightness == Brightness.light
+                          ? Theme.of(context).accentColor
+                          : Theme.of(context).scaffoldBackgroundColor,
+                      Theme.of(context).brightness == Brightness.light
+                          ? Theme.of(context).backgroundColor
+                          : Theme.of(context).accentColor,
+                    ],
+                  ),
+                  border: Border.all(
+                    width: 2.0,
+                    color: Colors.black.withOpacity(
+                      Theme.of(context).brightness == Brightness.light
+                          ? 0.3
+                          : 0.5,
+                    ),
+                  ),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        dayStatus,
+                        SizedBox(width: 10),
+                        productivityBar,
+                        SizedBox(width: 10),
+                        locksStatus,
+                      ],
+                    ),
+                    SizedBox(height: 15),
+                  ],
+                ),
               ),
-              SizedBox(height: 15),
+              Container(
+                height: (MediaQuery.of(context).size.height) * 0.72,
+                child: ScrollBar(
+                  child: kanbanBoard,
+                ),
+              ),
+              storyPanel,
             ],
           ),
         ),
-        Container(
-          height: (MediaQuery.of(context).size.height) * 0.72,
-          child: ScrollBar(
-            child: kanbanBoard,
-          ),
-        ),
-        storyPanel,
-      ],
+      ),
     );
   }
 }
