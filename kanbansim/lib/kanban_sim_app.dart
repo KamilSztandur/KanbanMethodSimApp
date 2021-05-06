@@ -2,6 +2,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:kanbansim/features/welcome_page/welcome_page.dart';
+import 'package:kanbansim/models/User.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,56 +18,20 @@ class KanbanSimApp extends StatefulWidget {
 }
 
 class _KanbanSimAppState extends State<KanbanSimApp> {
-  final _scaffoldKey = GlobalKey();
   bool _darkTheme = true;
   Locale _locale;
-  bool _justLaunched;
 
   @override
   Widget build(BuildContext context) {
     _createSavesFolder();
     setWindowTitle("Kanban Method's Simulator");
 
-    if (_justLaunched == null) {
-      this._justLaunched = true;
-    }
-
     return OverlaySupport(
       child: MaterialApp(
         /* body */
         home: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: _darkTheme
-                  ? AssetImage("assets/background.jpg")
-                  : AssetImage("assets/background_light.jpg"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            key: _scaffoldKey,
-            resizeToAvoidBottomInset: false,
-            body: WindowBorder(
-              color: Theme.of(context).primaryColor,
-              width: 1,
-              child: _justLaunched
-                  ? WelcomePage(
-                      scaffoldKey: _scaffoldKey,
-                      startedNew: () {
-                        setState(() {
-                          this._justLaunched = false;
-                        });
-                      },
-                      loadedExisting: (String path) {
-                        setState(() {
-                          this._justLaunched = false;
-                        });
-                      },
-                    )
-                  : MainPage(scaffoldKey: _scaffoldKey),
-            ),
-          ),
+          decoration: BoxDecoration(image: getBackgroundImage()),
+          child: WelcomePage(),
         ),
 
         /* Languages */
@@ -96,6 +61,13 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
     } else {
       savesFolder.create(recursive: true);
     }
+  }
+
+  DecorationImage getBackgroundImage() {
+    return DecorationImage(
+      image: AssetImage("assets/background.jpg"),
+      fit: BoxFit.cover,
+    );
   }
 
   bool isWeb() {

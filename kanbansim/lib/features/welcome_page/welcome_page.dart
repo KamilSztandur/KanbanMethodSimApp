@@ -1,21 +1,17 @@
 import 'dart:io';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
+import 'package:kanbansim/features/main_page/main_page.dart';
+import 'package:kanbansim/features/users_creator/users_creator.dart';
 import 'package:kanbansim/features/window_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
+import 'package:kanbansim/models/User.dart';
 
 class WelcomePage extends StatefulWidget {
-  final VoidCallback startedNew;
-  final Function(String) loadedExisting;
-  final scaffoldKey;
-
-  WelcomePage({
-    this.scaffoldKey,
-    @required this.startedNew,
-    @required this.loadedExisting,
-  });
+  WelcomePage({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => WelcomePageState();
@@ -24,59 +20,80 @@ class WelcomePage extends StatefulWidget {
 class WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
-          Flexible(flex: 2, child: SizedBox()),
-          Flexible(
-            flex: 13,
-            fit: FlexFit.tight,
-            child: _Logo(),
-          ),
-          Flexible(
-            flex: 2,
-            fit: FlexFit.tight,
-            child: _MenuButton(
-              text: AppLocalizations.of(context).createEmptySession,
-              action: () => _newSessionButtonPressed(),
-            ),
-          ),
-          Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-          Flexible(
-            flex: 2,
-            fit: FlexFit.tight,
-            child: _MenuButton(
-              text: AppLocalizations.of(context).loadSession,
-              action: () => _loadButtonPressed(),
-            ),
-          ),
-          Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-          KanbanSimApp.of(context).isWeb()
-              ? Center()
-              : Flexible(
-                  flex: 2,
-                  fit: FlexFit.tight,
-                  child: _MenuButton(
-                    text: AppLocalizations.of(context).quit,
-                    action: () => _quitButtonPressed(),
-                  ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: false,
+      body: WindowBorder(
+        color: Theme.of(context).primaryColor,
+        width: 1,
+        child: Center(
+          child: Column(
+            children: [
+              KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
+              Flexible(flex: 2, child: SizedBox()),
+              Flexible(
+                flex: 13,
+                fit: FlexFit.tight,
+                child: _Logo(),
+              ),
+              Flexible(
+                flex: 2,
+                fit: FlexFit.tight,
+                child: _MenuButton(
+                  text: AppLocalizations.of(context).createEmptySession,
+                  action: () => _newSessionButtonPressed(),
                 ),
-          Flexible(flex: 2, fit: FlexFit.tight, child: SizedBox()),
-          _LangSwitchButtons(),
-          Flexible(
-            flex: 2,
-            fit: FlexFit.tight,
-            child: _AuthorsNotice(),
+              ),
+              Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+              Flexible(
+                flex: 2,
+                fit: FlexFit.tight,
+                child: _MenuButton(
+                  text: AppLocalizations.of(context).loadSession,
+                  action: () => _loadButtonPressed(),
+                ),
+              ),
+              Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+              KanbanSimApp.of(context).isWeb()
+                  ? Center()
+                  : Flexible(
+                      flex: 2,
+                      fit: FlexFit.tight,
+                      child: _MenuButton(
+                        text: AppLocalizations.of(context).quit,
+                        action: () => _quitButtonPressed(),
+                      ),
+                    ),
+              Flexible(flex: 2, fit: FlexFit.tight, child: SizedBox()),
+              _LangSwitchButtons(),
+              Flexible(
+                flex: 2,
+                fit: FlexFit.tight,
+                child: _AuthorsNotice(),
+              ),
+              Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+            ],
           ),
-          Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-        ],
+        ),
       ),
     );
   }
 
   void _newSessionButtonPressed() {
-    this.widget.startedNew();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => UsersCreatorPopup(
+        usersCreated: (List<User> users) {
+          Navigator.of(context).pop();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MainPage(createdUsers: users),
+            ),
+          );
+        },
+      ).show(),
+    );
   }
 
   void _loadButtonPressed() {
@@ -84,8 +101,9 @@ class WelcomePageState extends State<WelcomePage> {
       context: context,
       builder: (BuildContext context) => LoadFilePopup(
         returnPickedFilepath: (String filePath) {
-          this.widget.loadedExisting(filePath);
-        }, returnPickedFileContent: (String data) {
+          //TODO
+        },
+        returnPickedFileContent: (String data) {
           //TODO
         },
       ).show(context),
