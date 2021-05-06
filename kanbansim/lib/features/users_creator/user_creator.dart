@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/models/User.dart';
 
 class UserCreatorPopup {
@@ -169,7 +170,7 @@ class _Headline extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "KREATOR CZŁONKA ZESPOŁU",
+            AppLocalizations.of(context).userCreator,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -205,7 +206,7 @@ class _ColorPickerState extends State<_ColorPicker> {
     return Column(
       children: [
         Text(
-          "Wybierz kolor reprezentujący członka zespołu:",
+          "${AppLocalizations.of(context).chooseUserColor}:",
           textAlign: TextAlign.left,
           style: TextStyle(
             color: Colors.white,
@@ -278,7 +279,7 @@ class _ProductivitySwitchState extends State<_ProductivitySwitch> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Wybierz produktywność",
+            "${AppLocalizations.of(context).chooseProductivity}:",
             textAlign: TextAlign.left,
             style: TextStyle(
               color: Colors.white,
@@ -391,7 +392,7 @@ class _UserNameCreatorState extends State<UserNameCreator> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Wybierz pseudonim członka zespołu:",
+            "${AppLocalizations.of(context).chooseUserNickname}:",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -411,7 +412,7 @@ class _UserNameCreatorState extends State<UserNameCreator> {
             controller: _controller,
             decoration: InputDecoration(
               counterStyle: TextStyle(color: Theme.of(context).primaryColor),
-              hintText: "Wpisz tutaj pseudonim członka zespołu",
+              hintText: AppLocalizations.of(context).enterUserNicknameHere,
               hintStyle: TextStyle(
                 color: Colors.white.withOpacity(0.5),
               ),
@@ -440,7 +441,7 @@ class _UserNameCreatorState extends State<UserNameCreator> {
                     _generateNameAutomatically();
                   },
                   child: Text(
-                    "Wygeneruj automatycznie",
+                    AppLocalizations.of(context).generateAutomatically,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
@@ -490,7 +491,7 @@ class _Buttons extends StatelessWidget {
                 this.createButtonClicked();
                 Navigator.of(context).pop();
               },
-              child: Text("Zatwierdź"),
+              child: Text(AppLocalizations.of(context).create),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
                   this.readyToCreate
@@ -512,7 +513,7 @@ class _Buttons extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Anuluj"),
+            child: Text(AppLocalizations.of(context).cancel),
           ),
         ),
         Flexible(

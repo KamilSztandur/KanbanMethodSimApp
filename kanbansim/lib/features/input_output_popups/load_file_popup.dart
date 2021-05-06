@@ -86,10 +86,11 @@ class _LoadFilePageState extends State<_LoadFilePage> {
               pathIsPicked: (String path) {
                 setState(() {
                   this.widget.filePath = path;
-                  if(kIsWeb) {}
+                  if (kIsWeb) {}
                 });
               },
-              contentIsPicked: (String content) => (this._fileContent_onlyWeb = content),
+              contentIsPicked: (String content) =>
+                  (this._fileContent_onlyWeb = content),
               width: _width,
             ),
           ),
@@ -101,7 +102,8 @@ class _LoadFilePageState extends State<_LoadFilePage> {
               isReadyToSubmit: _readyToSubmit,
               returnPickedFilePath: (String path) =>
                   this.widget.returnPickedFilePath(path),
-                  returnPickedFileContent: () => this.widget.returnPickedFileContent(_fileContent_onlyWeb),
+              returnPickedFileContent: () =>
+                  this.widget.returnPickedFileContent(_fileContent_onlyWeb),
             ),
           ),
           Flexible(flex: 1, child: Container()),
@@ -208,7 +210,7 @@ class _Buttons extends StatelessWidget {
   }
 
   void _returnIfExists(BuildContext context) {
-    if(kIsWeb) {
+    if (kIsWeb) {
       this.returnPickedFileContent();
     } else {
       File saveFile = File(this.filePath);

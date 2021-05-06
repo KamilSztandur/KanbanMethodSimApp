@@ -134,5 +134,17 @@
     
     "selectOwner": "Select",
     "selectTasksOwner": "SELECT TASK'S OWNER",
-    "successfullySetAsOwnerOf": "successfully set as owner of"
+    "successfullySetAsOwnerOf": "successfully set as owner of",
+
+    "clickToAddNewUser": "Click here to add new team member.",
+    "clickToRemoveUser": "Click here to remove this team member.",
+    "clickToModifyUser": "Click here to modify this team member.",
+    "usersCreator": "TEAM MEMBERS CREATOR",
+    "begin": "Begin",
+
+    "userCreator": "TEAM MEMBER'S CREATOR",
+    "chooseUserColor": "Choose team member's color",
+    "chooseProductivity": "Choose team member's productivity",
+    "chooseUserNickname": "Choose team member's nickname",
+    "enterUserNicknameHere": "Enter nickname here"
 }
