@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:kanbansim/features/users_creator/user_creator.dart';
 import 'package:kanbansim/models/User.dart';
 
 class UsersCreatorPopup {
@@ -105,7 +105,20 @@ class _UsersCreatorState extends State<_UsersCreator> {
             data: this.data,
             limit: this.limit,
             addNewUserBtnClicked: () {
-              //TODO
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => UserCreatorPopup(
+                  userCreated: (User createdUser) {
+                    setState(() {
+                      this.availableColors.remove(createdUser.getColor());
+                      this.availableNames.remove(createdUser.getName());
+                      this.data.add(createdUser);
+                    });
+                  },
+                  availableColors: this.availableColors,
+                  availableNames: this.availableNames,
+                ).show(),
+              );
             },
             deleteUserFromList: (User user) {
               setState(() {
