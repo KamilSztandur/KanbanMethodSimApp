@@ -124,8 +124,8 @@
     "assignUser": "Wyznacz członka zespołu",
     "assign": "Przydziel",
 
-    "areYouSureYouWantToDeleteTask": "Czy na pewno chcesz usunąć zadanie",
     "taskDeletionTitle": "USUWANIE ZADANIA",
+    "areYouSureYouWantToDeleteTask": "Czy na pewno chcesz usunąć zadanie",
     "delete": "Usuń",
     "doNotDelete": "Nie usuwaj",
 
@@ -133,7 +133,19 @@
     "couldntMoveTaskTo": "Nie powiodło się przesuwanie zadania do",
     "tasksLimitReached": "Osiągnięto limit ilości zadań w kolumnie",
 
-    "selectOwner": "Wyznacz",
     "selectTasksOwner": "WYZNACZ WŁAŚCICIELA ZADANIA",
-    "successfullySetAsOwnerOf": "został pomyślnie wyznaczony jako właściciel zadania"
+    "selectOwner": "Wyznacz",
+    "successfullySetAsOwnerOf": "został pomyślnie wyznaczony jako właściciel zadania",
+
+    "usersCreator": "KREATOR CZŁONKÓW ZESPOŁU",
+    "clickToAddNewUser": "Kliknij, aby dodać nowego użytkownika.",
+    "clickToRemoveUser": "Kliknij, aby usunąć tego użytkownika.",
+    "clickToModifyUser": "Kliknij, aby zmodyfikować tego użytkownika.",
+    "begin": "Rozpocznij",
+
+    "userCreator": "KREATOR CZŁONKA ZESPOŁU",
+    "chooseUserColor": "Wybierz kolor członka zespołu",
+    "chooseProductivity": "Wybierz produktywność członka zespołu",
+    "chooseUserNickname": "Wybierz pseudonim członka zespołu",
+    "enterUserNicknameHere": "Wpisz tutaj pseudonim członka zespołu"
 }

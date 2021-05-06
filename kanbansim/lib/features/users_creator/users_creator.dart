@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/users_creator/user_creator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/models/User.dart';
 
 class UsersCreatorPopup {
@@ -192,7 +193,7 @@ class _UsersShowcase extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    "${this.data.length}/${this.limit} prosze",
+                    "${this.data.length}/${this.limit}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -373,7 +374,7 @@ class _AddNewUserButton extends StatelessWidget {
         color: Colors.grey.shade800,
       ),
       iconSize: 85,
-      tooltip: "Dodaj nowego użytkownika.",
+      tooltip: AppLocalizations.of(context).clickToAddNewUser,
       onPressed: this.addNewUserBtnClicked,
     );
   }
@@ -473,7 +474,7 @@ class _DeleteUserButton extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: Tooltip(
-        message: "Kliknij, aby usunąć użytkownika.",
+        message: AppLocalizations.of(context).clickToRemoveUser,
         child: ClipOval(
           child: Material(
             color: Colors.grey.shade700,
@@ -512,7 +513,7 @@ class _ModifyUserButton extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: Tooltip(
-        message: "Kliknij, aby zmodyfikować użytkownika.",
+        message: AppLocalizations.of(context).clickToModifyUser,
         child: ClipOval(
           child: Material(
             color: Colors.grey.shade700,
@@ -558,7 +559,7 @@ class _Headline extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "KREATOR CZŁONKÓW ZESPOŁU",
+            AppLocalizations.of(context).usersCreator,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -591,13 +592,13 @@ class _Buttons extends StatelessWidget {
           child: Container(),
         ),
         Flexible(
-          flex: 2,
+          flex: 3,
           fit: FlexFit.tight,
           child: IgnorePointer(
             ignoring: !readyToCreate,
             child: ElevatedButton(
               onPressed: () => this.createButtonPressed(),
-              child: Text("Zatwierdź"),
+              child: Text(AppLocalizations.of(context).begin),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
                   this.readyToCreate
@@ -613,13 +614,13 @@ class _Buttons extends StatelessWidget {
           child: Container(),
         ),
         Flexible(
-          flex: 2,
+          flex: 3,
           fit: FlexFit.tight,
           child: ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Anuluj"),
+            child: Text(AppLocalizations.of(context).cancel),
           ),
         ),
         Flexible(
