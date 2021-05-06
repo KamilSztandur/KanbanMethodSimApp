@@ -1,8 +1,5 @@
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:kanbansim/features/welcome_page/welcome_page.dart';
-import 'package:kanbansim/models/User.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -65,7 +62,11 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
 
   DecorationImage getBackgroundImage() {
     return DecorationImage(
-      image: AssetImage("assets/background.jpg"),
+      image: AssetImage(
+        this._darkTheme
+            ? "assets/background.jpg"
+            : "assets/background_light.jpg",
+      ),
       fit: BoxFit.cover,
     );
   }
