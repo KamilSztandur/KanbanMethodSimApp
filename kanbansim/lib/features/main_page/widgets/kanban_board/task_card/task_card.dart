@@ -9,6 +9,8 @@ class TaskCard extends StatelessWidget {
   final Function(Task, User, int) productivityAssigned;
   final Function taskUnlocked;
   final Function getUsers;
+  final Function getCurrentDay;
+  final Function getFinalDay;
   Function(Task) deleteMe;
   Color _taskCardColor;
   Task task;
@@ -18,6 +20,8 @@ class TaskCard extends StatelessWidget {
     @required this.productivityAssigned,
     @required this.deleteMe,
     @required this.getUsers,
+    @required this.getCurrentDay,
+    @required this.getFinalDay,
     @required this.taskUnlocked,
   });
 
@@ -58,6 +62,8 @@ class TaskCard extends StatelessWidget {
             taskCardColor: this._taskCardColor,
             deleteTask: () => deleteMe(this.task),
             productivityAssigned: this.productivityAssigned,
+            getCurrentDay: this.getCurrentDay,
+            getFinalDay: this.getFinalDay,
           ).show(
             context,
             task,

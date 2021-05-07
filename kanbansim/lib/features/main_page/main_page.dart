@@ -162,6 +162,7 @@ class _MainPageState extends State<MainPage> {
 
   void _initializeKanbanBoard() {
     kanbanBoard = KanbanBoard(
+      getFinalDay: () => this.MAX_DAY,
       getCurrentDay: () => this.currentDay,
       getMaxSimDay: () => this.MAX_DAY,
       getAllTasks: () => this.allTasks,

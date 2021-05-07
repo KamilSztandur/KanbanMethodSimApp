@@ -13,6 +13,7 @@ class KanbanBoard extends StatefulWidget {
   final Function getMaxSimDay;
   final Function getCurrentDay;
   final Function getUsers;
+  final Function getFinalDay;
   final Function(Task) taskCreated;
   final Function getAllTasks;
   final Function(Task) deleteMe;
@@ -26,6 +27,7 @@ class KanbanBoard extends StatefulWidget {
     @required this.taskUnlocked,
     @required this.getMaxSimDay,
     @required this.getCurrentDay,
+    @required this.getFinalDay,
     @required this.getUsers,
   }) : super(key: key);
 
@@ -158,6 +160,8 @@ class KanbanBoardState extends State<KanbanBoard> {
       getUsers: this.widget.getUsers,
       taskUnlocked: this.widget.taskUnlocked,
       productivityAssigned: this.widget.productivityAssigned,
+      getCurrentDay: this.widget.getCurrentDay,
+      getFinalDay: this.widget.getFinalDay,
     );
   }
 
