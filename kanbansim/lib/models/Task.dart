@@ -13,9 +13,11 @@ class Task {
   int _productivityRequiredToUnlock;
   TaskType _type;
   int _deadlineDay;
+  int startDay;
+  int endDay;
 
   Task.dummy() {
-    // 
+    //
   }
 
   Task(String title, int productivityRequired, User owner, TaskType type) {

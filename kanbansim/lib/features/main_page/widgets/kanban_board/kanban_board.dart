@@ -83,6 +83,8 @@ class KanbanBoardState extends State<KanbanBoard> {
             getAllTasks: this.widget.getAllTasks,
             ownerSet: () => setState(() {}),
             getUsers: this.widget.getUsers,
+            getCurrentDay: this.widget.getCurrentDay,
+            getMaxSimDay: this.widget.getMaxSimDay,
             switchTasks: this._switchTasks,
             parseTaskCardsList: (List<Task> tasks) {
               return this._parseTaskCardsList(tasks);
@@ -130,6 +132,8 @@ class KanbanBoardState extends State<KanbanBoard> {
               task.owner = null;
               this._switchTasks("finished", task.getID());
             },
+            modifyTask: (Task task) =>
+                task.endDay = this.widget.getCurrentDay(),
             tasks:
                 _parseTaskCardsList(widget.getAllTasks().finishedTasksColumn),
           ),
@@ -266,6 +270,8 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
   final VoidCallback ownerSet;
   final Function(String, int) switchTasks;
   final Function(List<Task>) parseTaskCardsList;
+  final Function getMaxSimDay;
+  final Function getCurrentDay;
   final Function getAllTasks;
   final Function getUsers;
   final List<Task> inProgressTasks;
@@ -275,6 +281,8 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
     Key key,
     @required this.getAllTasks,
     @required this.getUsers,
+    @required this.getMaxSimDay,
+    @required this.getCurrentDay,
     @required this.ownerSet,
     @required this.switchTasks,
     @required this.parseTaskCardsList,
@@ -364,7 +372,10 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                               task: task,
                               columnName: "stage one in progress",
                               getAllUsers: this.getUsers,
-                              ownerSet: this.ownerSet,
+                              ownerSet: () {
+                                task.startDay = this.getCurrentDay();
+                                this.ownerSet();
+                              },
                               moveTask: this.switchTasks,
                             ).show(),
                           );

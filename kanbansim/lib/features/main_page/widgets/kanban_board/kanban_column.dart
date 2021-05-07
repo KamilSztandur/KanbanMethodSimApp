@@ -6,6 +6,7 @@ import 'package:kanbansim/models/Task.dart';
 class KanbanColumn extends StatefulWidget {
   final Function getAllTasks;
   final Function(Task) onTaskDropped;
+  final Function(Task) modifyTask;
   final List<TaskCard> tasks;
   final String title;
   final int tasksLimit;
@@ -18,6 +19,7 @@ class KanbanColumn extends StatefulWidget {
     @required this.tasks,
     @required this.title,
     @required this.isInternal,
+    this.modifyTask,
     this.tasksLimit,
     this.onTaskDropped,
     this.additionalWidget,
@@ -85,6 +87,10 @@ class KanbanColumnState extends State<KanbanColumn> {
                       ),
                     );
                   } else {
+                    if (this.widget.modifyTask != null) {
+                      this.widget.modifyTask(task);
+                    }
+
                     if (this.widget.onTaskDropped != null) {
                       this.widget.onTaskDropped(task);
                     }
