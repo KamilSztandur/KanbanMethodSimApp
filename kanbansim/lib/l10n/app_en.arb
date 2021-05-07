@@ -152,5 +152,12 @@
     "days": "days",
     "theDeadlineIsToday": "The deadline is today",
     "theDeadlineWas": "The deadline was",
-    "daysAgo": "days ago"
+    "daysAgo": "days ago",
+
+    "taskStartDay": "Task's start day",
+    "taskEndDay": "Task's end day",
+    "taskCompleted": "Task completed",
+    "daysBeforeDeadline": "days before deadline",
+    "atDeadline": "at deadline",
+    "daysAfterDeadline": "days after deadline"
 }

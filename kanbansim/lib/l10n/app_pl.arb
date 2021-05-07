@@ -153,5 +153,12 @@
     "days": "dni",
     "theDeadlineIsToday": "Termin upływa dziś",
     "theDeadlineWas": "Termin upłynął",
-    "daysAgo": "dni temu"
+    "daysAgo": "dni temu",
+    
+    "taskStartDay": "Dzień rozpoczęcia zadania",
+    "taskEndDay": "Dzień zakończenia zadania",
+    "taskCompleted": "Zadanie ukończone",
+    "daysBeforeDeadline": "dni przed terminem",
+    "atDeadline": "w dniu terminu",
+    "daysAfterDeadline": "dni po terminie"
 }

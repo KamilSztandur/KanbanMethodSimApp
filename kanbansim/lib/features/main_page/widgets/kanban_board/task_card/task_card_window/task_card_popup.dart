@@ -238,7 +238,7 @@ class _StartAndEndDayInfo extends StatelessWidget {
           Flexible(
             flex: 10,
             child: _DayInfo(
-              title: "Dzień rozpoczęcia zadania",
+              title: AppLocalizations.of(context).taskStartDay,
               info: this.task.startDay.toString(),
             ),
           ),
@@ -246,7 +246,7 @@ class _StartAndEndDayInfo extends StatelessWidget {
           Flexible(
             flex: 10,
             child: _DayInfo(
-              title: "Dzień zakończenia zadania",
+              title: AppLocalizations.of(context).taskEndDay,
               info: this.task.endDay.toString(),
             ),
           ),
@@ -280,7 +280,9 @@ class _DayInfo extends StatelessWidget {
             ),
           ),
           TextSpan(
-            text: this.info == "null" ? "Brak" : this.info,
+            text: this.info == "null"
+                ? AppLocalizations.of(context).empty
+                : this.info,
             style: TextStyle(
               color: Theme.of(context).primaryColor,
               fontWeight: FontWeight.bold,
@@ -366,7 +368,8 @@ class _DeadlineDayInfo extends StatelessWidget {
       if (days > 0) {
         return <TextSpan>[
           TextSpan(
-            text: "Zadanie ukończone ${days} dni przed terminem.",
+            text:
+                "${AppLocalizations.of(context).taskCompleted} $days ${AppLocalizations.of(context).daysBeforeDeadline}.",
             style: TextStyle(
               color: Colors.green,
               fontWeight: FontWeight.bold,
@@ -377,7 +380,8 @@ class _DeadlineDayInfo extends StatelessWidget {
       } else if (days == 0) {
         return <TextSpan>[
           TextSpan(
-            text: "Zadanie ukończone w dniu terminu.",
+            text:
+                "${AppLocalizations.of(context).taskCompleted} ${AppLocalizations.of(context).atDeadline}.",
             style: TextStyle(
               color: Colors.green,
               fontWeight: FontWeight.bold,
@@ -388,7 +392,8 @@ class _DeadlineDayInfo extends StatelessWidget {
       } else {
         return <TextSpan>[
           TextSpan(
-            text: "Zadanie ukończone ${days.abs()} dni po terminie.",
+            text:
+                "${AppLocalizations.of(context).taskCompleted} ${daysLeft.abs()} ${AppLocalizations.of(context).daysAfterDeadline}.",
             style: TextStyle(
               color: Colors.green,
               fontWeight: FontWeight.bold,
