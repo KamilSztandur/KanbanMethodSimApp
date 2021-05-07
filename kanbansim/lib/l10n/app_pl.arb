@@ -147,5 +147,11 @@
     "chooseUserColor": "Wybierz kolor członka zespołu",
     "chooseProductivity": "Wybierz produktywność członka zespołu",
     "chooseUserNickname": "Wybierz pseudonim członka zespołu",
-    "enterUserNicknameHere": "Wpisz tutaj pseudonim członka zespołu"
+    "enterUserNicknameHere": "Wpisz tutaj pseudonim członka zespołu",
+
+    "timeLeftToCompleteTask": "Na wykonanie zadania pozostało",
+    "days": "dni",
+    "theDeadlineIsToday": "Termin upływa dziś",
+    "theDeadlineWas": "Termin upłynął",
+    "daysAgo": "dni temu"
 }

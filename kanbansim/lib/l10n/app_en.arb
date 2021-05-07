@@ -146,5 +146,11 @@
     "chooseUserColor": "Choose team member's color",
     "chooseProductivity": "Choose team member's productivity",
     "chooseUserNickname": "Choose team member's nickname",
-    "enterUserNicknameHere": "Enter nickname here"
+    "enterUserNicknameHere": "Enter nickname here",
+
+    "timeLeftToCompleteTask": "Time left to complete task",
+    "days": "days",
+    "theDeadlineIsToday": "The deadline is today",
+    "theDeadlineWas": "The deadline was",
+    "daysAgo": "days ago"
 }

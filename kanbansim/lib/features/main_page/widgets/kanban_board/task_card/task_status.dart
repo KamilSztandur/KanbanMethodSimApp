@@ -59,25 +59,6 @@ class TaskStatusState extends State<TaskStatus> {
   }
 }
 
-class _DeadlineDayInfo extends StatelessWidget {
-  final int day;
-
-  _DeadlineDayInfo({
-    Key key,
-    @required this.day,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Icon(
-      Icons.alarm_rounded,
-      color: Colors.black,
-      size: 15,
-    );
-    ;
-  }
-}
-
 class _Title extends StatelessWidget {
   final String title;
 

@@ -250,7 +250,9 @@ class _DeadlineDayInfo extends StatelessWidget {
               text: TextSpan(
                 children: <TextSpan>[
                   TextSpan(
-                    text: daysLeft > 0 ? "Na wykonanie pozostało:\n" : "",
+                    text: daysLeft > 0
+                        ? "${AppLocalizations.of(context).timeLeftToCompleteTask}:\n"
+                        : "",
                     style: TextStyle(
                       color: Theme.of(context).textTheme.headline6.color,
                       fontSize: 18,
@@ -258,10 +260,10 @@ class _DeadlineDayInfo extends StatelessWidget {
                   ),
                   TextSpan(
                     text: daysLeft > 0
-                        ? "${daysLeft} dni"
+                        ? "${daysLeft} ${AppLocalizations.of(context).days}"
                         : daysLeft == 0
-                            ? "Termin upływa dziś."
-                            : "Termin upłynął ${daysLeft.abs()} dni temu.",
+                            ? "${AppLocalizations.of(context).theDeadlineIsToday}."
+                            : "${AppLocalizations.of(context).theDeadlineWas} ${daysLeft.abs()} ${AppLocalizations.of(context).daysAgo}.",
                     style: TextStyle(
                       color: daysLeft > 0
                           ? Theme.of(context).primaryColor
