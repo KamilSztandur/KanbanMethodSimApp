@@ -19,29 +19,32 @@ class TaskStatusState extends State<TaskStatus> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Flexible(flex: 3, child: Container()),
+        Flexible(flex: 3, fit: FlexFit.tight, child: Container()),
         Flexible(
-          flex: 10,
+          flex: 13,
+          fit: FlexFit.tight,
           child: Row(
             children: [
-              Flexible(flex: 5, child: _LockIcon(task: this.widget.task)),
-              Flexible(flex: 5, fit: FlexFit.tight, child: Container()),
+              Flexible(flex: 3, fit: FlexFit.tight, child: Container()),
+              Flexible(flex: 10, child: _LockIcon(task: this.widget.task)),
+              Flexible(flex: 6, fit: FlexFit.tight, child: Container()),
               Flexible(
-                flex: 5,
+                flex: 10,
                 child: _UserIcon(
                   owner: this.widget.task.owner,
                 ),
               ),
-              Flexible(flex: 10, fit: FlexFit.tight, child: Container()),
+              Flexible(flex: 20, fit: FlexFit.tight, child: Container()),
             ],
           ),
         ),
-        Flexible(flex: 10, child: Container()),
+        Flexible(flex: 3, child: Container()),
         Flexible(
           flex: 20,
+          fit: FlexFit.tight,
           child: _Title(title: this.widget.task.getTitle()),
         ),
-        Flexible(flex: 5, child: Container()),
+        Flexible(flex: 3, child: Container()),
         Flexible(
           flex: 8,
           fit: FlexFit.tight,
@@ -50,7 +53,7 @@ class TaskStatusState extends State<TaskStatus> {
             mode: Size.small,
           ),
         ),
-        Flexible(flex: 3, child: Container()),
+        Flexible(flex: 5, child: Container()),
       ],
     );
   }

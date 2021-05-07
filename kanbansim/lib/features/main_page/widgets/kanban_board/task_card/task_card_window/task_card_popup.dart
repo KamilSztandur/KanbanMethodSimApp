@@ -11,6 +11,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskCardPopup {
   final Function(Task, User, int) productivityAssigned;
+  final Function getCurrentDay;
+  final Function getFinalDay;
   final Function taskUnlocked;
   final Function deleteTask;
   final Function getUsers;
@@ -19,6 +21,8 @@ class TaskCardPopup {
   TaskCardPopup({
     @required this.getUsers,
     @required this.productivityAssigned,
+    @required this.getCurrentDay,
+    @required this.getFinalDay,
     @required this.taskUnlocked,
     @required this.deleteTask,
     @required this.taskCardColor,
@@ -36,6 +40,8 @@ class TaskCardPopup {
         deleteTask: this.deleteTask,
         getUsers: this.getUsers,
         productivityAssigned: this.productivityAssigned,
+        getCurrentDay: this.getCurrentDay,
+        getFinalDay: this.getFinalDay,
       ),
     );
   }
@@ -43,6 +49,8 @@ class TaskCardPopup {
 
 class _TaskCardPage extends StatefulWidget {
   final Function(Task, User, int) productivityAssigned;
+  final Function getCurrentDay;
+  final Function getFinalDay;
   final Function deleteTask;
   final Function taskUnlocked;
   final Function getUsers;
@@ -54,6 +62,8 @@ class _TaskCardPage extends StatefulWidget {
     @required this.task,
     @required this.deleteTask,
     @required this.productivityAssigned,
+    @required this.getCurrentDay,
+    @required this.getFinalDay,
     @required this.taskCardColor,
     @required this.getUsers,
     @required this.taskUnlocked,
@@ -70,6 +80,7 @@ class _TaskCardPageState extends State<_TaskCardPage> {
       height: 500,
       width: 800,
       child: Stack(
+        clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
           Container(
@@ -91,7 +102,7 @@ class _TaskCardPageState extends State<_TaskCardPage> {
             child: Column(
               children: [
                 Flexible(
-                  flex: 10,
+                  flex: 13,
                   fit: FlexFit.tight,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -139,7 +150,7 @@ class _TaskCardPageState extends State<_TaskCardPage> {
                   fit: FlexFit.tight,
                   child: _Title(title: this.widget.task.getTitle()),
                 ),
-                Flexible(flex: 5, child: Container()),
+                Flexible(flex: 3, child: Container()),
                 Flexible(
                   flex: 8,
                   fit: FlexFit.tight,
@@ -148,10 +159,19 @@ class _TaskCardPageState extends State<_TaskCardPage> {
                     task: this.widget.task,
                   ),
                 ),
-                Flexible(flex: 5, child: Container()),
+                Flexible(flex: 3, child: Container()),
               ],
             ),
           ),
+          this.widget.task.getDeadlineDay() != -1
+              ? Positioned(
+                  top: -100,
+                  child: _DeadlineDayInfo(
+                    getCurrentDay: this.widget.getCurrentDay,
+                    finalDay: this.widget.task.getDeadlineDay(),
+                  ),
+                )
+              : Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -174,6 +194,98 @@ class _TaskCardPageState extends State<_TaskCardPage> {
         ],
       ),
     );
+  }
+}
+
+class _DeadlineDayInfo extends StatelessWidget {
+  final Function getCurrentDay;
+  final int finalDay;
+
+  _DeadlineDayInfo({
+    Key key,
+    @required this.getCurrentDay,
+    @required this.finalDay,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    int daysLeft = _calcDaysLeft();
+
+    return Container(
+      padding: EdgeInsets.only(
+        left: 10,
+        right: 10,
+      ),
+      height: 75,
+      width: 300,
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.light
+            ? Theme.of(context).accentColor
+            : Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.all(
+          Radius.circular(15.0),
+        ),
+        border: Border.all(color: Theme.of(context).primaryColor),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            spreadRadius: 1,
+            blurRadius: 1,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Icon(
+              Icons.alarm_outlined,
+              size: 70,
+              color: Theme.of(context).primaryColor.withOpacity(0.3),
+            ),
+          ),
+          Center(
+            child: RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                    text: daysLeft > 0
+                        ? "${AppLocalizations.of(context).timeLeftToCompleteTask}:\n"
+                        : "",
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.headline6.color,
+                      fontSize: 18,
+                    ),
+                  ),
+                  TextSpan(
+                    text: daysLeft > 0
+                        ? "${daysLeft} ${AppLocalizations.of(context).days}"
+                        : daysLeft == 0
+                            ? "${AppLocalizations.of(context).theDeadlineIsToday}."
+                            : "${AppLocalizations.of(context).theDeadlineWas} ${daysLeft.abs()} ${AppLocalizations.of(context).daysAgo}.",
+                    style: TextStyle(
+                      color: daysLeft > 0
+                          ? Theme.of(context).primaryColor
+                          : daysLeft == 0
+                              ? Colors.amber
+                              : Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  int _calcDaysLeft() {
+    return this.finalDay - this.getCurrentDay();
   }
 }
 
