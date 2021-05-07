@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kanbansim/kanban_sim_app.dart';
 
 class FilenameReaderWidget extends StatefulWidget {
   final Function(String) checkIfReadyToSave;
@@ -29,29 +30,34 @@ class _FilenameReaderWidgetState extends State<FilenameReaderWidget> {
 
     return Column(
       children: [
-        TextField(
-          textAlign: TextAlign.left,
-          maxLines: 1,
-          onChanged: (String value) {
-            this.widget.checkIfReadyToSave(value);
-          },
-          onSubmitted: (String value) {
-            this.widget.saveFile(value);
-          },
-          controller: _controller,
-          decoration: new InputDecoration(
-            hintText: AppLocalizations.of(context).enterSaveNameHere,
-            labelText: "${AppLocalizations.of(context).filenameLabel}:",
-            labelStyle: new TextStyle(color: const Color(0xFF424242)),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).primaryColor),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).primaryColor),
-            ),
-            border: UnderlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).primaryColor),
+        IgnorePointer(
+          ignoring: !KanbanSimApp.of(context).isWeb(),
+          child: TextField(
+            textAlign: TextAlign.left,
+            maxLines: 1,
+            onChanged: (String value) {
+              this.widget.checkIfReadyToSave(value);
+            },
+            onSubmitted: (String value) {
+              this.widget.saveFile(value);
+            },
+            controller: _controller,
+            decoration: new InputDecoration(
+              hintText: KanbanSimApp.of(context).isWeb()
+                  ? AppLocalizations.of(context).enterSaveNameHere
+                  : "",
+              labelText: "${AppLocalizations.of(context).filenameLabel}:",
+              labelStyle: new TextStyle(color: const Color(0xFF424242)),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              ),
             ),
           ),
         ),

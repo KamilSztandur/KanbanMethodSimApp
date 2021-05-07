@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:kanbansim/models/User.dart';
 
 class UserCreatorPopup {
@@ -398,36 +399,41 @@ class _UserNameCreatorState extends State<UserNameCreator> {
               color: Colors.white,
             ),
           ),
-          TextField(
-            maxLength: 10,
-            textAlign: TextAlign.left,
-            maxLines: 1,
-            onChanged: (String value) {
-              this.widget.nameChanged(value);
-            },
-            cursorColor: Colors.white,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-            controller: _controller,
-            decoration: InputDecoration(
-              counterStyle: TextStyle(color: Theme.of(context).primaryColor),
-              hintText: AppLocalizations.of(context).enterUserNicknameHere,
-              hintStyle: TextStyle(
-                color: Colors.white.withOpacity(0.5),
+          IgnorePointer(
+            ignoring: !KanbanSimApp.of(context).isWeb(),
+            child: TextField(
+              maxLength: 10,
+              textAlign: TextAlign.left,
+              maxLines: 1,
+              onChanged: (String value) {
+                this.widget.nameChanged(value);
+              },
+              cursorColor: Colors.white,
+              style: TextStyle(
+                color: Colors.white,
               ),
-              labelStyle: new TextStyle(color: const Color(0xFF424242)),
-              enabledBorder: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).primaryColor, width: 2),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).primaryColor, width: 2),
-              ),
-              border: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).primaryColor, width: 2),
+              controller: _controller,
+              decoration: InputDecoration(
+                counterStyle: TextStyle(color: Theme.of(context).primaryColor),
+                hintText: KanbanSimApp.of(context).isWeb()
+                    ? AppLocalizations.of(context).enterUserNicknameHere
+                    : "",
+                hintStyle: TextStyle(
+                  color: Colors.white.withOpacity(0.5),
+                ),
+                labelStyle: new TextStyle(color: const Color(0xFF424242)),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 2),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 2),
+                ),
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 2),
+                ),
               ),
             ),
           ),
