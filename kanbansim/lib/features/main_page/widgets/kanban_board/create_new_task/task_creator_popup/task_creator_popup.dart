@@ -14,7 +14,7 @@ class TaskCreatorPopup {
   final Function getUsers;
 
   TaskCreatorPopup({
-    @required this.getMaxSimDay, 
+    @required this.getMaxSimDay,
     @required this.getCurrentDay,
     @required this.getUsers,
     @required this.taskCreated,
@@ -41,7 +41,7 @@ class _TaskCreatorPage extends StatefulWidget {
   final Function getUsers;
 
   _TaskCreatorPage({
-    @required this.getMaxSimDay, 
+    @required this.getMaxSimDay,
     @required this.getCurrentDay,
     @required this.getUsers,
     @required this.taskCreated,

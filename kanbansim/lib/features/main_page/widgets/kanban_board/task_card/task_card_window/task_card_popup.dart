@@ -78,7 +78,7 @@ class _TaskCardPageState extends State<_TaskCardPage> {
   Widget build(BuildContext context) {
     return Container(
       height: 500,
-      width: 800,
+      width: 700,
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.center,
@@ -165,31 +165,35 @@ class _TaskCardPageState extends State<_TaskCardPage> {
           ),
           this.widget.task.getDeadlineDay() != -1
               ? Positioned(
-                  top: -100,
+                  top: -90,
                   child: _DeadlineDayInfo(
                     getCurrentDay: this.widget.getCurrentDay,
-                    finalDay: this.widget.task.getDeadlineDay(),
+                    task: this.widget.task,
                   ),
                 )
               : Container(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _DeleteTaskButton(
-                task: this.widget.task,
-                deleteTask: this.widget.deleteTask,
-              ),
-              SizedBox(width: 550),
-              _AssignProductivityButton(
-                task: this.widget.task,
-                getUsers: this.widget.getUsers,
-                productivityAssigned: (Task task, User user, int value) {
-                  setState(() {
-                    this.widget.productivityAssigned(task, user, value);
-                  });
-                },
-              ),
-            ],
+          Positioned(
+            bottom: -90,
+            child: _StartAndEndDayInfo(task: this.widget.task),
+          ),
+          Positioned(
+            left: 0,
+            child: _DeleteTaskButton(
+              task: this.widget.task,
+              deleteTask: this.widget.deleteTask,
+            ),
+          ),
+          Positioned(
+            right: 0,
+            child: _AssignProductivityButton(
+              task: this.widget.task,
+              getUsers: this.widget.getUsers,
+              productivityAssigned: (Task task, User user, int value) {
+                setState(() {
+                  this.widget.productivityAssigned(task, user, value);
+                });
+              },
+            ),
           ),
         ],
       ),
@@ -197,20 +201,113 @@ class _TaskCardPageState extends State<_TaskCardPage> {
   }
 }
 
-class _DeadlineDayInfo extends StatelessWidget {
-  final Function getCurrentDay;
-  final int finalDay;
+class _StartAndEndDayInfo extends StatelessWidget {
+  final Task task;
 
-  _DeadlineDayInfo({
+  _StartAndEndDayInfo({
     Key key,
-    @required this.getCurrentDay,
-    @required this.finalDay,
+    @required this.task,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    int daysLeft = _calcDaysLeft();
+    return Container(
+      height: 75,
+      width: 500,
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.light
+            ? Theme.of(context).accentColor
+            : Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.all(
+          Radius.circular(15.0),
+        ),
+        border: Border.all(color: Theme.of(context).primaryColor),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            spreadRadius: 1,
+            blurRadius: 1,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(flex: 1, child: Container()),
+          Flexible(
+            flex: 10,
+            child: _DayInfo(
+              title: AppLocalizations.of(context).taskStartDay,
+              info: this.task.startDay.toString(),
+            ),
+          ),
+          Flexible(flex: 1, child: Container()),
+          Flexible(
+            flex: 10,
+            child: _DayInfo(
+              title: AppLocalizations.of(context).taskEndDay,
+              info: this.task.endDay.toString(),
+            ),
+          ),
+          Flexible(flex: 1, child: Container()),
+        ],
+      ),
+    );
+  }
+}
 
+class _DayInfo extends StatelessWidget {
+  final String title;
+  final String info;
+
+  _DayInfo({
+    Key key,
+    @required this.title,
+    @required this.info,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+            text: "${this.title}:\n",
+            style: TextStyle(
+              color: Theme.of(context).textTheme.headline6.color,
+              fontSize: 18,
+            ),
+          ),
+          TextSpan(
+            text: this.info == "null"
+                ? AppLocalizations.of(context).empty
+                : this.info,
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ],
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
+class _DeadlineDayInfo extends StatelessWidget {
+  final Function getCurrentDay;
+  final Task task;
+
+  _DeadlineDayInfo({
+    Key key,
+    @required this.getCurrentDay,
+    @required this.task,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
         left: 10,
@@ -248,33 +345,7 @@ class _DeadlineDayInfo extends StatelessWidget {
           Center(
             child: RichText(
               text: TextSpan(
-                children: <TextSpan>[
-                  TextSpan(
-                    text: daysLeft > 0
-                        ? "${AppLocalizations.of(context).timeLeftToCompleteTask}:\n"
-                        : "",
-                    style: TextStyle(
-                      color: Theme.of(context).textTheme.headline6.color,
-                      fontSize: 18,
-                    ),
-                  ),
-                  TextSpan(
-                    text: daysLeft > 0
-                        ? "${daysLeft} ${AppLocalizations.of(context).days}"
-                        : daysLeft == 0
-                            ? "${AppLocalizations.of(context).theDeadlineIsToday}."
-                            : "${AppLocalizations.of(context).theDeadlineWas} ${daysLeft.abs()} ${AppLocalizations.of(context).daysAgo}.",
-                    style: TextStyle(
-                      color: daysLeft > 0
-                          ? Theme.of(context).primaryColor
-                          : daysLeft == 0
-                              ? Colors.amber
-                              : Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
+                children: _getInfo(context),
               ),
               textAlign: TextAlign.center,
             ),
@@ -285,7 +356,100 @@ class _DeadlineDayInfo extends StatelessWidget {
   }
 
   int _calcDaysLeft() {
-    return this.finalDay - this.getCurrentDay();
+    return this.task.getDeadlineDay() - this.getCurrentDay();
+  }
+
+  List<TextSpan> _getInfo(BuildContext context) {
+    int daysLeft = _calcDaysLeft();
+
+    if (this.task.endDay != null) {
+      int days = this.task.getDeadlineDay() - this.task.endDay;
+
+      if (days > 0) {
+        return <TextSpan>[
+          TextSpan(
+            text:
+                "${AppLocalizations.of(context).taskCompleted} $days ${AppLocalizations.of(context).daysBeforeDeadline}.",
+            style: TextStyle(
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ];
+      } else if (days == 0) {
+        return <TextSpan>[
+          TextSpan(
+            text:
+                "${AppLocalizations.of(context).taskCompleted} ${AppLocalizations.of(context).atDeadline}.",
+            style: TextStyle(
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ];
+      } else {
+        return <TextSpan>[
+          TextSpan(
+            text:
+                "${AppLocalizations.of(context).taskCompleted} ${daysLeft.abs()} ${AppLocalizations.of(context).daysAfterDeadline}.",
+            style: TextStyle(
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ];
+      }
+    } else {
+      if (daysLeft > 0) {
+        return <TextSpan>[
+          TextSpan(
+            text: "${AppLocalizations.of(context).timeLeftToCompleteTask}:\n",
+            style: TextStyle(
+              color: Theme.of(context).textTheme.headline6.color,
+              fontSize: 18,
+            ),
+          ),
+          TextSpan(
+            text: "${daysLeft} ${AppLocalizations.of(context).days}",
+            style: TextStyle(
+              color: daysLeft > 0
+                  ? Theme.of(context).primaryColor
+                  : daysLeft == 0
+                      ? Colors.amber
+                      : Colors.red,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ];
+      } else if (daysLeft == 0) {
+        return <TextSpan>[
+          TextSpan(
+            text: "${AppLocalizations.of(context).theDeadlineIsToday}.",
+            style: TextStyle(
+              color: Colors.orange,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ];
+      } else {
+        return <TextSpan>[
+          TextSpan(
+            text:
+                "${AppLocalizations.of(context).theDeadlineWas} ${daysLeft.abs()} ${AppLocalizations.of(context).daysAgo}.",
+            style: TextStyle(
+              color: Colors.red,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ];
+      }
+    }
   }
 }
 
