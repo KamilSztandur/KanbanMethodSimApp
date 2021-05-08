@@ -96,6 +96,7 @@ class _AssignProductivityWindowState extends State<_AssignProductivityWindow> {
                       });
                       _checkIfReadyToAssign();
                     },
+                    ownerName: this.widget.task.owner.getName(),
                   ),
                 ),
                 Flexible(flex: 1, fit: FlexFit.tight, child: Container()),
