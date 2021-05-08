@@ -410,7 +410,7 @@ class _UserNameCreatorState extends State<UserNameCreator> {
             ),
           ),
           IgnorePointer(
-            ignoring: KanbanSimApp.of(context).isWeb(),
+            ignoring: !KanbanSimApp.of(context).isWeb(),
             child: TextField(
               maxLength: 10,
               textAlign: TextAlign.left,
