@@ -33,7 +33,12 @@ class KanbanColumnState extends State<KanbanColumn> {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          _HeadLine(title: widget.title, isInternal: widget.isInternal),
+          _HeadLine(
+            title: widget.title,
+            isInternal: widget.isInternal,
+            limit: this.widget.tasksLimit,
+            tasksAmount: this.widget.tasks.length,
+          ),
           ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: MediaQuery.of(context).size.height * 0.35,
@@ -106,46 +111,57 @@ class KanbanColumnState extends State<KanbanColumn> {
 class _HeadLine extends StatelessWidget {
   final String title;
   final bool isInternal;
+  final int limit;
+  final int tasksAmount;
 
   _HeadLine({
     Key key,
     @required this.title,
     @required this.isInternal,
+    @required this.limit,
+    @required this.tasksAmount,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Flexible(
-          flex: 1,
-          fit: FlexFit.tight,
-          child: Container(
-            height: 50,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                stops: [0.0, 0.8],
-                tileMode: TileMode.clamp,
-                colors: [
-                  Colors.blueAccent.shade200,
-                  Colors.blueAccent.shade400,
-                ],
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          stops: [0.0, 0.8],
+          tileMode: TileMode.clamp,
+          colors: [
+            Colors.blueAccent.shade200,
+            Colors.blueAccent.shade400,
+          ],
+        ),
+        borderRadius: this.isInternal
+            ? BorderRadius.zero
+            : BorderRadius.only(
+                topLeft: Radius.circular(100.0),
+                topRight: Radius.circular(100.0),
               ),
-              borderRadius: this.isInternal
-                  ? BorderRadius.zero
-                  : BorderRadius.only(
-                      topLeft: Radius.circular(100.0),
-                      topRight: Radius.circular(100.0),
-                    ),
-            ),
+      ),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.center,
             child: _Title(title: this.title),
           ),
-        ),
-      ],
+          Positioned(
+            top: 10,
+            right: 30,
+            child: this.limit == null
+                ? Container()
+                : _LimitInfo(
+                    limit: this.limit,
+                    tasksAmount: this.tasksAmount,
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -289,5 +305,38 @@ class _TaskColumn extends StatelessWidget {
     }
 
     return column;
+  }
+}
+
+class _LimitInfo extends StatelessWidget {
+  final int limit;
+  final int tasksAmount;
+
+  _LimitInfo({
+    Key key,
+    @required this.limit,
+    @required this.tasksAmount,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: Text(
+        '$tasksAmount/$limit',
+        style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+        textAlign: TextAlign.center,
+      ),
+      width: 40,
+      height: 30,
+      decoration: BoxDecoration(
+        color: Theme.of(context).accentColor.withOpacity(0.3),
+        border: Border.all(color: Colors.white),
+      ),
+    );
   }
 }

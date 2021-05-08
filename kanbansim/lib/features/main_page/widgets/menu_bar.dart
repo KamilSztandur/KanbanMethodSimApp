@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
 import 'package:kanbansim/features/input_output_popups/save_file_popup.dart';
+import 'package:kanbansim/features/main_page/widgets/modify_column_limits_popup.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:kanbansim/features/window_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
@@ -13,6 +14,12 @@ class MainMenuBar extends StatelessWidget {
   final VoidCallback clearAllTasks;
   final Function(String) loadSimStateFromFilePath;
   final Function(String) loadSimStateFromFileContent;
+  final Function(int) stageOneInProgressLimitChanged;
+  final Function(int) stageOneDoneLimitChanged;
+  final Function(int) stageTwoLimitChanged;
+  final Function getStageOneInProgressLimit;
+  final Function getStageOneDoneLimit;
+  final Function getStageTwoLimit;
   final Function getCurrentDay;
   final Function getAllUsers;
   final Function getAllTasks;
@@ -23,6 +30,12 @@ class MainMenuBar extends StatelessWidget {
     @required this.clearAllTasks,
     @required this.loadSimStateFromFilePath,
     @required this.loadSimStateFromFileContent,
+    @required this.stageTwoLimitChanged,
+    @required this.stageOneInProgressLimitChanged,
+    @required this.stageOneDoneLimitChanged,
+    @required this.getStageTwoLimit,
+    @required this.getStageOneInProgressLimit,
+    @required this.getStageOneDoneLimit,
     @required this.getCurrentDay,
     @required this.getAllTasks,
     @required this.getAllUsers,
@@ -52,6 +65,12 @@ class MainMenuBar extends StatelessWidget {
             loadSimStateFromFileContent: this.loadSimStateFromFileContent,
             getAllUsers: this.getAllUsers,
             getAllTasks: this.getAllTasks,
+            getStageOneInProgressLimit: this.getStageOneInProgressLimit,
+            getStageTwoLimit: this.getStageTwoLimit,
+            stageOneInProgressLimitChanged: this.stageOneInProgressLimitChanged,
+            stageTwoLimitChanged: this.stageTwoLimitChanged,
+            getStageOneDoneLimit: this.getStageOneDoneLimit,
+            stageOneDoneLimitChanged: this.stageOneDoneLimitChanged,
           ),
         ],
       ),
@@ -64,6 +83,12 @@ class _ToolBar extends StatelessWidget {
   final VoidCallback clearAllTasks;
   final Function(String) loadSimStateFromFilePath;
   final Function(String) loadSimStateFromFileContent;
+  final Function(int) stageOneInProgressLimitChanged;
+  final Function(int) stageOneDoneLimitChanged;
+  final Function(int) stageTwoLimitChanged;
+  final Function getStageOneInProgressLimit;
+  final Function getStageOneDoneLimit;
+  final Function getStageTwoLimit;
   final Function getCurrentDay;
   final Function getAllUsers;
   final Function getAllTasks;
@@ -77,6 +102,12 @@ class _ToolBar extends StatelessWidget {
     @required this.clearAllTasks,
     @required this.loadSimStateFromFilePath,
     @required this.loadSimStateFromFileContent,
+    @required this.stageTwoLimitChanged,
+    @required this.stageOneDoneLimitChanged,
+    @required this.stageOneInProgressLimitChanged,
+    @required this.getStageTwoLimit,
+    @required this.getStageOneInProgressLimit,
+    @required this.getStageOneDoneLimit,
     @required this.getCurrentDay,
     @required this.getAllTasks,
     @required this.getAllUsers,
@@ -177,6 +208,24 @@ class _ToolBar extends StatelessWidget {
             SubtleMessage.messageWithContext(
               context,
               AppLocalizations.of(context).resetSessionSuccess,
+            );
+          },
+        ),
+        MenuItem(
+          title: AppLocalizations.of(context).limits,
+          icon: Icons.list,
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => ModifyColumnLimitsPopup(
+                stageOneInProgressLimitChanged:
+                    this.stageOneInProgressLimitChanged,
+                stageOneDoneLimitChanged: this.stageOneDoneLimitChanged,
+                stageTwoLimitChanged: this.stageTwoLimitChanged,
+                stageOneInProgressLimit: this.getStageOneInProgressLimit(),
+                stageOneDoneLimit: this.getStageOneDoneLimit(),
+                stageTwoLimit: this.getStageTwoLimit(),
+              ).show(context),
             );
           },
         ),

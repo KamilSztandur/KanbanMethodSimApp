@@ -30,6 +30,7 @@ dependencies:
   bitsdojo_window: ^0.1.0
   syncfusion_flutter_sliders: ^19.1.55-beta
   flutter_material_color_picker: ^1.0.5
+  cupertino_icons: ^1.0.3
 
 dev_dependencies:
   flutter_test:

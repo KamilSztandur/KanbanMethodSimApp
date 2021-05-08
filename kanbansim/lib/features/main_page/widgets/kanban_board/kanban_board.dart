@@ -9,14 +9,17 @@ import 'package:kanbansim/models/User.dart';
 
 class KanbanBoard extends StatefulWidget {
   final Function(Task, User, int) productivityAssigned;
+  final Function(Task) deleteMe;
+  final Function(Task) taskCreated;
   final Function taskUnlocked;
   final Function getMaxSimDay;
   final Function getCurrentDay;
   final Function getUsers;
   final Function getFinalDay;
-  final Function(Task) taskCreated;
   final Function getAllTasks;
-  final Function(Task) deleteMe;
+  final Function getStageOneInProgressLimit;
+  final Function getStageOneDoneLimit;
+  final Function getStageTwoLimit;
 
   KanbanBoard({
     Key key,
@@ -29,6 +32,9 @@ class KanbanBoard extends StatefulWidget {
     @required this.getCurrentDay,
     @required this.getFinalDay,
     @required this.getUsers,
+    @required this.getStageOneInProgressLimit,
+    @required this.getStageOneDoneLimit,
+    @required this.getStageTwoLimit,
   }) : super(key: key);
 
   @override
@@ -85,6 +91,8 @@ class KanbanBoardState extends State<KanbanBoard> {
             getUsers: this.widget.getUsers,
             getCurrentDay: this.widget.getCurrentDay,
             getMaxSimDay: this.widget.getMaxSimDay,
+            getStageOneInProgressLimit: this.widget.getStageOneInProgressLimit,
+            getStageOneDoneLimit: this.widget.getStageOneDoneLimit,
             switchTasks: this._switchTasks,
             parseTaskCardsList: (List<Task> tasks) {
               return this._parseTaskCardsList(tasks);
@@ -109,11 +117,13 @@ class KanbanBoardState extends State<KanbanBoard> {
                   columnName: "stage two",
                   moveTask: this._switchTasks,
                   getAllUsers: this.widget.getUsers,
-                  ownerSet: () => setState(() {}),
+                  ownerSet: () => setState(() {
+                    // Update widgets
+                  }),
                 ).show(),
               );
             },
-            tasksLimit: 3,
+            tasksLimit: this.widget.getStageTwoLimit(),
             tasks:
                 _parseTaskCardsList(widget.getAllTasks().stageTwoTasksColumn),
           ),
@@ -270,6 +280,8 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
   final VoidCallback ownerSet;
   final Function(String, int) switchTasks;
   final Function(List<Task>) parseTaskCardsList;
+  final Function getStageOneInProgressLimit;
+  final Function getStageOneDoneLimit;
   final Function getMaxSimDay;
   final Function getCurrentDay;
   final Function getAllTasks;
@@ -279,6 +291,8 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
 
   _StageOneTasksDoubleColumn({
     Key key,
+    @required this.getStageOneInProgressLimit,
+    @required this.getStageOneDoneLimit,
     @required this.getAllTasks,
     @required this.getUsers,
     @required this.getMaxSimDay,
@@ -380,7 +394,7 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                             ).show(),
                           );
                         },
-                        tasksLimit: 3,
+                        tasksLimit: this.getStageOneInProgressLimit(),
                         tasks: this.parseTaskCardsList(this.inProgressTasks),
                       ),
                     ),
@@ -395,6 +409,7 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                           this.switchTasks("stage one done", task.getID());
                         },
                         tasks: this.parseTaskCardsList(this.doneTasks),
+                        tasksLimit: this.getStageOneDoneLimit(),
                       ),
                     ),
                   ],
