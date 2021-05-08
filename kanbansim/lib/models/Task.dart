@@ -92,7 +92,9 @@ class Task {
   }
 
   void unlockWith(User user) {
-    user.decreaseProductivity(this._productivityRequiredToUnlock);
+    user.decreaseProductivity(
+      this.getProductivityRequiredToUnlockForUser(user.getID()),
+    );
     this.unlock();
   }
 
@@ -135,6 +137,14 @@ class Task {
 
   int getProductivityRequiredToUnlock() {
     return this._productivityRequiredToUnlock;
+  }
+
+  int getProductivityRequiredToUnlockForUser(int userID) {
+    if (this.owner.getID() == userID) {
+      return this._productivityRequiredToUnlock;
+    } else {
+      return (0.5 * this._productivityRequiredToUnlock).ceil();
+    }
   }
 
   String getTitle() {

@@ -110,9 +110,11 @@
     "unlockThisTaskFirst": "Unlock this task first.",
     "assignProductivity": "Assign productivity.",
     "deleteTask": "Delete this task.",
-    "isOwnerOfThisTask": "is owner of this task.",
+    "isOwnerOfThisTask": "is owner of this task",
     "clickHereToUnlock": "click here to unlock this task.",
     "taskUnlocked": "Task is unlocked.",
+    "owner_CAP": "OWNER",
+    "doubleCost": "Double cost", 
 
     "cannotAssignProductivityFromThisUser": "Cannot assign productivity from this user.",
     "productivityAvailableFromThisUser": "Productivity available from this user",
