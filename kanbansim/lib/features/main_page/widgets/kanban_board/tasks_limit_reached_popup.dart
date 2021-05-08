@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TasksLimitReachedPopup {
-  Widget show(String columnName, int limit) {
+  Widget show(String columnName, int currentAmount, int limit) {
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: EdgeInsets.all(10),
@@ -10,6 +10,7 @@ class TasksLimitReachedPopup {
       child: _TasksLimitWarningWindow(
         columnName: columnName,
         limit: limit,
+        currentAmount: currentAmount,
       ),
     );
   }
@@ -17,11 +18,13 @@ class TasksLimitReachedPopup {
 
 class _TasksLimitWarningWindow extends StatelessWidget {
   final String columnName;
+  final int currentAmount;
   final int limit;
 
   _TasksLimitWarningWindow({
     Key key,
     @required this.columnName,
+    @required this.currentAmount,
     @required this.limit,
   }) : super(key: key);
 
@@ -43,7 +46,11 @@ class _TasksLimitWarningWindow extends StatelessWidget {
               _CloseButton(),
             ],
           ),
-          _TextLabel(columnName: columnName, limit: limit),
+          _TextLabel(
+            columnName: columnName,
+            limit: limit,
+            currentAmount: this.currentAmount,
+          ),
           SizedBox(height: 27),
         ],
       ),
@@ -53,11 +60,13 @@ class _TasksLimitWarningWindow extends StatelessWidget {
 
 class _TextLabel extends StatelessWidget {
   final String columnName;
+  final int currentAmount;
   final int limit;
 
   _TextLabel({
     Key key,
     @required this.columnName,
+    @required this.currentAmount,
     @required this.limit,
   }) : super(key: key);
 
@@ -90,7 +99,7 @@ class _TextLabel extends StatelessWidget {
           ),
           TextSpan(
             text:
-                "${AppLocalizations.of(context).tasksLimitReached} ($limit/$limit).\n",
+                "${AppLocalizations.of(context).tasksLimitReached} ($currentAmount/$limit).\n",
             style: TextStyle(
               color: Theme.of(context).textTheme.headline6.color,
               fontSize: 14,

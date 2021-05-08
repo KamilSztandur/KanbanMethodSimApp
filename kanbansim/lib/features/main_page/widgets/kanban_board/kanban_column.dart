@@ -88,6 +88,7 @@ class KanbanColumnState extends State<KanbanColumn> {
                       builder: (BuildContext context) =>
                           TasksLimitReachedPopup().show(
                         this.widget.title,
+                        this.widget.tasks.length,
                         this.widget.tasksLimit,
                       ),
                     );
