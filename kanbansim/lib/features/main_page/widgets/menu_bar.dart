@@ -16,7 +16,7 @@ class MainMenuBar extends StatelessWidget {
   final Function getCurrentDay;
   final Function getAllUsers;
   final Function getAllTasks;
-  
+
   MainMenuBar({
     Key key,
     @required this.addRandomTasks,
@@ -68,7 +68,6 @@ class _ToolBar extends StatelessWidget {
   final Function getAllUsers;
   final Function getAllTasks;
 
-
   LoadFilePopup pickFilePopup;
   SaveFilePopup saveFilePopup;
 
@@ -84,21 +83,18 @@ class _ToolBar extends StatelessWidget {
   }) : super(key: key);
 
   void _initializeFilePickerPopup() {
-    pickFilePopup = LoadFilePopup(
-      returnPickedFilepath: (String filePath) {
-        this.loadSimStateFromFilePath(filePath);
-      },
-      returnPickedFileContent: (String content) {
-        this.loadSimStateFromFileContent(content);
-      }
-    );
+    pickFilePopup = LoadFilePopup(returnPickedFilepath: (String filePath) {
+      this.loadSimStateFromFilePath(filePath);
+    }, returnPickedFileContent: (String content) {
+      this.loadSimStateFromFileContent(content);
+    });
   }
 
   void _initializeFileSaverPopup() {
     saveFilePopup = SaveFilePopup(
       getCurrentDay: this.getCurrentDay,
       getAllTasks: this.getAllTasks,
-      getAllUsers: this.getAllUsers, 
+      getAllUsers: this.getAllUsers,
     );
   }
 
@@ -210,7 +206,6 @@ class _ToolBar extends StatelessWidget {
                   AppLocalizations.of(context).langSwitchSuccess,
                 );
               },
-              children: [],
             ),
             MenuItem(
               title: AppLocalizations.of(context).polishLang,
@@ -222,7 +217,6 @@ class _ToolBar extends StatelessWidget {
                   AppLocalizations.of(context).langSwitchSuccess,
                 );
               },
-              children: [],
             ),
           ],
         ),
