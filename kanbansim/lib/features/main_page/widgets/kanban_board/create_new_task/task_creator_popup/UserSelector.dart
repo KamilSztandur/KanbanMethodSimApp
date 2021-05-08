@@ -5,6 +5,7 @@ import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_tas
 class UserSelector extends StatefulWidget {
   final Function(String) updateSelectedUserName;
   final List<String> names;
+  final String ownerName;
   final String initialUserName;
   final double subWidth;
 
@@ -13,6 +14,7 @@ class UserSelector extends StatefulWidget {
     @required this.subWidth,
     @required this.updateSelectedUserName,
     @required this.names,
+    @required this.ownerName,
     @required this.initialUserName,
   }) : super(key: key);
   @override
@@ -55,12 +57,42 @@ class UserSelectorState extends State<UserSelector> {
             items: widget.names.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: value,
+                        style: TextStyle(
+                          color: _isOwner(value)
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).textTheme.bodyText1.color,
+                        ),
+                      ),
+                    ),
+                    _isOwner(value)
+                        ? RichText(
+                            text: TextSpan(
+                              text: AppLocalizations.of(context).owner_CAP,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10,
+                              ),
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
               );
             }).toList(),
           ),
         ],
       ),
     );
+  }
+
+  bool _isOwner(String name) {
+    return this.widget.ownerName == name;
   }
 }
