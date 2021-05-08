@@ -47,7 +47,7 @@ class _LockStatusState extends State<_LockStatus> {
   int _neededProductivity;
   bool _readyToUnlock;
   double _cornerRadius = 35;
-  double _height = 400;
+  double _height = 415;
   double _width = 350;
 
   void _unlockTask() {
@@ -66,14 +66,14 @@ class _LockStatusState extends State<_LockStatus> {
     List<User> users = this.widget.getUsers();
     List<String> usersNames = <String>[];
 
-    int minProductivity = widget.task.getProductivityRequiredToUnlock();
-
     int length = users.length;
     for (int i = 0; i < length; i++) {
-      if (users[i].getID() != widget.task.owner.getID()) {
-        if (users[i].getProductivity() >= minProductivity) {
-          usersNames.add(users[i].getName());
-        }
+      int minProductivity = widget.task.getProductivityRequiredToUnlockForUser(
+        users[i].getID(),
+      );
+
+      if (users[i].getProductivity() >= minProductivity.ceil()) {
+        usersNames.add(users[i].getName());
       }
     }
 
@@ -122,12 +122,65 @@ class _LockStatusState extends State<_LockStatus> {
     );
   }
 
+  void _setDefaultSelectedUserValue() {
+    List<String> names = _getAvailableUsersNames();
+    if (names.length != 0) {
+      if (_selectedValue == null) {
+        _selectedValue = names[0];
+      }
+
+      this._readyToUnlock = true;
+    } else {
+      String empty = AppLocalizations.of(context).empty;
+      names.add(empty);
+      _selectedValue = empty;
+      this._readyToUnlock = false;
+    }
+  }
+
   Widget _buildRequirementsInfo() {
-    _neededProductivity = widget.task.getProductivityRequiredToUnlock();
+    _setDefaultSelectedUserValue();
+
+    if (_getUserWithNameOf(_selectedValue) == null) {
+      _neededProductivity = widget.task.getProductivityRequiredToUnlock();
+    } else if (_selectedValue == AppLocalizations.of(context).empty) {
+      _neededProductivity = -1;
+    } else {
+      _neededProductivity = widget.task.getProductivityRequiredToUnlockForUser(
+        _getUserWithNameOf(_selectedValue).getID(),
+      );
+    }
+
     Color color = Colors.red;
 
     return Column(
       children: [
+        this._selectedValue == this.widget.task.owner.getName()
+            ? RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "${AppLocalizations.of(context).doubleCost}: ",
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text:
+                          "$_selectedValue ${AppLocalizations.of(context).isOwnerOfThisTask}",
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Container(),
+        SizedBox(height: 5),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -160,19 +213,6 @@ class _LockStatusState extends State<_LockStatus> {
 
   Widget _buildDropDownList() {
     List<String> names = _getAvailableUsersNames();
-    if (names.length != 0) {
-      if (_selectedValue == null) {
-        _selectedValue = names[0];
-      }
-
-      this._readyToUnlock = true;
-    } else {
-      String empty = AppLocalizations.of(context).empty;
-      names.add(empty);
-      _selectedValue = empty;
-      this._readyToUnlock = false;
-    }
-
     return DropdownButton<String>(
       value: _selectedValue,
       icon: const Icon(Icons.account_circle_outlined),
@@ -187,12 +227,50 @@ class _LockStatusState extends State<_LockStatus> {
           _selectedValue = newValue;
         });
       },
-      items: names.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+      items: names.length == 0
+          ? [
+              DropdownMenuItem<String>(
+                value: AppLocalizations.of(context).empty,
+                child: Text(AppLocalizations.of(context).empty),
+              ),
+            ]
+          : names.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "$value",
+                            style: TextStyle(
+                              color: this.widget.task.owner.getName() == value
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context).textTheme.headline6.color,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: this.widget.task.owner.getName() == value
+                          ? TextSpan(
+                              text: AppLocalizations.of(context).owner_CAP,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : TextSpan(),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
     );
   }
 
@@ -287,7 +365,7 @@ class _LockStatusState extends State<_LockStatus> {
                   child: Container(),
                 ),
                 Flexible(
-                  flex: 2,
+                  flex: 3,
                   child: _buildRequirementsInfo(),
                 ),
                 Flexible(
