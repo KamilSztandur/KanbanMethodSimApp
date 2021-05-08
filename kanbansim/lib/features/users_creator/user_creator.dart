@@ -6,11 +6,13 @@ import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:kanbansim/models/User.dart';
 
 class UserCreatorPopup {
+  final Function(String) isNameAlreadyTaken;
   final Function(User) userCreated;
   final List<ColorSwatch<dynamic>> availableColors;
   final List<String> availableNames;
 
   UserCreatorPopup({
+    @required this.isNameAlreadyTaken,
     @required this.userCreated,
     @required this.availableColors,
     @required this.availableNames,
@@ -22,6 +24,7 @@ class UserCreatorPopup {
       insetPadding: EdgeInsets.all(10),
       elevation: 0,
       child: _UserCreator(
+        isNameAlreadyTaken: this.isNameAlreadyTaken,
         userCreated: this.userCreated,
         availableColors: this.availableColors,
         availableNames: this.availableNames,
@@ -31,12 +34,14 @@ class UserCreatorPopup {
 }
 
 class _UserCreator extends StatefulWidget {
+  final Function(String) isNameAlreadyTaken;
   final Function(User) userCreated;
   final List<ColorSwatch<dynamic>> availableColors;
   final List<String> availableNames;
 
   _UserCreator({
     Key key,
+    @required this.isNameAlreadyTaken,
     @required this.userCreated,
     @required this.availableColors,
     @required this.availableNames,
@@ -81,6 +86,7 @@ class _UserCreatorState extends State<_UserCreator> {
           SizedBox(height: 15),
           UserNameCreator(
             possibleNames: this.widget.availableNames,
+            isNameAlreadyTaken: this.widget.isNameAlreadyTaken,
             nameChanged: (String name) {
               setState(() {
                 this._name = name;
@@ -129,6 +135,8 @@ class _UserCreatorState extends State<_UserCreator> {
 
   bool _isReadyToCreate() {
     if (this._name == null || this._name == "") {
+      return false;
+    } else if (this.widget.isNameAlreadyTaken(this._name)) {
       return false;
     } else if (this._color == null) {
       return false;
@@ -365,11 +373,13 @@ class _ProductivitySwitchState extends State<_ProductivitySwitch> {
 }
 
 class UserNameCreator extends StatefulWidget {
+  final Function(String) isNameAlreadyTaken;
   final Function(String) nameChanged;
   final List<String> possibleNames;
 
   UserNameCreator({
     Key key,
+    @required this.isNameAlreadyTaken,
     @required this.nameChanged,
     @required this.possibleNames,
   }) : super(key: key);
@@ -388,7 +398,7 @@ class _UserNameCreatorState extends State<UserNameCreator> {
     }
 
     return Container(
-      width: 290,
+      width: 350,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -400,7 +410,7 @@ class _UserNameCreatorState extends State<UserNameCreator> {
             ),
           ),
           IgnorePointer(
-            ignoring: !KanbanSimApp.of(context).isWeb(),
+            ignoring: KanbanSimApp.of(context).isWeb(),
             child: TextField(
               maxLength: 10,
               textAlign: TextAlign.left,
@@ -438,23 +448,23 @@ class _UserNameCreatorState extends State<UserNameCreator> {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(
-                flex: 4,
-                child: TextButton(
-                  onPressed: () {
-                    _generateNameAutomatically();
-                  },
-                  child: Text(
-                    AppLocalizations.of(context).generateAutomatically,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                    ),
+              TextButton(
+                onPressed: () {
+                  _generateNameAutomatically();
+                },
+                child: Text(
+                  AppLocalizations.of(context).generateAutomatically,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
+              this.widget.isNameAlreadyTaken(_controller.text)
+                  ? _NameAlreadyTakenWarning()
+                  : Container(),
             ],
           ),
         ],
@@ -466,6 +476,18 @@ class _UserNameCreatorState extends State<UserNameCreator> {
     int randIndex = Random().nextInt(this.widget.possibleNames.length);
     this._controller.text = this.widget.possibleNames[randIndex];
     this.widget.nameChanged(this._controller.text);
+  }
+}
+
+class _NameAlreadyTakenWarning extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "${AppLocalizations.of(context).usernameIsAlreadyTakenWarning}.",
+      style: TextStyle(
+        color: Colors.red,
+      ),
+    );
   }
 }
 

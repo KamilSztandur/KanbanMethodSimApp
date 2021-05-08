@@ -109,6 +109,13 @@ class _UsersCreatorState extends State<_UsersCreator> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) => UserCreatorPopup(
+                  isNameAlreadyTaken: (String name) {
+                    int indexWithThisName = this.data.indexWhere(
+                          (User user) => user.getName() == name,
+                        );
+
+                    return indexWithThisName != -1;
+                  },
                   userCreated: (User createdUser) {
                     setState(() {
                       this.availableColors.remove(createdUser.getColor());
@@ -263,9 +270,11 @@ class _UsersListState extends State<_UsersList> {
     int unfilled = this.widget.limit - filled;
     if (unfilled > 0) {
       list.add(_UserBox(
-          specialAction: _AddNewUserButton(
-        addNewUserBtnClicked: this.widget.addNewUserBtnClicked,
-      )));
+        specialAction: _AddNewUserButton(
+          addNewUserBtnClicked: this.widget.addNewUserBtnClicked,
+        ),
+        deleteMeFromList: null,
+      ));
 
       for (int i = 1; i < unfilled; i++) {
         list.add(SizedBox(width: 10));

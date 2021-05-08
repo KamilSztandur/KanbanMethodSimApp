@@ -151,6 +151,7 @@
     "chooseProductivity": "Wybierz produktywność członka zespołu",
     "chooseUserNickname": "Wybierz pseudonim członka zespołu",
     "enterUserNicknameHere": "Wpisz tutaj pseudonim członka zespołu",
+    "usernameIsAlreadyTakenWarning" : "Nazwa jest już zajęta",
 
     "timeLeftToCompleteTask": "Na wykonanie zadania pozostało",
     "days": "dni",

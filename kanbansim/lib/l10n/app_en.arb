@@ -150,6 +150,7 @@
     "chooseProductivity": "Choose team member's productivity",
     "chooseUserNickname": "Choose team member's nickname",
     "enterUserNicknameHere": "Enter nickname here",
+    "usernameIsAlreadyTakenWarning" : "Name is already taken",
 
     "timeLeftToCompleteTask": "Time left to complete task",
     "days": "days",
