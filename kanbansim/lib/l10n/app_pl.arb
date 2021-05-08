@@ -14,6 +14,7 @@
     "langSwitch": "Zmień język",
     "polishLang": "Język polski",
     "englishLang": "Język angielski",
+    "limits": "Limity",
     "help": "Pomoc",
     "info": "Informacje",
     "shareApp": "Udostępnij",
@@ -160,5 +161,9 @@
     "taskCompleted": "Zadanie ukończone",
     "daysBeforeDeadline": "dni przed terminem",
     "atDeadline": "w dniu terminu",
-    "daysAfterDeadline": "dni po terminie"
+    "daysAfterDeadline": "dni po terminie",
+
+    "modifyTasksLimits": "ZMODYFIKUJ LIMITY ZADAŃ",
+    "discard": "Porzuć",
+    "setLimitFor": "Ustaw limit dla"
 }

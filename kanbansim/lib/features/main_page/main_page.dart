@@ -43,6 +43,10 @@ class _MainPageState extends State<MainPage> {
   final int MAX_DAY = 25;
   int currentDay;
 
+  int stageOneInProgressColumnLimit;
+  int stageOneDoneColumnLimit;
+  int stageTwoColumnLimit;
+
   void _restoreUsersProductivities() {
     int n = this.currentUsers.length;
     for (int i = 0; i < n; i++) {
@@ -149,6 +153,24 @@ class _MainPageState extends State<MainPage> {
           this.dayStatus.updateCurrentDay(this.currentDay);
         });
       },
+      getStageOneInProgressLimit: () => this.stageOneInProgressColumnLimit,
+      getStageTwoLimit: () => this.stageTwoColumnLimit,
+      stageOneInProgressLimitChanged: (int newLimit) {
+        setState(() {
+          this.stageOneInProgressColumnLimit = newLimit;
+        });
+      },
+      stageTwoLimitChanged: (int newLimit) {
+        setState(() {
+          this.stageTwoColumnLimit = newLimit;
+        });
+      },
+      getStageOneDoneLimit: () => this.stageOneDoneColumnLimit,
+      stageOneDoneLimitChanged: (int newLimit) {
+        setState(() {
+          this.stageOneDoneColumnLimit = newLimit;
+        });
+      },
     );
   }
 
@@ -204,6 +226,9 @@ class _MainPageState extends State<MainPage> {
           );
         });
       },
+      getStageOneInProgressLimit: () => this.stageOneInProgressColumnLimit,
+      getStageTwoLimit: () => this.stageTwoColumnLimit,
+      getStageOneDoneLimit: () => this.stageOneDoneColumnLimit,
     );
   }
 
