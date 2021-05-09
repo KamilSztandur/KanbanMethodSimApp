@@ -304,10 +304,9 @@ class _MainPageState extends State<MainPage> {
         body: WindowBorder(
           color: Theme.of(context).primaryColor,
           width: 1,
-          child: ListView(
+          child: Column(
             children: [
               menuBar,
-              SizedBox(width: 10),
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -356,7 +355,11 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               Container(
-                height: (MediaQuery.of(context).size.height) * 0.72,
+                height: MediaQuery.of(context).size.height -
+                    (180 +
+                        (KanbanSimApp.of(context).isWeb()
+                            ? 0
+                            : 33)), // status bar + appbar
                 child: ScrollBar(
                   child: kanbanBoard,
                 ),
