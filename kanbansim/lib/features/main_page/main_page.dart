@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kanbansim/common/savefile_parsers/savefile_reader.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
 import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
-import 'package:kanbansim/features/main_page/widgets/story_logs/story_panel.dart';
+import 'package:kanbansim/features/main_page/widgets/story_logs/logs_button.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
@@ -359,7 +359,7 @@ class _MainPageState extends State<MainPage> {
                     (180 +
                         (KanbanSimApp.of(context).isWeb()
                             ? 0
-                            : 33)), // status bar + appbar
+                            : 33)), // appbar makes the difference
                 child: ScrollBar(
                   child: kanbanBoard,
                 ),
@@ -367,23 +367,7 @@ class _MainPageState extends State<MainPage> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          label: Text(
-            AppLocalizations.of(context).events,
-          ),
-          icon: Icon(
-            Icons.reorder,
-            size: 30,
-          ),
-          backgroundColor: Theme.of(context).primaryColor,
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) =>
-                  StoryPanelPopup(messages: this.messages).show(context),
-            );
-          },
-        ),
+        floatingActionButton: LogsButton(messages: this.messages),
       ),
     );
   }
