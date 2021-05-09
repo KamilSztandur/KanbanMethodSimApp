@@ -39,71 +39,81 @@ class KanbanColumnState extends State<KanbanColumn> {
             limit: this.widget.tasksLimit,
             tasksAmount: this.widget.tasks.length,
           ),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height * 0.35,
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).primaryColor),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10.0),
-                  bottomRight: Radius.circular(10.0),
+          Column(
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 0.35,
                 ),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: [0.1, 1.0],
-                  tileMode: TileMode.clamp,
-                  colors: [
-                    Theme.of(context).brightness == Brightness.light
-                        ? Theme.of(context).accentColor
-                        : Theme.of(context).bottomAppBarColor,
-                    Theme.of(context).brightness == Brightness.light
-                        ? Theme.of(context).backgroundColor
-                        : Theme.of(context).accentColor,
-                  ],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.4),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: DragTarget<Task>(
-                builder: (context, candidateItems, rejectedItems) {
-                  return _TaskColumn(
-                    tasks: widget.tasks,
-                    additionalWidget: widget.additionalWidget,
-                  );
-                },
-                onAccept: (task) {
-                  int n = this.widget.tasksLimit;
-                  if (n != null && this.widget.tasks.length + 1 > n) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          TasksLimitReachedPopup().show(
-                        this.widget.title,
-                        this.widget.tasks.length,
-                        this.widget.tasksLimit,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Theme.of(context).primaryColor),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10.0),
+                      bottomRight: Radius.circular(10.0),
+                    ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: [0.1, 1.0],
+                      tileMode: TileMode.clamp,
+                      colors: [
+                        Theme.of(context).brightness == Brightness.light
+                            ? Theme.of(context).accentColor
+                            : Theme.of(context).bottomAppBarColor,
+                        Theme.of(context).brightness == Brightness.light
+                            ? Theme.of(context).backgroundColor
+                            : Theme.of(context).accentColor,
+                      ],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.4),
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                        offset: Offset(0, 3),
                       ),
-                    );
-                  } else {
-                    if (this.widget.modifyTask != null) {
-                      this.widget.modifyTask(task);
-                    }
+                    ],
+                  ),
+                  child: DragTarget<Task>(
+                    builder: (context, candidateItems, rejectedItems) {
+                      return _TaskColumn(
+                        tasks: widget.tasks,
+                        additionalWidget: widget.additionalWidget,
+                      );
+                    },
+                    onAccept: (task) {
+                      int n = this.widget.tasksLimit;
+                      if (n != null && this.widget.tasks.length + 1 > n) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              TasksLimitReachedPopup().show(
+                            this.widget.title,
+                            this.widget.tasks.length,
+                            this.widget.tasksLimit,
+                          ),
+                        );
+                      } else {
+                        if (this.widget.modifyTask != null) {
+                          this.widget.modifyTask(task);
+                        }
 
-                    if (this.widget.onTaskDropped != null) {
-                      this.widget.onTaskDropped(task);
-                    }
-                  }
-                },
+                        if (this.widget.onTaskDropped != null) {
+                          this.widget.onTaskDropped(task);
+                        }
+                      }
+                    },
+                  ),
+                ),
               ),
-            ),
+              this.widget.tasksLimit == null
+                  ? Container()
+                  : _LimitInfo(
+                      limit: this.widget.tasksLimit,
+                      tasksAmount: this.widget.tasks.length,
+                    ),
+            ],
           ),
         ],
       );
@@ -126,23 +136,15 @@ class _HeadLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: 35,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          stops: [0.0, 0.8],
-          tileMode: TileMode.clamp,
-          colors: [
-            Colors.blueAccent.shade200,
-            Colors.blueAccent.shade400,
-          ],
-        ),
+        color: Theme.of(context).primaryColor.withOpacity(0.3),
+        border: Border.all(color: Theme.of(context).primaryColor),
         borderRadius: this.isInternal
             ? BorderRadius.zero
             : BorderRadius.only(
-                topLeft: Radius.circular(100.0),
-                topRight: Radius.circular(100.0),
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0),
               ),
       ),
       child: Stack(
@@ -150,16 +152,6 @@ class _HeadLine extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: _Title(title: this.title),
-          ),
-          Positioned(
-            top: 10,
-            right: 30,
-            child: this.limit == null
-                ? Container()
-                : _LimitInfo(
-                    limit: this.limit,
-                    tasksAmount: this.tasksAmount,
-                  ),
           ),
         ],
       ),
@@ -175,7 +167,7 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.all(9),
       child: FittedBox(
         fit: BoxFit.fitHeight,
         child: Text(
@@ -187,7 +179,9 @@ class _Title extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 22,
-            color: Colors.white,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Theme.of(context).primaryColor
+                : Colors.white,
           ),
         ),
       ),
@@ -322,21 +316,38 @@ class _LimitInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
-      child: Text(
-        '$tasksAmount/$limit',
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
-        textAlign: TextAlign.center,
-      ),
-      width: 40,
-      height: 30,
+      width: 60,
+      height: 25,
       decoration: BoxDecoration(
-        color: Theme.of(context).accentColor.withOpacity(0.3),
-        border: Border.all(color: Colors.white),
+        color: Theme.of(context).brightness == Brightness.light
+            ? Theme.of(context).accentColor
+            : Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10.0),
+          bottomRight: Radius.circular(10.0),
+        ),
+        border: Border.all(color: Theme.of(context).primaryColor),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            spreadRadius: 1,
+            blurRadius: 1,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          '$tasksAmount/$limit',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Theme.of(context).primaryColor
+                : Colors.white,
+          ),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }

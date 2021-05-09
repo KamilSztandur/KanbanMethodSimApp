@@ -56,7 +56,6 @@ class KanbanBoardState extends State<KanbanBoard> {
           flex: 20,
           child: Column(
             children: [
-              SizedBox(height: 15),
               KanbanColumn(
                 getAllTasks: this.widget.getAllTasks,
                 onTaskDropped: (Task task) {
@@ -231,7 +230,7 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(14),
+      padding: EdgeInsets.all(9),
       child: FittedBox(
         fit: BoxFit.fitHeight,
         child: Text(
@@ -243,7 +242,9 @@ class _Title extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 22,
-            color: Colors.white,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Theme.of(context).primaryColor
+                : Colors.white,
           ),
         ),
       ),
@@ -320,31 +321,14 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                 flex: 1,
                 fit: FlexFit.tight,
                 child: Container(
-                  height: 50,
+                  height: 35,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      stops: [0.0, 0.8],
-                      tileMode: TileMode.clamp,
-                      colors: [
-                        Colors.blueAccent.shade200,
-                        Colors.blueAccent.shade400,
-                      ],
-                    ),
+                    color: Theme.of(context).primaryColor.withOpacity(0.3),
                     border: Border.all(color: Theme.of(context).primaryColor),
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(100.0),
-                      topRight: Radius.circular(100.0),
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.4),
-                        spreadRadius: 1,
-                        blurRadius: 1,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
                   ),
                   child:
                       _Title(title: AppLocalizations.of(context).stageOneTasks),
@@ -353,21 +337,6 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
             ],
           ),
           Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10.0),
-                bottomRight: Radius.circular(10.0),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.4),
-                  spreadRadius: 1,
-                  blurRadius: 1,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
             child: Column(
               children: [
                 Row(
