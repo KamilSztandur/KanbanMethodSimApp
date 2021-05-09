@@ -304,10 +304,9 @@ class _MainPageState extends State<MainPage> {
         body: WindowBorder(
           color: Theme.of(context).primaryColor,
           width: 1,
-          child: ListView(
+          child: Column(
             children: [
               menuBar,
-              SizedBox(width: 10),
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
