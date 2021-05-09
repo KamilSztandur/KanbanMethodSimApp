@@ -356,15 +356,11 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               Container(
-<<<<<<< Updated upstream
-                height: (MediaQuery.of(context).size.height) * 0.72,
-=======
                 height: MediaQuery.of(context).size.height -
                     (180 +
                         (KanbanSimApp.of(context).isWeb()
                             ? 0
                             : 33)), // appbar makes the difference
->>>>>>> Stashed changes
                 child: ScrollBar(
                   child: kanbanBoard,
                 ),
