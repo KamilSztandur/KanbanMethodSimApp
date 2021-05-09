@@ -2,57 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:expandable/expandable.dart';
 
-class StoryPanel extends StatefulWidget {
-  final List<String> messages;
+class StoryPanelPopup {
+  List<String> messages;
 
-  StoryPanel({Key key, @required this.messages})
-      : assert(messages != null),
-        super(key: key);
+  StoryPanelPopup({
+    @required this.messages,
+  });
 
-  @override
-  StoryPanelState createState() => StoryPanelState();
+  Widget show(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: EdgeInsets.all(10),
+      elevation: 0,
+      child: _StoryPanel(messages: this.messages),
+    );
+  }
 }
 
-class StoryPanelState extends State<StoryPanel> {
+class _StoryPanel extends StatelessWidget {
+  final List<String> messages;
+
+  _StoryPanel({
+    @required this.messages,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return ExpandableNotifier(
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.light
-                      ? Theme.of(context).accentColor
-                      : Theme.of(context).scaffoldBackgroundColor,
-                  border: Border.all(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5.0),
-                  ),
-                ),
-                child: ScrollOnExpand(
-                  scrollOnExpand: true,
-                  scrollOnCollapse: false,
-                  child: ExpandablePanel(
-                    theme: const ExpandableThemeData(
-                      headerAlignment: ExpandablePanelHeaderAlignment.center,
-                    ),
-                    collapsed: Container(),
-                    header: _Headline(messages: this.widget.messages),
-                    expanded: _Logs(messages: this.widget.messages),
-                  ),
-                ),
-              ),
-            ],
-          ),
+    return Container(
+      height: 450,
+      width: 800,
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.light
+            ? Theme.of(context).accentColor
+            : Theme.of(context).scaffoldBackgroundColor,
+        border: Border.all(
+          color: Theme.of(context).primaryColor,
         ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(5.0),
+        ),
+      ),
+      child: Column(
+        children: [
+          _Headline(messages: this.messages),
+          _Logs(messages: this.messages),
+        ],
       ),
     );
   }
@@ -122,32 +117,30 @@ class _Logs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: (MediaQuery.of(context).size.width),
-      height: (MediaQuery.of(context).size.height) * 0.75,
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          Container(
-            height: (MediaQuery.of(context).size.height) * 0.7,
-            decoration: BoxDecoration(
-              color: Theme.of(context).backgroundColor.withOpacity(0.5),
-              border: Border.all(
-                color: Theme.of(context).primaryColor,
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(5.0),
-                topRight: Radius.circular(5.0),
-              ),
-            ),
-            child: Scrollbar(
-              controller: _scrollController,
-              child: ListView(
-                controller: _scrollController,
-                children: _getTiles(context),
-              ),
-            ),
+      padding: const EdgeInsets.only(
+        left: 8,
+        right: 8,
+        bottom: 8,
+      ),
+      child: Container(
+        height: 399,
+        decoration: BoxDecoration(
+          color: Theme.of(context).backgroundColor,
+          border: Border.all(
+            color: Theme.of(context).primaryColor,
           ),
-        ],
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(5.0),
+            bottomRight: Radius.circular(5.0),
+          ),
+        ),
+        child: Scrollbar(
+          controller: _scrollController,
+          child: ListView(
+            controller: _scrollController,
+            children: _getTiles(context),
+          ),
+        ),
       ),
     );
   }

@@ -33,7 +33,6 @@ class _MainPageState extends State<MainPage> {
   DayStatus dayStatus;
   LocksStatus locksStatus;
   ProductivityBar productivityBar;
-  StoryPanel storyPanel;
 
   AllTasksContainer allTasks;
   List<String> messages;
@@ -236,8 +235,6 @@ class _MainPageState extends State<MainPage> {
     if (this.messages == null) {
       this.messages = <String>[];
     }
-
-    this.storyPanel = StoryPanel(messages: messages);
   }
 
   void _initializeStatusBar() {
@@ -364,9 +361,25 @@ class _MainPageState extends State<MainPage> {
                   child: kanbanBoard,
                 ),
               ),
-              storyPanel,
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          label: Text(
+            AppLocalizations.of(context).events,
+          ),
+          icon: Icon(
+            Icons.reorder,
+            size: 30,
+          ),
+          backgroundColor: Theme.of(context).primaryColor,
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) =>
+                  StoryPanelPopup(messages: this.messages).show(context),
+            );
+          },
         ),
       ),
     );
