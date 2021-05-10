@@ -5,6 +5,7 @@ import 'package:kanbansim/models/Task.dart';
 
 class KanbanColumn extends StatefulWidget {
   final Function getAllTasks;
+  final Function(int) isNotFromTheSameColumn;
   final Function(Task) onTaskDropped;
   final Function(Task) modifyTask;
   final List<TaskCard> tasks;
@@ -16,6 +17,7 @@ class KanbanColumn extends StatefulWidget {
   KanbanColumn({
     Key key,
     @required this.getAllTasks,
+    @required this.isNotFromTheSameColumn,
     @required this.tasks,
     @required this.title,
     @required this.isInternal,
@@ -83,24 +85,26 @@ class KanbanColumnState extends State<KanbanColumn> {
                       );
                     },
                     onAccept: (task) {
-                      int n = this.widget.tasksLimit;
-                      if (n != null && this.widget.tasks.length + 1 > n) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              TasksLimitReachedPopup().show(
-                            this.widget.title,
-                            this.widget.tasks.length,
-                            this.widget.tasksLimit,
-                          ),
-                        );
-                      } else {
-                        if (this.widget.modifyTask != null) {
-                          this.widget.modifyTask(task);
-                        }
+                      if (this.widget.isNotFromTheSameColumn(task.getID())) {
+                        int n = this.widget.tasksLimit;
+                        if (n != null && this.widget.tasks.length + 1 > n) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                TasksLimitReachedPopup().show(
+                              this.widget.title,
+                              this.widget.tasks.length,
+                              this.widget.tasksLimit,
+                            ),
+                          );
+                        } else {
+                          if (this.widget.modifyTask != null) {
+                            this.widget.modifyTask(task);
+                          }
 
-                        if (this.widget.onTaskDropped != null) {
-                          this.widget.onTaskDropped(task);
+                          if (this.widget.onTaskDropped != null) {
+                            this.widget.onTaskDropped(task);
+                          }
                         }
                       }
                     },
@@ -244,6 +248,13 @@ class _TaskColumn extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Draggable<Task>(
+                childWhenDragging: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                  ),
+                ),
                 data: this.tasks[i].task,
                 dragAnchor: DragAnchor.pointer,
                 feedback: this.tasks[i],
@@ -251,6 +262,13 @@ class _TaskColumn extends StatelessWidget {
               ),
               SizedBox(width: 15),
               Draggable<Task>(
+                childWhenDragging: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                  ),
+                ),
                 data: this.tasks[++i].task,
                 dragAnchor: DragAnchor.pointer,
                 feedback: this.tasks[i],
@@ -270,6 +288,13 @@ class _TaskColumn extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Draggable<Task>(
+                  childWhenDragging: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                    ),
+                  ),
                   data: this.tasks[i].task,
                   dragAnchor: DragAnchor.pointer,
                   feedback: this.tasks[i],
@@ -277,6 +302,13 @@ class _TaskColumn extends StatelessWidget {
                 ),
                 SizedBox(width: 15),
                 Draggable<Task>(
+                  childWhenDragging: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                    ),
+                  ),
                   data: this.tasks[++i].task,
                   dragAnchor: DragAnchor.pointer,
                   feedback: this.tasks[i],
@@ -290,6 +322,13 @@ class _TaskColumn extends StatelessWidget {
             Draggable<Task>(
               data: this.tasks[i].task,
               dragAnchor: DragAnchor.pointer,
+              childWhenDragging: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                ),
+              ),
               feedback: this.tasks[i],
               child: this.tasks[i],
             ),

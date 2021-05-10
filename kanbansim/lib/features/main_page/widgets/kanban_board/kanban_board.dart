@@ -42,6 +42,14 @@ class KanbanBoard extends StatefulWidget {
 }
 
 class KanbanBoardState extends State<KanbanBoard> {
+  List<String> columns = [
+    "available",
+    "stage one in progress",
+    "stage one done",
+    "stage two",
+    "finished",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -57,22 +65,25 @@ class KanbanBoardState extends State<KanbanBoard> {
           child: Column(
             children: [
               KanbanColumn(
-                getAllTasks: this.widget.getAllTasks,
-                onTaskDropped: (Task task) {
-                  task.owner = null;
-                  this._switchTasks("available", task.getID());
-                },
-                title: AppLocalizations.of(context).availableTasks,
-                isInternal: false,
-                tasks:
-                    _parseTaskCardsList(widget.getAllTasks().idleTasksColumn),
-                additionalWidget: _NewTaskButton(
-                  getCurrentDay: this.widget.getCurrentDay,
-                  getMaxSimDay: this.widget.getMaxSimDay,
-                  taskCreated: this.widget.taskCreated,
-                  getUsers: this.widget.getUsers,
-                ),
-              ),
+                  title: AppLocalizations.of(context).availableTasks,
+                  isInternal: false,
+                  tasks:
+                      _parseTaskCardsList(widget.getAllTasks().idleTasksColumn),
+                  getAllTasks: this.widget.getAllTasks,
+                  onTaskDropped: (Task task) {
+                    if (_isNotFromTheSameColumn("available", task.getID())) {
+                      task.owner = null;
+                      this._switchTasks("available", task.getID());
+                    }
+                  },
+                  additionalWidget: _NewTaskButton(
+                    getCurrentDay: this.widget.getCurrentDay,
+                    getMaxSimDay: this.widget.getMaxSimDay,
+                    taskCreated: this.widget.taskCreated,
+                    getUsers: this.widget.getUsers,
+                  ),
+                  isNotFromTheSameColumn: (int taskID) =>
+                      this._isNotFromTheSameColumn("available", taskID)),
             ],
           ),
         ),
@@ -96,6 +107,7 @@ class KanbanBoardState extends State<KanbanBoard> {
             parseTaskCardsList: (List<Task> tasks) {
               return this._parseTaskCardsList(tasks);
             },
+            isNotFromTheSameColumn: this._isNotFromTheSameColumn,
           ),
         ),
         Flexible(
@@ -108,23 +120,23 @@ class KanbanBoardState extends State<KanbanBoard> {
             title: AppLocalizations.of(context).stageTwoTasks,
             isInternal: false,
             getAllTasks: this.widget.getAllTasks,
-            onTaskDropped: (Task task) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => SetOwnerPopup(
-                  task: task,
-                  columnName: "stage two",
-                  moveTask: this._switchTasks,
-                  getAllUsers: this.widget.getUsers,
-                  ownerSet: () => setState(() {
-                    // Update widgets
-                  }),
-                ).show(),
-              );
-            },
+            onTaskDropped: (Task task) => showDialog(
+              context: context,
+              builder: (BuildContext context) => SetOwnerPopup(
+                task: task,
+                columnName: "stage two",
+                moveTask: this._switchTasks,
+                getAllUsers: this.widget.getUsers,
+                ownerSet: () => setState(() {
+                  // Update widgets. Do not remove.
+                }),
+              ).show(),
+            ),
             tasksLimit: this.widget.getStageTwoLimit(),
             tasks:
                 _parseTaskCardsList(widget.getAllTasks().stageTwoTasksColumn),
+            isNotFromTheSameColumn: (int taskID) =>
+                this._isNotFromTheSameColumn("stage two", taskID),
           ),
         ),
         Flexible(
@@ -145,6 +157,8 @@ class KanbanBoardState extends State<KanbanBoard> {
                 task.endDay = this.widget.getCurrentDay(),
             tasks:
                 _parseTaskCardsList(widget.getAllTasks().finishedTasksColumn),
+            isNotFromTheSameColumn: (int taskID) =>
+                this._isNotFromTheSameColumn("finished", taskID),
           ),
         ),
         Flexible(
@@ -179,14 +193,6 @@ class KanbanBoardState extends State<KanbanBoard> {
   }
 
   void _switchTasks(String addToListName, int taskID) {
-    List<String> columns = [
-      "available",
-      "stage one in progress",
-      "stage one done",
-      "stage two",
-      "finished",
-    ];
-
     int n = columns.length;
     for (int i = 0; i < n; i++) {
       int index = _getTaskListByName(columns[i]).indexWhere(
@@ -202,6 +208,26 @@ class KanbanBoardState extends State<KanbanBoard> {
         break;
       }
     }
+  }
+
+  bool _isNotFromTheSameColumn(String addToListName, int taskID) {
+    int n = columns.length;
+    for (int i = 0; i < n; i++) {
+      int index = _getTaskListByName(columns[i]).indexWhere(
+        (Task task) => task.getID() == taskID,
+      );
+
+      if (index != -1) {
+        List<Task> removeFromList = _getTaskListByName(columns[i]);
+        List<Task> addToList = _getTaskListByName(addToListName);
+
+        if (removeFromList == addToList) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   List<Task> _getTaskListByName(String name) {
@@ -282,6 +308,7 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
   final Function(String, int) switchTasks;
   final Function(List<Task>) parseTaskCardsList;
   final Function getStageOneInProgressLimit;
+  final Function(String, int) isNotFromTheSameColumn;
   final Function getStageOneDoneLimit;
   final Function getMaxSimDay;
   final Function getCurrentDay;
@@ -292,6 +319,7 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
 
   _StageOneTasksDoubleColumn({
     Key key,
+    @required this.isNotFromTheSameColumn,
     @required this.getStageOneInProgressLimit,
     @required this.getStageOneDoneLimit,
     @required this.getAllTasks,
@@ -348,23 +376,26 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                         title: AppLocalizations.of(context).inProgressTasks,
                         isInternal: true,
                         getAllTasks: this.getAllTasks,
-                        onTaskDropped: (Task task) {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => SetOwnerPopup(
-                              task: task,
-                              columnName: "stage one in progress",
-                              getAllUsers: this.getUsers,
-                              ownerSet: () {
-                                task.startDay = this.getCurrentDay();
-                                this.ownerSet();
-                              },
-                              moveTask: this.switchTasks,
-                            ).show(),
-                          );
-                        },
+                        onTaskDropped: (Task task) => showDialog(
+                          context: context,
+                          builder: (BuildContext context) => SetOwnerPopup(
+                            task: task,
+                            columnName: "stage one in progress",
+                            getAllUsers: this.getUsers,
+                            ownerSet: () {
+                              task.startDay = this.getCurrentDay();
+                              this.ownerSet();
+                            },
+                            moveTask: this.switchTasks,
+                          ).show(),
+                        ),
                         tasksLimit: this.getStageOneInProgressLimit(),
                         tasks: this.parseTaskCardsList(this.inProgressTasks),
+                        isNotFromTheSameColumn: (int taskID) =>
+                            isNotFromTheSameColumn(
+                          "stage one in progress",
+                          taskID,
+                        ),
                       ),
                     ),
                     Flexible(
@@ -379,6 +410,11 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                         },
                         tasks: this.parseTaskCardsList(this.doneTasks),
                         tasksLimit: this.getStageOneDoneLimit(),
+                        isNotFromTheSameColumn: (int taskID) =>
+                            isNotFromTheSameColumn(
+                          "stage one done",
+                          taskID,
+                        ),
                       ),
                     ),
                   ],
