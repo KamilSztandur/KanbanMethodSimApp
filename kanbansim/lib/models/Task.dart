@@ -15,6 +15,7 @@ class Task {
   int _deadlineDay;
   int startDay;
   int endDay;
+  int stage;
 
   Task.dummy() {
     //
@@ -31,7 +32,7 @@ class Task {
     this.owner = owner;
     this._productivityRequiredToUnlock = 0;
     this._type = type;
-    blockTaskRandomly();
+    this.stage = 0;
   }
 
   int getLatestTaskID() {
@@ -161,9 +162,7 @@ class _TaskProgress {
   int _fulfilledPartsAmount;
 
   _TaskProgress(int maxProductivity) {
-    this._parts = <User>[];
-    this._parts.length = maxProductivity;
-    this._fulfilledPartsAmount = 0;
+    _setUpProductivity(maxProductivity);
   }
 
   bool fulfillPartsWith(User user, int howManyParts, bool isDoubled) {
@@ -186,6 +185,16 @@ class _TaskProgress {
     } else {
       return false;
     }
+  }
+
+  void clearInvestedProductivity() {
+    _setUpProductivity(this._parts.length);
+  }
+
+  void _setUpProductivity(int maxProductivity) {
+    this._parts = <User>[];
+    this._parts.length = maxProductivity;
+    this._fulfilledPartsAmount = 0;
   }
 
   int getNumberOfAllParts() {

@@ -38,7 +38,7 @@ class LogsButton extends StatelessWidget {
             : Colors.white,
       ),
       backgroundColor: Theme.of(context).brightness == Brightness.light
-          ? Theme.of(context).primaryColor.withOpacity(0.3)
+          ? Theme.of(context).accentColor
           : Theme.of(context).primaryColor,
       onPressed: () {
         showDialog(

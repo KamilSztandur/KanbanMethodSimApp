@@ -20,6 +20,7 @@ class KanbanBoard extends StatefulWidget {
   final Function getStageOneInProgressLimit;
   final Function getStageOneDoneLimit;
   final Function getStageTwoLimit;
+  final double defaultMinColumnHeight;
 
   KanbanBoard({
     Key key,
@@ -35,6 +36,7 @@ class KanbanBoard extends StatefulWidget {
     @required this.getStageOneInProgressLimit,
     @required this.getStageOneDoneLimit,
     @required this.getStageTwoLimit,
+    @required this.defaultMinColumnHeight,
   }) : super(key: key);
 
   @override
@@ -42,6 +44,14 @@ class KanbanBoard extends StatefulWidget {
 }
 
 class KanbanBoardState extends State<KanbanBoard> {
+  List<String> columns = [
+    "available",
+    "stage one in progress",
+    "stage one done",
+    "stage two",
+    "finished",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -57,21 +67,27 @@ class KanbanBoardState extends State<KanbanBoard> {
           child: Column(
             children: [
               KanbanColumn(
-                getAllTasks: this.widget.getAllTasks,
-                onTaskDropped: (Task task) {
-                  task.owner = null;
-                  this._switchTasks("available", task.getID());
-                },
                 title: AppLocalizations.of(context).availableTasks,
                 isInternal: false,
                 tasks:
                     _parseTaskCardsList(widget.getAllTasks().idleTasksColumn),
+                getAllTasks: this.widget.getAllTasks,
+                onTaskDropped: (Task task) {
+                  if (_isNotFromTheSameColumn("available", task.getID())) {
+                    task.owner = null;
+                    this._switchTasks("available", task.getID());
+                  }
+                },
                 additionalWidget: _NewTaskButton(
                   getCurrentDay: this.widget.getCurrentDay,
                   getMaxSimDay: this.widget.getMaxSimDay,
                   taskCreated: this.widget.taskCreated,
                   getUsers: this.widget.getUsers,
                 ),
+                isNotFromTheSameColumn: (int taskID) =>
+                    this._isNotFromTheSameColumn("available", taskID),
+                areRequirementsMet: (Task task) => false,
+                defaultMinColumnHeight: this.widget.defaultMinColumnHeight,
               ),
             ],
           ),
@@ -96,6 +112,8 @@ class KanbanBoardState extends State<KanbanBoard> {
             parseTaskCardsList: (List<Task> tasks) {
               return this._parseTaskCardsList(tasks);
             },
+            isNotFromTheSameColumn: this._isNotFromTheSameColumn,
+            defaultMinColumnHeight: this.widget.defaultMinColumnHeight,
           ),
         ),
         Flexible(
@@ -108,23 +126,26 @@ class KanbanBoardState extends State<KanbanBoard> {
             title: AppLocalizations.of(context).stageTwoTasks,
             isInternal: false,
             getAllTasks: this.widget.getAllTasks,
-            onTaskDropped: (Task task) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => SetOwnerPopup(
-                  task: task,
-                  columnName: "stage two",
-                  moveTask: this._switchTasks,
-                  getAllUsers: this.widget.getUsers,
-                  ownerSet: () => setState(() {
-                    // Update widgets
-                  }),
-                ).show(),
-              );
-            },
+            onTaskDropped: (Task task) => showDialog(
+              context: context,
+              builder: (BuildContext context) => SetOwnerPopup(
+                task: task,
+                columnName: "stage two",
+                moveTask: this._switchTasks,
+                getAllUsers: this.widget.getUsers,
+                ownerSet: () => setState(() {
+                  task.stage = 2;
+                }),
+              ).show(),
+            ),
             tasksLimit: this.widget.getStageTwoLimit(),
+            defaultMinColumnHeight: this.widget.defaultMinColumnHeight,
             tasks:
                 _parseTaskCardsList(widget.getAllTasks().stageTwoTasksColumn),
+            isNotFromTheSameColumn: (int taskID) =>
+                this._isNotFromTheSameColumn("stage two", taskID),
+            areRequirementsMet: (Task task) =>
+                task.stage == 1 && task.owner == null,
           ),
         ),
         Flexible(
@@ -139,12 +160,20 @@ class KanbanBoardState extends State<KanbanBoard> {
             getAllTasks: this.widget.getAllTasks,
             onTaskDropped: (Task task) {
               task.owner = null;
+              task.stage = 3;
+              task.progress.clearInvestedProductivity();
               this._switchTasks("finished", task.getID());
             },
+            areRequirementsMet: (Task task) =>
+                task.stage == 2 &&
+                task.progress.getNumberOfUnfulfilledParts() == 0,
             modifyTask: (Task task) =>
                 task.endDay = this.widget.getCurrentDay(),
+            defaultMinColumnHeight: this.widget.defaultMinColumnHeight,
             tasks:
                 _parseTaskCardsList(widget.getAllTasks().finishedTasksColumn),
+            isNotFromTheSameColumn: (int taskID) =>
+                this._isNotFromTheSameColumn("finished", taskID),
           ),
         ),
         Flexible(
@@ -179,14 +208,6 @@ class KanbanBoardState extends State<KanbanBoard> {
   }
 
   void _switchTasks(String addToListName, int taskID) {
-    List<String> columns = [
-      "available",
-      "stage one in progress",
-      "stage one done",
-      "stage two",
-      "finished",
-    ];
-
     int n = columns.length;
     for (int i = 0; i < n; i++) {
       int index = _getTaskListByName(columns[i]).indexWhere(
@@ -202,6 +223,26 @@ class KanbanBoardState extends State<KanbanBoard> {
         break;
       }
     }
+  }
+
+  bool _isNotFromTheSameColumn(String addToListName, int taskID) {
+    int n = columns.length;
+    for (int i = 0; i < n; i++) {
+      int index = _getTaskListByName(columns[i]).indexWhere(
+        (Task task) => task.getID() == taskID,
+      );
+
+      if (index != -1) {
+        List<Task> removeFromList = _getTaskListByName(columns[i]);
+        List<Task> addToList = _getTaskListByName(addToListName);
+
+        if (removeFromList == addToList) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   List<Task> _getTaskListByName(String name) {
@@ -278,10 +319,12 @@ class _NewTaskButton extends StatelessWidget {
 }
 
 class _StageOneTasksDoubleColumn extends StatelessWidget {
+  final double defaultMinColumnHeight;
   final VoidCallback ownerSet;
   final Function(String, int) switchTasks;
   final Function(List<Task>) parseTaskCardsList;
   final Function getStageOneInProgressLimit;
+  final Function(String, int) isNotFromTheSameColumn;
   final Function getStageOneDoneLimit;
   final Function getMaxSimDay;
   final Function getCurrentDay;
@@ -289,9 +332,12 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
   final Function getUsers;
   final List<Task> inProgressTasks;
   final List<Task> doneTasks;
+  final double _headlineHeight = 35;
 
   _StageOneTasksDoubleColumn({
     Key key,
+    @required this.defaultMinColumnHeight,
+    @required this.isNotFromTheSameColumn,
     @required this.getStageOneInProgressLimit,
     @required this.getStageOneDoneLimit,
     @required this.getAllTasks,
@@ -321,7 +367,7 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                 flex: 1,
                 fit: FlexFit.tight,
                 child: Container(
-                  height: 35,
+                  height: this._headlineHeight,
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor.withOpacity(0.3),
                     border: Border.all(color: Theme.of(context).primaryColor),
@@ -348,23 +394,30 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                         title: AppLocalizations.of(context).inProgressTasks,
                         isInternal: true,
                         getAllTasks: this.getAllTasks,
-                        onTaskDropped: (Task task) {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => SetOwnerPopup(
-                              task: task,
-                              columnName: "stage one in progress",
-                              getAllUsers: this.getUsers,
-                              ownerSet: () {
-                                task.startDay = this.getCurrentDay();
-                                this.ownerSet();
-                              },
-                              moveTask: this.switchTasks,
-                            ).show(),
-                          );
-                        },
+                        onTaskDropped: (Task task) => showDialog(
+                          context: context,
+                          builder: (BuildContext context) => SetOwnerPopup(
+                            task: task,
+                            columnName: "stage one in progress",
+                            getAllUsers: this.getUsers,
+                            ownerSet: () {
+                              task.startDay = this.getCurrentDay();
+                              task.stage = 1;
+                              this.ownerSet();
+                            },
+                            moveTask: this.switchTasks,
+                          ).show(),
+                        ),
                         tasksLimit: this.getStageOneInProgressLimit(),
+                        defaultMinColumnHeight:
+                            this.defaultMinColumnHeight - this._headlineHeight,
                         tasks: this.parseTaskCardsList(this.inProgressTasks),
+                        isNotFromTheSameColumn: (int taskID) =>
+                            isNotFromTheSameColumn(
+                          "stage one in progress",
+                          taskID,
+                        ),
+                        areRequirementsMet: (Task task) => (task.stage == 0),
                       ),
                     ),
                     Flexible(
@@ -375,10 +428,20 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                         getAllTasks: this.getAllTasks,
                         onTaskDropped: (Task task) {
                           task.owner = null;
+                          task.progress.clearInvestedProductivity();
                           this.switchTasks("stage one done", task.getID());
                         },
                         tasks: this.parseTaskCardsList(this.doneTasks),
                         tasksLimit: this.getStageOneDoneLimit(),
+                        defaultMinColumnHeight:
+                            this.defaultMinColumnHeight - this._headlineHeight,
+                        isNotFromTheSameColumn: (int taskID) =>
+                            isNotFromTheSameColumn(
+                          "stage one done",
+                          taskID,
+                        ),
+                        areRequirementsMet: (Task task) => (task.stage == 1 &&
+                            task.progress.getNumberOfUnfulfilledParts() == 0),
                       ),
                     ),
                   ],

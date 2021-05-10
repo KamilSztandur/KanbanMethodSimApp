@@ -115,6 +115,7 @@
     "taskUnlocked": "Task is unlocked.",
     "owner_CAP": "OWNER",
     "doubleCost": "Double cost", 
+    "completed_CAP": "COMPLETED", 
 
     "cannotAssignProductivityFromThisUser": "Cannot assign productivity from this user.",
     "productivityAvailableFromThisUser": "Productivity available from this user",
