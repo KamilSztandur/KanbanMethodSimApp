@@ -4,6 +4,7 @@ import 'package:kanbansim/features/main_page/widgets/kanban_board/tasks_limit_re
 import 'package:kanbansim/models/Task.dart';
 
 class KanbanColumn extends StatefulWidget {
+  final double defaultMinColumnHeight;
   final Function getAllTasks;
   final Function(int) isNotFromTheSameColumn;
   final Function(Task) areRequirementsMet;
@@ -22,6 +23,7 @@ class KanbanColumn extends StatefulWidget {
     @required this.tasks,
     @required this.title,
     @required this.isInternal,
+    @required this.defaultMinColumnHeight,
     this.modifyTask,
     this.tasksLimit,
     this.onTaskDropped,
@@ -47,7 +49,7 @@ class KanbanColumnState extends State<KanbanColumn> {
             children: [
               ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height * 0.35,
+                  minHeight: this.widget.defaultMinColumnHeight,
                 ),
                 child: Container(
                   decoration: BoxDecoration(

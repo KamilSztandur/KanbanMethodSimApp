@@ -20,6 +20,7 @@ class KanbanBoard extends StatefulWidget {
   final Function getStageOneInProgressLimit;
   final Function getStageOneDoneLimit;
   final Function getStageTwoLimit;
+  final double defaultMinColumnHeight;
 
   KanbanBoard({
     Key key,
@@ -35,6 +36,7 @@ class KanbanBoard extends StatefulWidget {
     @required this.getStageOneInProgressLimit,
     @required this.getStageOneDoneLimit,
     @required this.getStageTwoLimit,
+    @required this.defaultMinColumnHeight,
   }) : super(key: key);
 
   @override
@@ -85,6 +87,7 @@ class KanbanBoardState extends State<KanbanBoard> {
                 isNotFromTheSameColumn: (int taskID) =>
                     this._isNotFromTheSameColumn("available", taskID),
                 areRequirementsMet: (Task task) => false,
+                defaultMinColumnHeight: this.widget.defaultMinColumnHeight,
               ),
             ],
           ),
@@ -110,6 +113,7 @@ class KanbanBoardState extends State<KanbanBoard> {
               return this._parseTaskCardsList(tasks);
             },
             isNotFromTheSameColumn: this._isNotFromTheSameColumn,
+            defaultMinColumnHeight: this.widget.defaultMinColumnHeight,
           ),
         ),
         Flexible(
@@ -135,6 +139,7 @@ class KanbanBoardState extends State<KanbanBoard> {
               ).show(),
             ),
             tasksLimit: this.widget.getStageTwoLimit(),
+            defaultMinColumnHeight: this.widget.defaultMinColumnHeight,
             tasks:
                 _parseTaskCardsList(widget.getAllTasks().stageTwoTasksColumn),
             isNotFromTheSameColumn: (int taskID) =>
@@ -164,6 +169,7 @@ class KanbanBoardState extends State<KanbanBoard> {
                 task.progress.getNumberOfUnfulfilledParts() == 0,
             modifyTask: (Task task) =>
                 task.endDay = this.widget.getCurrentDay(),
+            defaultMinColumnHeight: this.widget.defaultMinColumnHeight,
             tasks:
                 _parseTaskCardsList(widget.getAllTasks().finishedTasksColumn),
             isNotFromTheSameColumn: (int taskID) =>
@@ -313,6 +319,7 @@ class _NewTaskButton extends StatelessWidget {
 }
 
 class _StageOneTasksDoubleColumn extends StatelessWidget {
+  final double defaultMinColumnHeight;
   final VoidCallback ownerSet;
   final Function(String, int) switchTasks;
   final Function(List<Task>) parseTaskCardsList;
@@ -325,9 +332,11 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
   final Function getUsers;
   final List<Task> inProgressTasks;
   final List<Task> doneTasks;
+  final double _headlineHeight = 35;
 
   _StageOneTasksDoubleColumn({
     Key key,
+    @required this.defaultMinColumnHeight,
     @required this.isNotFromTheSameColumn,
     @required this.getStageOneInProgressLimit,
     @required this.getStageOneDoneLimit,
@@ -358,7 +367,7 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                 flex: 1,
                 fit: FlexFit.tight,
                 child: Container(
-                  height: 35,
+                  height: this._headlineHeight,
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor.withOpacity(0.3),
                     border: Border.all(color: Theme.of(context).primaryColor),
@@ -400,6 +409,8 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                           ).show(),
                         ),
                         tasksLimit: this.getStageOneInProgressLimit(),
+                        defaultMinColumnHeight:
+                            this.defaultMinColumnHeight - this._headlineHeight,
                         tasks: this.parseTaskCardsList(this.inProgressTasks),
                         isNotFromTheSameColumn: (int taskID) =>
                             isNotFromTheSameColumn(
@@ -422,6 +433,8 @@ class _StageOneTasksDoubleColumn extends StatelessWidget {
                         },
                         tasks: this.parseTaskCardsList(this.doneTasks),
                         tasksLimit: this.getStageOneDoneLimit(),
+                        defaultMinColumnHeight:
+                            this.defaultMinColumnHeight - this._headlineHeight,
                         isNotFromTheSameColumn: (int taskID) =>
                             isNotFromTheSameColumn(
                           "stage one done",

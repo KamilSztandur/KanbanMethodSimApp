@@ -228,6 +228,7 @@ class _MainPageState extends State<MainPage> {
       getStageOneInProgressLimit: () => this.stageOneInProgressColumnLimit,
       getStageTwoLimit: () => this.stageTwoColumnLimit,
       getStageOneDoneLimit: () => this.stageOneDoneColumnLimit,
+      defaultMinColumnHeight: _calcKanbanColumnHeight(),
     );
   }
 
@@ -276,6 +277,15 @@ class _MainPageState extends State<MainPage> {
         },
       );
     }
+  }
+
+  double _calcKanbanColumnHeight() {
+    return _calcKanbanBoardHeight() - 100;
+  }
+
+  double _calcKanbanBoardHeight() {
+    return MediaQuery.of(context).size.height -
+        (180 + (KanbanSimApp.of(context).isWeb() ? 0 : 33));
   }
 
   void _initializeUsersIfNeeded() {
@@ -355,11 +365,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height -
-                    (180 +
-                        (KanbanSimApp.of(context).isWeb()
-                            ? 0
-                            : 33)), // appbar makes the difference
+                height: this._calcKanbanBoardHeight(),
                 child: ScrollBar(
                   child: kanbanBoard,
                 ),
