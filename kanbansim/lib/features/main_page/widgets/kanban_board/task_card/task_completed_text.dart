@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskCompletedText extends StatelessWidget {
   final double size;
@@ -12,7 +13,7 @@ class TaskCompletedText extends StatelessWidget {
   @override
   Widget build(Object context) {
     return Text(
-      "UKOŃCZONE",
+      AppLocalizations.of(context).completed_CAP,
       style: TextStyle(
         color: Colors.black,
         fontSize: this.size,

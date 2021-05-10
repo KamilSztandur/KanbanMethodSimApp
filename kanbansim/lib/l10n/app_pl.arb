@@ -114,7 +114,8 @@
     "clickHereToUnlock": "Kliknij, aby odblokować zadanie.",
     "taskUnlocked": "Zadanie odblokowane.",
     "owner_CAP": "WŁAŚCICIEL",
-    "doubleCost": "Podwójny koszt", 
+    "doubleCost": "Podwójny koszt",
+    "completed_CAP": "UKOŃCZONE", 
 
     "cannotAssignProductivityFromThisUser": "Nie można przydzielić produktywności od tego członka zespołu.",
     "productivityAvailableFromThisUser": "Dostępna produktywność u tego członka zespołu",
