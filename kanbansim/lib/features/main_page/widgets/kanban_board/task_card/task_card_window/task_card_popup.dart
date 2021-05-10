@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card_window/assign_productivity_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card_window/confirm_task_deletion_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card_window/lock_status_popup.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_completed_icon.dart';
+import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_completed_text.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_progress.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
@@ -127,7 +129,10 @@ class _TaskCardPageState extends State<_TaskCardPage> {
                             ),
                             Flexible(
                               flex: 35,
-                              child: _UserIcon(owner: this.widget.task.owner),
+                              child: _UserIcon(
+                                owner: this.widget.task.owner,
+                                isFinished: this.widget.task.stage == 3,
+                              ),
                             ),
                           ],
                         ),
@@ -154,10 +159,12 @@ class _TaskCardPageState extends State<_TaskCardPage> {
                 Flexible(
                   flex: 8,
                   fit: FlexFit.tight,
-                  child: TaskProgress(
-                    mode: Size.big,
-                    task: this.widget.task,
-                  ),
+                  child: this.widget.task.stage == 3
+                      ? TaskCompletedText(size: 40)
+                      : TaskProgress(
+                          mode: Size.big,
+                          task: this.widget.task,
+                        ),
                 ),
                 Flexible(flex: 3, child: Container()),
               ],
@@ -485,32 +492,35 @@ class _LockIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      message: task.isLocked()
-          ? AppLocalizations.of(context).clickHereToUnlock
-          : AppLocalizations.of(context).taskUnlocked,
-      child: IgnorePointer(
-        ignoring: !task.isLocked(),
-        child: IconButton(
-          iconSize: 75,
-          icon: Icon(
-            task.getProductivityRequiredToUnlock() != 0
-                ? Icons.lock_rounded
-                : Icons.lock_open_rounded,
-            color: Colors.black,
+    return IgnorePointer(
+      ignoring: this.task.stage == 3,
+      child: Tooltip(
+        message: task.isLocked()
+            ? AppLocalizations.of(context).clickHereToUnlock
+            : AppLocalizations.of(context).taskUnlocked,
+        child: IgnorePointer(
+          ignoring: !task.isLocked(),
+          child: IconButton(
+            iconSize: 75,
+            icon: Icon(
+              task.getProductivityRequiredToUnlock() != 0
+                  ? Icons.lock_rounded
+                  : Icons.lock_open_rounded,
+              color: this.task.stage == 3 ? Colors.transparent : Colors.black,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => LockStatusPopup(
+                  getUsers: getUsers,
+                  taskUnlocked: taskUnlocked,
+                ).show(
+                  context,
+                  task,
+                ),
+              );
+            },
           ),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => LockStatusPopup(
-                getUsers: getUsers,
-                taskUnlocked: taskUnlocked,
-              ).show(
-                context,
-                task,
-              ),
-            );
-          },
         ),
       ),
     );
@@ -518,33 +528,40 @@ class _LockIcon extends StatelessWidget {
 }
 
 class _UserIcon extends StatelessWidget {
+  final bool isFinished;
   final User owner;
 
-  _UserIcon({Key key, @required this.owner}) : super(key: key);
+  _UserIcon({
+    Key key,
+    @required this.isFinished,
+    @required this.owner,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ClipOval(
       child: Material(
-        color: Colors.grey.shade700,
+        color: this.isFinished ? Colors.green : Colors.grey.shade700,
         child: InkWell(
           hoverColor: Colors.red,
           child: SizedBox(
             height: 90,
             width: 90,
-            child: owner == null
-                ? Container()
-                : Tooltip(
-                    message:
-                        "${owner.getName()} ${AppLocalizations.of(context).isOwnerOfThisTask}",
-                    child: Center(
-                      child: Icon(
-                        Icons.account_circle_outlined,
-                        color: owner.getColor(),
-                        size: 70,
+            child: this.isFinished
+                ? TaskCompletedIcon(size: 60)
+                : owner == null
+                    ? Container()
+                    : Tooltip(
+                        message:
+                            "${owner.getName()} ${AppLocalizations.of(context).isOwnerOfThisTask}",
+                        child: Center(
+                          child: Icon(
+                            Icons.account_circle_outlined,
+                            color: owner.getColor(),
+                            size: 70,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
           ),
         ),
       ),
