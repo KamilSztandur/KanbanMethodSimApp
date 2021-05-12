@@ -91,6 +91,7 @@ class _AssignProductivityWindowState extends State<_AssignProductivityWindow> {
                     updateSelectedUserName: (String name) {
                       setState(() {
                         this._assignedUsername = name;
+                        this._assignedProductivity = 0;
                         this._max = _getMaxProductivityValuePossibleToAssign()
                             .toDouble();
                       });
@@ -117,6 +118,7 @@ class _AssignProductivityWindowState extends State<_AssignProductivityWindow> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: _ProductivitySelection(
+                    current: _assignedProductivity.toDouble(),
                     max: _getMaxProductivityValuePossibleToAssign().toDouble(),
                     productivityChanged: (int value) {
                       this._assignedProductivity = value;
@@ -313,12 +315,14 @@ class _ProductivityAvailabilityInfoLabel extends StatelessWidget {
 
 class _ProductivitySelection extends StatefulWidget {
   final Function(int) productivityChanged;
+  final double current;
   final double max;
 
   _ProductivitySelection({
     Key key,
     @required this.productivityChanged,
     @required this.max,
+    @required this.current,
   }) : super(key: key);
 
   @override
@@ -326,10 +330,12 @@ class _ProductivitySelection extends StatefulWidget {
 }
 
 class _ProductivitySelectionState extends State<_ProductivitySelection> {
-  double _value = 0.0;
+  double _value;
 
   @override
   Widget build(BuildContext context) {
+    _value = this.widget.current;
+
     if (this.widget.max == 0.0) {
       return Container();
     } else {
