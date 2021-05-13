@@ -77,15 +77,31 @@ class StoryModule {
     );
   }
 
-  void lockTask(Task task) {
-    int diceRoll = Random().nextInt(3);
-    int productivityToUnlock = _POSSIBLE_PRODUCTIVITIES_TO_UNLOCK[diceRoll];
-
-    task.block(productivityToUnlock);
+  void taskUnlocked(Task task) {
     this._eventOccured(
       EventType.LOCK,
-      "Zadanie ${task.getTitle()} zostało zablokowane.",
+      "Zadanie ${task.getTitle()} zostało odblokowane.",
     );
+  }
+
+  void productivityAssigned(Task task, User user, int value) {
+    this._eventOccured(
+      EventType.INFO,
+      "${user.getName()} zainwestowal $value produktywności w zadanie ${task.getTitle()}.",
+    );
+  }
+
+  void lockTask(Task task) {
+    if (task.getProductivityRequiredToUnlock() == 0) {
+      int diceRoll = Random().nextInt(3);
+      int productivityToUnlock = _POSSIBLE_PRODUCTIVITIES_TO_UNLOCK[diceRoll];
+
+      task.block(productivityToUnlock);
+      this._eventOccured(
+        EventType.LOCK,
+        "Zadanie ${task.getTitle()} zostało zablokowane.",
+      );
+    }
   }
 
   void lockTasksRandomly() {
@@ -111,19 +127,19 @@ class StoryModule {
       _UNLOCK_POSSIBILITIES_RANGES[0],
       _UNLOCK_POSSIBILITIES_RANGES[1],
     )) {
-      user.addProductivity(_POSSIBLE_PRODUCTIVITIES_AFTER_NEW_DAY[1]);
+      user.addProductivity(_POSSIBLE_PRODUCTIVITIES_AFTER_NEW_DAY[0]);
     } else if (_isInRange(
       diceRoll,
       _UNLOCK_POSSIBILITIES_RANGES[2],
       _UNLOCK_POSSIBILITIES_RANGES[3],
     )) {
-      user.addProductivity(_POSSIBLE_PRODUCTIVITIES_AFTER_NEW_DAY[2]);
+      user.addProductivity(_POSSIBLE_PRODUCTIVITIES_AFTER_NEW_DAY[1]);
     } else if (_isInRange(
       diceRoll,
       _UNLOCK_POSSIBILITIES_RANGES[4],
       _UNLOCK_POSSIBILITIES_RANGES[5],
     )) {
-      user.addProductivity(_POSSIBLE_PRODUCTIVITIES_AFTER_NEW_DAY[3]);
+      user.addProductivity(_POSSIBLE_PRODUCTIVITIES_AFTER_NEW_DAY[2]);
     }
 
     this._eventOccured(

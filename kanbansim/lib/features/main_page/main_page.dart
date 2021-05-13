@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/common/savefile_parsers/savefile_reader.dart';
+import 'package:kanbansim/common/story_module.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
 import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
 import 'package:kanbansim/features/main_page/widgets/story_logs/logs_button.dart';
@@ -33,30 +34,19 @@ class _MainPageState extends State<MainPage> {
   DayStatus dayStatus;
   LocksStatus locksStatus;
   ProductivityBar productivityBar;
+  StoryModule storyModule;
 
   AllTasksContainer allTasks;
   List<String> messages;
   List<User> currentUsers;
 
   final int MIN_DAY = 1;
-  final int MAX_DAY = 25;
+  int MAX_DAY;
   int currentDay;
 
   int stageOneInProgressColumnLimit;
   int stageOneDoneColumnLimit;
   int stageTwoColumnLimit;
-
-  void _restoreUsersProductivities() {
-    int n = this.currentUsers.length;
-    for (int i = 0; i < n; i++) {
-      this.currentUsers[i].addProductivity(5);
-    }
-  }
-
-  void _eventOccured(EventType type, String text) {
-    _printNotification(type, text);
-    _addLog(text);
-  }
 
   void _addLog(String text) {
     setState(() {
@@ -64,12 +54,22 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  void _printNotification(EventType type, String text) {
-    StoryNotification(
-      context: this.context,
-      type: type,
-      message: text,
-    ).show();
+  void _initializeStoryModule() {
+    this.storyModule = StoryModule(
+      addLog: this._addLog,
+      context: context,
+      getAllTasks: () => this.allTasks,
+      getCurrentDay: () => this.currentDay,
+      getUsers: () => this.currentUsers,
+    );
+    this.MAX_DAY = this.storyModule.getMaxDays();
+  }
+
+  void _restoreUsersProductivities() {
+    int n = this.currentUsers.length;
+    for (int i = 0; i < n; i++) {
+      this.currentUsers[i].addProductivity(5);
+    }
   }
 
   void _initializeMainMenuBar() {
@@ -168,27 +168,33 @@ class _MainPageState extends State<MainPage> {
       getCurrentDay: () => this.currentDay,
       getMaxSimDay: () => this.MAX_DAY,
       getAllTasks: () => this.allTasks,
+      getUsers: () => this.currentUsers,
+      getStageOneInProgressLimit: () => this.stageOneInProgressColumnLimit,
+      getStageTwoLimit: () => this.stageTwoColumnLimit,
+      getStageOneDoneLimit: () => this.stageOneDoneColumnLimit,
+      defaultMinColumnHeight: _calcKanbanColumnHeight(),
       taskCreated: (Task task) {
+        this.storyModule.newTaskAppeared(task);
         setState(() {
           this.allTasks.idleTasksColumn.add(task);
         });
       },
       deleteMe: (Task task) {
+        this.storyModule.taskDeleted(task);
         setState(
           () {
             this.allTasks.removeTask(task);
           },
         );
       },
-      getUsers: () {
-        return this.currentUsers;
-      },
-      taskUnlocked: () {
+      taskUnlocked: (Task task) {
+        this.storyModule.taskUnlocked(task);
         setState(() {
           this.locksStatus.checkForLocks();
         });
       },
       productivityAssigned: (Task task, User user, int value) {
+        this.storyModule.productivityAssigned(task, user, value);
         setState(() {
           task.investProductivityFrom(
             user,
@@ -196,10 +202,6 @@ class _MainPageState extends State<MainPage> {
           );
         });
       },
-      getStageOneInProgressLimit: () => this.stageOneInProgressColumnLimit,
-      getStageTwoLimit: () => this.stageTwoColumnLimit,
-      getStageOneDoneLimit: () => this.stageOneDoneColumnLimit,
-      defaultMinColumnHeight: _calcKanbanColumnHeight(),
     );
   }
 
@@ -218,7 +220,15 @@ class _MainPageState extends State<MainPage> {
       MIN_DAY: this.MIN_DAY,
       MAX_DAY: this.MAX_DAY,
       dayHasChanged: (int daysPassed) {
-        this.currentDay = daysPassed;
+        if (daysPassed < this.currentDay) {
+          this.storyModule.switchedToPreviousDay();
+        } else if (daysPassed > this.currentDay) {
+          this.storyModule.switchedToNextDay();
+        }
+
+        setState(() {
+          this.currentDay = daysPassed;
+        });
       },
       getCurrentDay: () => this.currentDay,
     );
@@ -264,11 +274,12 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     _initializeUsersIfNeeded();
     _initializeAllTasksContainer();
+    _initializeStoryLogs();
+    _initializeStoryModule();
 
     _initializeKanbanBoard();
     _initializeMainMenuBar();
     _initializeStatusBar();
-    _initializeStoryLogs();
 
     return Container(
       decoration: BoxDecoration(
