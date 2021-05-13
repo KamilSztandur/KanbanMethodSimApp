@@ -49,6 +49,7 @@ class StoryModule {
     this._eventOccured(
       EventType.INFO,
       "Nadszedł dzień $currentDay.",
+      true,
     );
 
     _pushNotificationForDay(currentDay);
@@ -60,6 +61,7 @@ class StoryModule {
     this._eventOccured(
       EventType.INFO,
       "Skorzystano z oszustwa. Przyznano dodatkowy dzień.",
+      true,
     );
   }
 
@@ -67,6 +69,7 @@ class StoryModule {
     this._eventOccured(
       EventType.NEWTASK,
       "${AppLocalizations.of(context).newTaskAppeared}! ${_getTranslatedTaskTypeName(task.getTaskTypeName())} '${task.getTitle()}'.",
+      true,
     );
   }
 
@@ -74,6 +77,7 @@ class StoryModule {
     this._eventOccured(
       EventType.DELETE,
       "${AppLocalizations.of(context).elementDeleted}! ${_getTranslatedTaskTypeName(task.getTaskTypeName())} '${task.getTitle()}'.",
+      true,
     );
   }
 
@@ -81,6 +85,7 @@ class StoryModule {
     this._eventOccured(
       EventType.LOCK,
       "Zadanie ${task.getTitle()} zostało odblokowane.",
+      true,
     );
   }
 
@@ -88,6 +93,7 @@ class StoryModule {
     this._eventOccured(
       EventType.INFO,
       "${user.getName()} zainwestowal $value produktywności w zadanie ${task.getTitle()}.",
+      true,
     );
   }
 
@@ -100,6 +106,7 @@ class StoryModule {
       this._eventOccured(
         EventType.LOCK,
         "Zadanie ${task.getTitle()} zostało zablokowane.",
+        true,
       );
     }
   }
@@ -143,9 +150,9 @@ class StoryModule {
     }
 
     this._eventOccured(
-      EventType.INFO,
-      "Członek zespołu ${user.getName()} rozpoczął dzień z produktywnością równą ${user.getProductivity()}.",
-    );
+        EventType.INFO,
+        "Członek zespołu ${user.getName()} rozpoczął dzień z produktywnością równą ${user.getProductivity()}.",
+        false);
   }
 
   bool _isInRange(int number, int min, int max) {
@@ -164,7 +171,7 @@ class StoryModule {
   }
 
   void _pushNotificationForDay(int dayNumber) {
-    this._eventOccured(EventType.INFO, _scriptedMessages[dayNumber - 1]);
+    this._eventOccured(EventType.INFO, _scriptedMessages[dayNumber - 1], true);
   }
 
   String _getTranslatedTaskTypeName(String type) {
@@ -186,8 +193,10 @@ class StoryModule {
     }
   }
 
-  void _eventOccured(EventType type, String text) {
-    _printNotification(type, text);
+  void _eventOccured(EventType type, String text, bool withNotification) {
+    if (withNotification) {
+      _printNotification(type, text);
+    }
     this.addLog(text);
   }
 
