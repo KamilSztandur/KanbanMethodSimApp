@@ -30,7 +30,7 @@ class _StoryPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 450,
+      height: 455,
       width: 800,
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.light
@@ -123,7 +123,7 @@ class _Logs extends StatelessWidget {
         bottom: 8,
       ),
       child: Container(
-        height: 399,
+        height: 400,
         decoration: BoxDecoration(
           color: Theme.of(context).backgroundColor,
           border: Border.all(
@@ -137,6 +137,7 @@ class _Logs extends StatelessWidget {
         child: Scrollbar(
           controller: _scrollController,
           child: ListView(
+            shrinkWrap: true,
             controller: _scrollController,
             children: _getTiles(context),
           ),
@@ -147,9 +148,18 @@ class _Logs extends StatelessWidget {
 
   List<ListTile> _getTiles(BuildContext context) {
     List<ListTile> tiles = <ListTile>[];
+    tiles.add(
+      ListTile(
+        title: Container(
+          height: 1,
+          width: MediaQuery.of(context).size.height,
+          color: Theme.of(context).hintColor,
+        ),
+      ),
+    );
 
     int length = this.messages.length;
-    for (int i = 0; i < length; i++) {
+    for (int i = length - 1; i >= 0; i--) {
       tiles.add(
         ListTile(
           title: SelectableText(
