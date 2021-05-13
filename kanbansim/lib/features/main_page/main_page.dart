@@ -49,32 +49,13 @@ class _MainPageState extends State<MainPage> {
   void _restoreUsersProductivities() {
     int n = this.currentUsers.length;
     for (int i = 0; i < n; i++) {
-      this.currentUsers[i].restoreProductivity();
+      this.currentUsers[i].addProductivity(5);
     }
   }
 
   void _eventOccured(EventType type, String text) {
     _printNotification(type, text);
     _addLog(text);
-  }
-
-  String _getTranslatedTaskTypeName(String type) {
-    switch (type) {
-      case "Standard":
-        return AppLocalizations.of(context).standard;
-        break;
-
-      case "Expedite":
-        return AppLocalizations.of(context).expedite;
-        break;
-
-      case "FixedDate":
-        return AppLocalizations.of(context).fixedDate;
-        break;
-
-      default:
-        return AppLocalizations.of(context).standard;
-    }
   }
 
   void _addLog(String text) {
@@ -191,22 +172,12 @@ class _MainPageState extends State<MainPage> {
         setState(() {
           this.allTasks.idleTasksColumn.add(task);
         });
-
-        _eventOccured(
-          EventType.NEWTASK,
-          "${AppLocalizations.of(context).newTaskAppeared}! ${_getTranslatedTaskTypeName(task.getTaskTypeName())} '${task.getTitle()}'.",
-        );
       },
       deleteMe: (Task task) {
         setState(
           () {
             this.allTasks.removeTask(task);
           },
-        );
-
-        _eventOccured(
-          EventType.DELETE,
-          "${AppLocalizations.of(context).elementDeleted}! ${_getTranslatedTaskTypeName(task.getTaskTypeName())} '${task.getTitle()}'.",
         );
       },
       getUsers: () {
@@ -266,14 +237,9 @@ class _MainPageState extends State<MainPage> {
   void _initializeAllTasksContainer() {
     if (this.allTasks == null) {
       this.allTasks = AllTasksContainer(
-        () {
-          return this.currentUsers;
-        },
+        () => this.currentUsers,
         (Task task) {
-          _eventOccured(
-            EventType.NEWTASK,
-            "${AppLocalizations.of(context).newTaskAppeared}! ${_getTranslatedTaskTypeName(task.getTaskTypeName())} '${task.getTitle()}'.",
-          );
+          //TODO DELETE
         },
       );
     }

@@ -79,13 +79,8 @@ class Task {
     return this._type.toString().split('.').last;
   }
 
-  void blockTaskRandomly() {
-    var dice = Random().nextInt(6) + 1;
-    if (dice == 1) {
-      this._productivityRequiredToUnlock = Random().nextInt(3) + 1;
-    } else {
-      this._productivityRequiredToUnlock = 0;
-    }
+  void block(int productivity) {
+    this._productivityRequiredToUnlock = productivity;
   }
 
   void unlock() {

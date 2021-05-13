@@ -32,8 +32,14 @@ class User {
     }
   }
 
-  void restoreProductivity() {
-    this._productivity = this._maxProductivity;
+  void addProductivity(int productivity) {
+    int prodSum = this.getProductivity() + productivity;
+
+    if (prodSum > this.getMaxProductivity()) {
+      this._productivity = this.getMaxProductivity();
+    } else {
+      this._productivity += productivity;
+    }
   }
 
   bool increaseProductivity(int amount) {
