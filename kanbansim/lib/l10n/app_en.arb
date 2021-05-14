@@ -215,5 +215,10 @@
     "hasBeenLocked": "has been locked",
     "hasBeenUnlocked": "has been unlocked",
     "teamMember": "Team member",
-    "startedDayWithProductivityEqualTo": "started day with productivity equal to"
+    "startedDayWithProductivityEqualTo": "started day with productivity equal to",
+
+    "email": "Email",
+    "messageFrom": "Message from",
+    "management": "Menagement",
+    "fellowDevs": "Fellow devs"
 }

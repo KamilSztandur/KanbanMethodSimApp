@@ -208,5 +208,10 @@
     "wasLocked": "zostało zablokowane",
     "hasBeenUnlocked": "zostało odblokowane",
     "teamMember": "Członek zespołu",
-    "startedDayWithProductivityEqualTo": "rozpoczął dzień z produktywnością równą"
+    "startedDayWithProductivityEqualTo": "rozpoczął dzień z produktywnością równą",
+
+    "email": "Poczta",
+    "messageFrom": "Wiadomość od",
+    "management": "Zarząd",
+    "fellowDevs": "Drodzy deweloperzy"
 }

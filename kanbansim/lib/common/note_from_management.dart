@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:kanbansim/models/User.dart';
 
 class NoteFromManagementPopup {
@@ -86,7 +85,7 @@ class _emailTitle extends StatelessWidget {
         ),
         SizedBox(width: 5),
         Text(
-          "Email",
+          AppLocalizations.of(context).email,
           style: TextStyle(
             fontSize: 25,
             color: Theme.of(context).primaryColor,
@@ -133,17 +132,37 @@ class _HeadlineRow extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _emailTitle(),
-        SizedBox(width: 10),
-        Container(
-          height: 30,
-          width: 475,
-          color: Theme.of(context).brightness == Brightness.light
-              ? Colors.black.withOpacity(0.1)
-              : Colors.white.withOpacity(0.1),
+        Flexible(
+          flex: 140,
+          fit: FlexFit.tight,
+          child: _emailTitle(),
         ),
-        SizedBox(width: 10),
-        _QuitButton(),
+        Flexible(
+          flex: 10,
+          fit: FlexFit.tight,
+          child: Container(),
+        ),
+        Flexible(
+          flex: 400,
+          fit: FlexFit.loose,
+          child: Container(
+            height: 30,
+            width: 460,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.black.withOpacity(0.1)
+                : Colors.white.withOpacity(0.1),
+          ),
+        ),
+        Flexible(
+          flex: 20,
+          fit: FlexFit.tight,
+          child: Container(),
+        ),
+        Flexible(
+          flex: 33,
+          fit: FlexFit.tight,
+          child: _QuitButton(),
+        ),
       ],
     );
   }
@@ -227,7 +246,7 @@ class _emailHeadline extends StatelessWidget {
           children: [
             SizedBox(width: 60),
             SelectableText(
-              "Message from management",
+              "${AppLocalizations.of(context).messageFrom} ${AppLocalizations.of(context).management}",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -250,7 +269,7 @@ class _emailHeadline extends StatelessWidget {
               children: [
                 SizedBox(height: 5),
                 SelectableText(
-                  "Management",
+                  AppLocalizations.of(context).management,
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -309,15 +328,15 @@ class _emailContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SelectableText(
-              "Fellow devs,\n\n${this.message}\n\n",
+              "${AppLocalizations.of(context).fellowDevs},\n\n${this.message}\n\n",
               style: TextStyle(
                 fontSize: this.fontSize,
               ),
             ),
-            Container(height: 1, width: 300, color: Colors.grey),
+            Container(height: 1, width: 150, color: Colors.grey),
             SizedBox(height: 10),
             SelectableText(
-              "Management",
+              AppLocalizations.of(context).management,
               style: TextStyle(
                 fontSize: this.fontSize,
               ),
