@@ -204,5 +204,16 @@
     "warning": "WARNING",
     "simulationIsGoingToBeOverWarning": "Simulation is going to be over and total points summed up. This action cannot be undone",
     "savingSimulationStateIsAdvised": "Saving simulation state before proceeding is advised",
-    "proceed": "Proceed"
+    "proceed": "Proceed",
+
+    "hasCome": "has come",
+    "cheatWasUsed": "Cheat was used",
+    "additionalDayAdded": "Additional day added",
+    "task": "Task",
+    "invested": "invested",
+    "productivityInTask": "productivity in task",
+    "hasBeenLocked": "has been locked",
+    "hasBeenUnlocked": "has been unlocked",
+    "teamMember": "Team member",
+    "startedDayWithProductivityEqualTo": "started day with productivity equal to"
 }

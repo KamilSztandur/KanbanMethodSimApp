@@ -197,5 +197,16 @@
     "warning": "UWAGA",
     "simulationIsGoingToBeOverWarning": "Symulacja dobiegnie końca i zostaną podliczone punkty końcowe. Tej akcji nie można cofnąć",
     "savingSimulationStateIsAdvised": "Sugerowane jest zapisanie stanu symulacji przed kontynuowaniem",
-    "proceed": "Kontynuuj"
+    "proceed": "Kontynuuj",
+
+    "hasCome": "nadszedł",
+    "cheatWasUsed": "Skorzystano z oszustwa",
+    "additionalDayAdded": "Przyznano dodatkowy dzień",
+    "task": "Zadanie",
+    "invested": "zainwestował",
+    "productivityInTask": "oroduktywności w zadanie",
+    "wasLocked": "zostało zablokowane",
+    "hasBeenUnlocked": "zostało odblokowane",
+    "teamMember": "Członek zespołu",
+    "startedDayWithProductivityEqualTo": "rozpoczął dzień z produktywnością równą"
 }
