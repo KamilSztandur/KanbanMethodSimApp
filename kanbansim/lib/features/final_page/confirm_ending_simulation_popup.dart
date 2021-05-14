@@ -77,7 +77,7 @@ class _Headline extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "UWAGA",
+            "${AppLocalizations.of(context).warning.toUpperCase()}",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -100,7 +100,7 @@ class _WarningLabel extends StatelessWidget {
         children: [
           TextSpan(
             text:
-                "Symulacja dobiegnie końca i zostaną podliczone punkty końcowe. Tej akcji nie można cofnąć.\n",
+                "${AppLocalizations.of(context).simulationIsGoingToBeOverWarning}.\n",
             style: TextStyle(
               color: Theme.of(context).textTheme.bodyText1.color,
             ),
@@ -110,7 +110,7 @@ class _WarningLabel extends StatelessWidget {
           ),
           TextSpan(
             text:
-                "Sugerowane jest zapisanie stanu symulacji przed kontynuowaniem.\n",
+                "${AppLocalizations.of(context).savingSimulationStateIsAdvised}.\n",
             style: TextStyle(
               color: Theme.of(context).primaryColor,
             ),
@@ -145,7 +145,7 @@ class _Buttons extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
               ),
               child: Text(
-                "Kontynuuj",
+                "${AppLocalizations.of(context).proceed}",
                 textAlign: TextAlign.center,
               ),
             )),

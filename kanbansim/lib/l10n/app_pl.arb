@@ -192,5 +192,10 @@
     "smallBonusOf": "mały bonus",
     "pointsAreAwarded": "punktów zostaje przyznany",
     "total": "Razem",
-    "returnToTitleScreen": "Powrót do ekranu tytułowego"
+    "returnToTitleScreen": "Powrót do ekranu tytułowego",
+
+    "warning": "UWAGA",
+    "simulationIsGoingToBeOverWarning": "Symulacja dobiegnie końca i zostaną podliczone punkty końcowe. Tej akcji nie można cofnąć",
+    "savingSimulationStateIsAdvised": "Sugerowane jest zapisanie stanu symulacji przed kontynuowaniem",
+    "proceed": "Kontynuuj"
 }

@@ -199,5 +199,10 @@
     "smallBonusOf": "as a small bonus",
     "pointsAreAwarded": "points are awarded",
     "total": "Total",
-    "returnToTitleScreen": "Return to title screen"
+    "returnToTitleScreen": "Return to title screen",
+
+    "warning": "WARNING",
+    "simulationIsGoingToBeOverWarning": "Simulation is going to be over and total points summed up. This action cannot be undone",
+    "savingSimulationStateIsAdvised": "Saving simulation state before proceeding is advised",
+    "proceed": "Proceed"
 }
