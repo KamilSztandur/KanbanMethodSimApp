@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:kanbansim/common/note_from_management.dart';
+import 'package:kanbansim/features/notifications/note_from_management.dart';
 import 'package:kanbansim/features/notifications/story_notification.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';

@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kanbansim/features/final_page/tasks_chart.dart';
+import 'package:kanbansim/features/final_page/widgets/tasks_chart.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/TaskType.dart';

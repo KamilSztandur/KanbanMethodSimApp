@@ -48,7 +48,7 @@ class _NoteFromManagement extends StatelessWidget {
       height: 500,
       width: 700,
       color: Theme.of(context).brightness == Brightness.light
-          ? Theme.of(context).accentColor
+          ? Colors.white
           : Theme.of(context).scaffoldBackgroundColor,
       child: ListView(
         children: [
@@ -321,8 +321,8 @@ class _emailContent extends StatelessWidget {
       height: 250,
       width: 660,
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          color: Colors.grey.withOpacity(0.2)),
+        border: Border.all(color: Colors.grey.shade600),
+      ),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
