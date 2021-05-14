@@ -1,23 +1,20 @@
 import 'dart:io';
-
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/common/savefile_parsers/savefile_reader.dart';
 import 'package:kanbansim/common/story_module.dart';
+import 'package:kanbansim/features/final_page/final_page.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
 import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
 import 'package:kanbansim/features/main_page/widgets/story_logs/logs_button.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
-import 'package:kanbansim/features/notifications/story_notification.dart';
-import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:kanbansim/features/scroll_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
   List<User> createdUsers;
@@ -95,9 +92,6 @@ class _MainPageState extends State<MainPage> {
             this.dayStatus.updateCurrentDay(this.currentDay);
           });
         });
-
-        SubtleMessage.messageWithContext(
-            context, "Pomyślnie załadowano plik zapisu.}");
       },
       getCurrentDay: () => this.currentDay,
       clearAllTasks: () {
@@ -217,21 +211,32 @@ class _MainPageState extends State<MainPage> {
     }
 
     dayStatus = DayStatus(
-      MIN_DAY: this.MIN_DAY,
-      MAX_DAY: this.MAX_DAY,
-      dayHasChanged: (int daysPassed) {
-        if (daysPassed < this.currentDay) {
-          this.storyModule.switchedToPreviousDay();
-        } else if (daysPassed > this.currentDay) {
-          this.storyModule.switchedToNextDay();
-        }
+        MIN_DAY: this.MIN_DAY,
+        MAX_DAY: this.MAX_DAY,
+        dayHasChanged: (int daysPassed) {
+          if (daysPassed < this.currentDay) {
+            this.storyModule.switchedToPreviousDay();
+          } else if (daysPassed > this.currentDay) {
+            this.storyModule.switchedToNextDay();
+          }
 
-        setState(() {
-          this.currentDay = daysPassed;
+          setState(() {
+            this.currentDay = daysPassed;
+          });
+        },
+        getCurrentDay: () => this.currentDay,
+        simulationCompleted: () {
+          Navigator.of(context).pop();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FinalPage(
+                allTasks: this.allTasks,
+                users: this.currentUsers,
+              ),
+            ),
+          );
         });
-      },
-      getCurrentDay: () => this.currentDay,
-    );
 
     locksStatus = LocksStatus(
       checkForLocks: () {
