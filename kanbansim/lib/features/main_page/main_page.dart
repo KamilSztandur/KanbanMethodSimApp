@@ -226,7 +226,10 @@ class _MainPageState extends State<MainPage> {
         },
         getCurrentDay: () => this.currentDay,
         simulationCompleted: () {
-          Navigator.of(context).pop();
+          if (Theme.of(context).brightness == Brightness.light) {
+            KanbanSimApp.of(context).switchTheme();
+          }
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(

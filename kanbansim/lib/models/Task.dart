@@ -35,6 +35,20 @@ class Task {
     this.stage = 0;
   }
 
+  int getCompletionTime() {
+    if (this.startDay == null || this.endDay == null) {
+      return -1;
+    } else {
+      int completionTime = this.endDay - this.startDay;
+
+      if (completionTime < 0) {
+        return 0;
+      } else {
+        return completionTime;
+      }
+    }
+  }
+
   int getLatestTaskID() {
     return _latestTaskID;
   }
