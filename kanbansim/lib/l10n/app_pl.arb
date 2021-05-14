@@ -169,5 +169,28 @@
 
     "modifyTasksLimits": "ZMODYFIKUJ LIMITY ZADAŃ",
     "discard": "Porzuć",
-    "setLimitFor": "Ustaw limit dla"
+    "setLimitFor": "Ustaw limit dla",
+
+    "simulationCompleted": "SYMULACJA ZAKOŃCZONA",
+    "summary": "PODSUMOWANIE",
+    "completed": "Ukończono",
+    "tasksOfType": "zadań typu",
+    "pts": "pkt",
+    "points": "punktów",
+    "tasksOfFixedDateTypeCompleted": "zadań typu Z Ustaloną Datą wykonano",
+    "beforeDeadline": "przed terminem",
+    "onDeadline": "w terminie",
+    "afterDeadline": "po terminie",
+    "bonuses": "BONUSES",
+    "teamConsistedOf": "Zespół składał się z",
+    "teamMembers": "członków",
+    "so": "więc",
+    "pointsAsPartOfSmallTeamBonusAreAwarded": "punktów w ramach bonusu małej drużyny zostaje przyznane",
+    "smallTeamBonusIsNotAwarded": "bonus małej drużyny nie zostaje przyznany",
+    "incompletedTasksFinishedProgressPhaseOfFirstStage": "nieukończonych zadań ukończyło fazę produkcyjną pierwszego etapu",
+    "noBonusIsAwarded": "żaden dodatkowy bonus nie zostaje naliczony",
+    "smallBonusOf": "mały bonus",
+    "pointsAreAwarded": "punktów zostaje przyznany",
+    "total": "Razem",
+    "returnToTitleScreen": "Powrót do ekranu tytułowego"
 }

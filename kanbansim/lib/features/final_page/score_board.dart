@@ -82,7 +82,7 @@ class _Headline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      "SYMULACJA ZAKOŃCZONA",
+      AppLocalizations.of(context).simulationCompleted,
       textAlign: TextAlign.center,
       style: TextStyle(
         color: Theme.of(context).primaryColor,
@@ -119,7 +119,7 @@ class _Statistics extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: Text(
-            "PODSUMOWANIE",
+            "${AppLocalizations.of(context).summary.toUpperCase()}:",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
@@ -135,7 +135,7 @@ class _Statistics extends StatelessWidget {
               ),
               score: calculator.sumAllStandardTasks(),
               color: Colors.orange,
-              type: "standard",
+              type: AppLocalizations.of(context).standard,
             ),
             SizedBox(height: 15),
             _TaskTypeStatistic(
@@ -144,7 +144,7 @@ class _Statistics extends StatelessWidget {
               ),
               score: calculator.sumAllExpediteTasks(),
               color: Colors.red,
-              type: 'expedite',
+              type: AppLocalizations.of(context).expedite,
             ),
             SizedBox(height: 15),
             _TaskTypeStatistic(
@@ -153,7 +153,7 @@ class _Statistics extends StatelessWidget {
               ),
               score: calculator.sumAllFixedDateTasks(),
               color: Colors.cyan,
-              type: 'fixed date',
+              type: AppLocalizations.of(context).fixedDate,
             ),
             SizedBox(height: 15),
             _Divider(width: this.width * 0.4, height: 2),
@@ -223,7 +223,8 @@ class _TaskTypeStatistic extends StatelessWidget {
           text: TextSpan(
             children: [
               TextSpan(
-                text: "Wykonano $amount zadań typu ",
+                text:
+                    "${AppLocalizations.of(context).completed} $amount ${AppLocalizations.of(context).tasksOfType} ",
                 style: TextStyle(
                     color: Theme.of(context).textTheme.bodyText1.color),
               ),
@@ -240,7 +241,7 @@ class _TaskTypeStatistic extends StatelessWidget {
             ],
           ),
         ),
-        Text("$score pkt"),
+        Text("$score ${AppLocalizations.of(context).pts}"),
       ],
     );
   }
@@ -275,10 +276,10 @@ class _FixedDateTasksStatistics extends StatelessWidget {
             RichText(
               text: TextSpan(
                 text:
-                    "$beforeDeadlineAmount zadań typu Fixed Date wykonano przed terminem.\n",
+                    "$beforeDeadlineAmount ${AppLocalizations.of(context).tasksOfFixedDateTypeCompleted} ${AppLocalizations.of(context).beforeDeadline}:\n",
               ),
             ),
-            Text("$beforeDeadlineScore pkt"),
+            Text("$beforeDeadlineScore ${AppLocalizations.of(context).pts}"),
           ],
         ),
         Row(
@@ -287,10 +288,10 @@ class _FixedDateTasksStatistics extends StatelessWidget {
             RichText(
               text: TextSpan(
                 text:
-                    "$onDeadlineAmount zadań typu Fixed Date wykonano w dniu terminu.\n",
+                    "$onDeadlineAmount ${AppLocalizations.of(context).tasksOfFixedDateTypeCompleted} ${AppLocalizations.of(context).onDeadline}:\n",
               ),
             ),
-            Text("$onDeadlineScore pkt"),
+            Text("$onDeadlineScore ${AppLocalizations.of(context).pts}"),
           ],
         ),
         Row(
@@ -299,10 +300,10 @@ class _FixedDateTasksStatistics extends StatelessWidget {
             RichText(
               text: TextSpan(
                 text:
-                    "$afterDeadlineAmount zadań typu Fixed Date wykonano po terminie.\n",
+                    "$afterDeadlineAmount ${AppLocalizations.of(context).tasksOfFixedDateTypeCompleted} ${AppLocalizations.of(context).afterDeadline}:\n",
               ),
             ),
-            Text("$afterDeadlineScore pkt"),
+            Text("$afterDeadlineScore ${AppLocalizations.of(context).pts}"),
           ],
         ),
       ],
@@ -334,7 +335,7 @@ class _BonusesInfo extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: Text(
-            "BONUSY",
+            "${AppLocalizations.of(context).bonuses.toUpperCase()}:",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
@@ -346,18 +347,20 @@ class _BonusesInfo extends StatelessWidget {
           textAlign: TextAlign.center,
           text: TextSpan(children: [
             TextSpan(
-              text: "Zespół składał się z $amountOfUsers członków, więc\n",
+              text:
+                  "${AppLocalizations.of(context).teamConsistedOf} $amountOfUsers ${AppLocalizations.of(context).teamMembers}, ${AppLocalizations.of(context).so}\n",
               style:
                   TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
             ),
             amountOfUsers <= this.maxUsersAmountForBonus
                 ? TextSpan(
                     text:
-                        "${this.smallTeamBonus} punktów w ramach bonusu małej drużyny zostają przyznane.\n",
+                        "${this.smallTeamBonus} ${AppLocalizations.of(context).pointsAsPartOfSmallTeamBonusAreAwarded}.\n",
                     style: TextStyle(color: Colors.green),
                   )
                 : TextSpan(
-                    text: "bonus małej drużyny nie zostaje przyznany.\n",
+                    text:
+                        "${AppLocalizations.of(context).smallTeamBonusIsNotAwarded}.\n",
                     style: TextStyle(color: Colors.red),
                   ),
           ]),
@@ -368,18 +371,19 @@ class _BonusesInfo extends StatelessWidget {
             children: [
               TextSpan(
                 text:
-                    "$amountOfTasksAfterFirstStage nieukończonych zadań ukończyło fazę produkcyjną pierwszego etapu, więc \n",
+                    "$amountOfTasksAfterFirstStage ${AppLocalizations.of(context).incompletedTasksFinishedProgressPhaseOfFirstStage}, ${AppLocalizations.of(context).so} \n",
                 style: TextStyle(
                     color: Theme.of(context).textTheme.bodyText1.color),
               ),
               amountOfTasksAfterFirstStage == 0
                   ? TextSpan(
-                      text: "żaden dodatkowy bonus nie zostaje naliczony.\n",
+                      text:
+                          "${AppLocalizations.of(context).noBonusIsAwarded}.\n",
                       style: TextStyle(color: Colors.red),
                     )
                   : TextSpan(
                       text:
-                          "zostaje przyznany mały bonus ${this.afterFirstStageTasksBonus * amountOfTasksAfterFirstStage} punktów.\n",
+                          "${AppLocalizations.of(context).smallBonusOf} ${this.afterFirstStageTasksBonus * amountOfTasksAfterFirstStage} ${AppLocalizations.of(context).pointsAreAwarded}.\n",
                       style: TextStyle(color: Colors.green),
                     ),
             ],
@@ -433,7 +437,7 @@ class _ScoreInfo extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: Text(
-            "RAZEM:",
+            "${AppLocalizations.of(context).total.toUpperCase()}:",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
@@ -442,10 +446,10 @@ class _ScoreInfo extends StatelessWidget {
         ),
         SizedBox(height: 20),
         Text(
-          "$score pkt",
+          "$score ${AppLocalizations.of(context).pts}",
           style: TextStyle(
             fontSize: 50,
-            color: Colors.orange,
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ],
@@ -462,7 +466,7 @@ class _CloseButton extends StatelessWidget {
         backgroundColor:
             MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
       ),
-      child: Text("Powrót do ekranu tytułowego"),
+      child: Text(AppLocalizations.of(context).returnToTitleScreen),
     );
   }
 
