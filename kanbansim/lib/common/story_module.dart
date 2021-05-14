@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:kanbansim/common/note_from_management.dart';
 import 'package:kanbansim/features/notifications/story_notification.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
@@ -51,7 +52,7 @@ class StoryModule {
       "${AppLocalizations.of(context).day} $currentDay ${AppLocalizations.of(context).hasCome}.",
       true,
     );
-
+    _showNoteFromManagement(currentDay);
     _pushNotificationForDay(currentDay);
     _restoreProductivitiesAfterNewDay();
     lockTasksRandomly();
@@ -206,5 +207,17 @@ class StoryModule {
       type: type,
       message: text,
     ).show();
+  }
+
+  void _showNoteFromManagement(int currentDay) {
+    String message = this._scriptedMessages[currentDay - 1];
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => NoteFromManagementPopup(
+        message: message,
+        users: this.getUsers(),
+      ).show(),
+    );
   }
 }
