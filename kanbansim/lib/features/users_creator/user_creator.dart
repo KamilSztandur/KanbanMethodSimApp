@@ -152,7 +152,7 @@ class _UserCreatorState extends State<_UserCreator> {
     }
 
     if (this._productivity == null) {
-      this._productivity = 1;
+      this._productivity = 5;
     }
   }
 }
