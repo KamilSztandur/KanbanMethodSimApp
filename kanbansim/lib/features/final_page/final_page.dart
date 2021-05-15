@@ -7,7 +7,7 @@ import 'package:kanbansim/features/final_page/widgets/chart_legend.dart';
 import 'package:kanbansim/features/final_page/widgets/chart_window.dart';
 import 'package:kanbansim/features/final_page/widgets/tasks_completion_time_average.dart';
 import 'package:kanbansim/features/final_page/widgets/tasks_completion_time_standard_deviation.dart';
-import 'package:kanbansim/features/title_page/welcome_page.dart';
+import 'package:kanbansim/features/title_page/title_page.dart';
 import 'package:kanbansim/features/window_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -56,7 +56,7 @@ class _FinalPageState extends State<FinalPage> with TickerProviderStateMixin {
           onPressed: () => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => WelcomePage(),
+              builder: (context) => TitlePage(),
             ),
           ),
         ),

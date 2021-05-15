@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:kanbansim/features/welcome_page/welcome_page.dart';
+import 'package:kanbansim/features/title_page/title_page.dart';
 
 class ConfirmReturningToWelcomePagePopup {
   Widget show() {
@@ -50,7 +50,7 @@ class _ConfirmReturningToWelcomePage extends StatelessWidget {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => WelcomePage(),
+        builder: (context) => TitlePage(),
       ),
     );
   }

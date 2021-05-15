@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanbansim/features/title_page/welcome_page.dart';
+import 'package:kanbansim/features/title_page/title_page.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,7 +28,7 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
         /* body */
         home: Container(
           decoration: BoxDecoration(image: getBackgroundImage()),
-          child: WelcomePage(),
+          child: TitlePage(),
         ),
 
         /* Languages */
