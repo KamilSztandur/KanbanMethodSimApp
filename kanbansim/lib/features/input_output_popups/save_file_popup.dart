@@ -104,6 +104,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
     SavefileCreator creator = SavefileCreator();
 
     creator.setSimState(this.widget.getSimState());
+    creator.setUsersList(this.widget.getSimState().users);
 
     AllTasksContainer allTasks = this.widget.getSimState().allTasks;
     creator.addTasksListsWithTitle(allTasks.idleTasksColumn, "idle");
@@ -115,7 +116,6 @@ class _SaveFilePageState extends State<_SaveFilePage> {
     creator.addTasksListsWithTitle(allTasks.finishedTasksColumn, "finished");
 
     String data = creator.convertDataToString();
-    print(data);
     return data;
   }
 

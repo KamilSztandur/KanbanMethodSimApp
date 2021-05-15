@@ -1,9 +1,7 @@
-import 'package:kanbansim/common/savefile_parsers/savefile_creator.dart';
 import 'package:kanbansim/common/savefile_parsers/savefile_reader.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
-import 'dart:io';
 
 class SimState {
   List<User> users;
