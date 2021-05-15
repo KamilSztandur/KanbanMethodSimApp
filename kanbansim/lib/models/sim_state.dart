@@ -38,20 +38,10 @@ class SimState {
   void createFromData(String data) {
     SavefileReader reader = SavefileReader();
     _buildCurrentDayFromData(reader, data);
+    _buildColumnLimitsFromData(reader, data);
     _buildUsersFromData(reader, data);
-    _buildLatestTaskIDFromData(reader, data);
     _buildTasksFromData(reader, data);
-  }
-
-  String parseIntoStringData() {
-    SavefileCreator creator = SavefileCreator();
-
-    _parseUsersToCreator(creator);
-    _parseSimStateDataToCreator(creator);
-    _parseTasksListsToCreator(creator);
-
-    String data = creator.convertDataToString();
-    return data;
+    _buildLatestTaskIDFromData(reader, data);
   }
 
   void _buildCurrentDayFromData(SavefileReader reader, String data) {
@@ -64,6 +54,7 @@ class SimState {
 
   void _buildLatestTaskIDFromData(SavefileReader reader, String data) {
     this.latestTaskID = reader.getLatestTaskID(data);
+    Task.getEmpty().setLatestTaskID(this.latestTaskID);
   }
 
   void _buildTasksFromData(SavefileReader reader, String data) {
@@ -76,26 +67,15 @@ class SimState {
     allTasks.stageTwoTasksColumn = reader.readStageTwoTasks(data);
     allTasks.finishedTasksColumn = reader.readFinishedTasks(data);
 
-    Task.getEmpty().setLatestTaskID(this.latestTaskID);
-
     this.allTasks = allTasks;
   }
 
-  void _parseUsersToCreator(SavefileCreator creator) {
-    creator.setUsersList(this.users);
-  }
+  void _buildColumnLimitsFromData(SavefileReader reader, String data) {
+    this.stageOneInProgressColumnLimit =
+        reader.getStageOneInProgressColumnLimit(data);
 
-  void _parseSimStateDataToCreator(SavefileCreator creator) {
-    creator.setSimStateData(this.currentDay, this.latestTaskID);
-  }
+    this.stageOneDoneColumnLimit = reader.getStageOneDoneColumnLimit(data);
 
-  void _parseTasksListsToCreator(SavefileCreator creator) {
-    creator.addTasksListsWithTitle(allTasks.idleTasksColumn, "idle");
-    creator.addTasksListsWithTitle(
-        allTasks.stageOneInProgressTasksColumn, "stage one in progress");
-    creator.addTasksListsWithTitle(
-        allTasks.stageOneDoneTasksColumn, "stage one done");
-    creator.addTasksListsWithTitle(allTasks.stageTwoTasksColumn, "stage two");
-    creator.addTasksListsWithTitle(allTasks.finishedTasksColumn, "finished");
+    this.stageTwoColumnLimit = reader.getStageTwoColumnLimit(data);
   }
 }

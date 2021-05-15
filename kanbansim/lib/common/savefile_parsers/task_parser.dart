@@ -13,6 +13,8 @@ class TaskParser {
     this._reader = _TaskReader(getAllUsers());
   }
 
+  get trueList => null;
+
   String parseTaskToString(Task task) {
     String data = "";
 
@@ -20,14 +22,14 @@ class TaskParser {
     TaskType type = task.getTaskType();
 
     int id = task.getID();
-    
+
     int ownerID;
-    if(task.owner == null) {
-       ownerID = -1;
+    if (task.owner == null) {
+      ownerID = -1;
     } else {
-       ownerID = task.owner.getID();
+      ownerID = task.owner.getID();
     }
-    
+
     int prodReqToUnlock = task.getProductivityRequiredToUnlock();
     int prodReqToComplete = task.progress.getNumberOfAllParts();
     int deadline = task.getDeadlineDay();

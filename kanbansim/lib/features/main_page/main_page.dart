@@ -132,13 +132,7 @@ class MainPageState extends State<MainPage> {
 
   void _initializeMainMenuBar() {
     this.menuBar = MainMenuBar(
-      getCurrentDay: () => this.currentSimState.currentDay,
-      getAllTasks: () => this.currentSimState.allTasks,
-      getAllUsers: () => this.currentSimState.users,
-      getStageOneInProgressLimit: () =>
-          this.currentSimState.stageOneInProgressColumnLimit,
-      getStageOneDoneLimit: () => this.currentSimState.stageOneDoneColumnLimit,
-      getStageTwoLimit: () => this.currentSimState.stageTwoColumnLimit,
+      getSimState: () => this.currentSimState,
       loadSimStateFromPickedData: (String data) =>
           this.simEngine.loadSimStateFromPickedData(this, data),
       stageOneInProgressLimitChanged: (int newLimit) =>

@@ -16,26 +16,16 @@ class MainMenuBar extends StatelessWidget {
   final Function(int) stageOneInProgressLimitChanged;
   final Function(int) stageOneDoneLimitChanged;
   final Function(int) stageTwoLimitChanged;
-  final Function getStageOneInProgressLimit;
-  final Function getStageOneDoneLimit;
-  final Function getStageTwoLimit;
-  final Function getCurrentDay;
-  final Function getAllUsers;
-  final Function getAllTasks;
+  final Function getSimState;
 
   MainMenuBar({
     Key key,
     @required this.resetSimulation,
     @required this.loadSimStateFromPickedData,
     @required this.stageTwoLimitChanged,
-    @required this.stageOneInProgressLimitChanged,
     @required this.stageOneDoneLimitChanged,
-    @required this.getStageTwoLimit,
-    @required this.getStageOneInProgressLimit,
-    @required this.getStageOneDoneLimit,
-    @required this.getCurrentDay,
-    @required this.getAllTasks,
-    @required this.getAllUsers,
+    @required this.stageOneInProgressLimitChanged,
+    @required this.getSimState,
   }) : super(key: key);
 
   @override
@@ -56,16 +46,11 @@ class MainMenuBar extends StatelessWidget {
           KanbanSimApp.of(context).isWeb() ? Container() : WindowBar(),
           _ToolBar(
             resetSimulation: this.resetSimulation,
-            getCurrentDay: this.getCurrentDay,
             loadSimStateFromPickedData: this.loadSimStateFromPickedData,
-            getAllUsers: this.getAllUsers,
-            getAllTasks: this.getAllTasks,
-            getStageOneInProgressLimit: this.getStageOneInProgressLimit,
-            getStageTwoLimit: this.getStageTwoLimit,
             stageOneInProgressLimitChanged: this.stageOneInProgressLimitChanged,
             stageTwoLimitChanged: this.stageTwoLimitChanged,
-            getStageOneDoneLimit: this.getStageOneDoneLimit,
             stageOneDoneLimitChanged: this.stageOneDoneLimitChanged,
+            getSimState: this.getSimState,
           ),
         ],
       ),
@@ -79,12 +64,7 @@ class _ToolBar extends StatelessWidget {
   final Function(int) stageOneInProgressLimitChanged;
   final Function(int) stageOneDoneLimitChanged;
   final Function(int) stageTwoLimitChanged;
-  final Function getStageOneInProgressLimit;
-  final Function getStageOneDoneLimit;
-  final Function getStageTwoLimit;
-  final Function getCurrentDay;
-  final Function getAllUsers;
-  final Function getAllTasks;
+  final Function getSimState;
 
   LoadFilePopup pickFilePopup;
   SaveFilePopup saveFilePopup;
@@ -96,12 +76,7 @@ class _ToolBar extends StatelessWidget {
     @required this.stageTwoLimitChanged,
     @required this.stageOneDoneLimitChanged,
     @required this.stageOneInProgressLimitChanged,
-    @required this.getStageTwoLimit,
-    @required this.getStageOneInProgressLimit,
-    @required this.getStageOneDoneLimit,
-    @required this.getCurrentDay,
-    @required this.getAllTasks,
-    @required this.getAllUsers,
+    @required this.getSimState,
   }) : super(key: key);
 
   void _initializeFilePickerPopup() {
@@ -113,11 +88,7 @@ class _ToolBar extends StatelessWidget {
   }
 
   void _initializeFileSaverPopup() {
-    saveFilePopup = SaveFilePopup(
-      getCurrentDay: this.getCurrentDay,
-      getAllTasks: this.getAllTasks,
-      getAllUsers: this.getAllUsers,
-    );
+    saveFilePopup = SaveFilePopup(getSimState: this.getSimState);
   }
 
   @override
@@ -190,9 +161,10 @@ class _ToolBar extends StatelessWidget {
                     this.stageOneInProgressLimitChanged,
                 stageOneDoneLimitChanged: this.stageOneDoneLimitChanged,
                 stageTwoLimitChanged: this.stageTwoLimitChanged,
-                stageOneInProgressLimit: this.getStageOneInProgressLimit(),
-                stageOneDoneLimit: this.getStageOneDoneLimit(),
-                stageTwoLimit: this.getStageTwoLimit(),
+                stageOneInProgressLimit:
+                    this.getSimState().stageOneInProgressColumnLimit,
+                stageOneDoneLimit: this.getSimState().stageOneDoneColumnLimit,
+                stageTwoLimit: this.getSimState().stageTwoColumnLimit,
               ).show(context),
             );
           },
