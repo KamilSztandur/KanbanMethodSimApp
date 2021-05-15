@@ -140,76 +140,44 @@ class _ToolBar extends StatelessWidget {
       textStyle: TextStyle(color: Colors.white),
       menus: [
         MenuItem(
-          title: AppLocalizations.of(context).newSession,
-          icon: Icons.create_outlined,
+          title: AppLocalizations.of(context).simulation,
+          icon: Icons.sticky_note_2_outlined,
           children: [
             MenuItem(
-              title: AppLocalizations.of(context).createEmptySession,
-              icon: Icons.create_new_folder_outlined,
+              title: AppLocalizations.of(context).loadSession,
+              icon: Icons.read_more_outlined,
               onTap: () {
-                SubtleMessage.messageWithContext(
-                  context,
-                  AppLocalizations.of(context).createEmptySession,
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      this.pickFilePopup.show(context),
                 );
               },
             ),
             MenuItem(
-              title: AppLocalizations.of(context).selectTemplate,
-              icon: Icons.file_copy_outlined,
+              title: AppLocalizations.of(context).saveSession,
+              icon: Icons.save_outlined,
               onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      this.saveFilePopup.show(context),
+                );
+              },
+            ),
+            MenuItem(
+              title: AppLocalizations.of(context).resetSession,
+              icon: Icons.delete_forever_outlined,
+              onTap: () {
+                this.clearAllTasks();
+
                 SubtleMessage.messageWithContext(
                   context,
-                  AppLocalizations.of(context).selectingTemplateNotif,
+                  AppLocalizations.of(context).resetSessionSuccess,
                 );
               },
             ),
           ],
-        ),
-        MenuItem(
-          title: AppLocalizations.of(context).saveSession,
-          icon: Icons.save_outlined,
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) =>
-                  this.saveFilePopup.show(context),
-            );
-          },
-        ),
-        MenuItem(
-          title: AppLocalizations.of(context).loadSession,
-          icon: Icons.read_more_outlined,
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) =>
-                  this.pickFilePopup.show(context),
-            );
-          },
-        ),
-        MenuItem(
-          title: AppLocalizations.of(context).addRandomTasks,
-          icon: Icons.library_add_outlined,
-          onTap: () {
-            this.addRandomTasks();
-
-            SubtleMessage.messageWithContext(
-              context,
-              AppLocalizations.of(context).addRandomTasksSuccess,
-            );
-          },
-        ),
-        MenuItem(
-          title: AppLocalizations.of(context).resetSession,
-          icon: Icons.delete_forever_outlined,
-          onTap: () {
-            this.clearAllTasks();
-
-            SubtleMessage.messageWithContext(
-              context,
-              AppLocalizations.of(context).resetSessionSuccess,
-            );
-          },
         ),
         MenuItem(
           title: AppLocalizations.of(context).limits,
@@ -275,7 +243,7 @@ class _ToolBar extends StatelessWidget {
           onTap: () {
             showAboutDialog(
               context: context,
-              applicationVersion: '0.7.6',
+              applicationVersion: '0.9.8',
               applicationIcon: Icon(Icons.info_outline_rounded),
               applicationLegalese:
                   AppLocalizations.of(context).applicationLegalese,
