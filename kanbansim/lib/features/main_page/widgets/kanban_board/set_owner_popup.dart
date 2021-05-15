@@ -87,6 +87,7 @@ class _SetOwnerWindowState extends State<_SetOwnerWindow> {
               subWidth: this._subWidth,
               updateSelectedUserName: (String selectedUser) =>
                   this._selectedValue = selectedUser,
+              ownerName: null,
             ),
           ),
           Flexible(
