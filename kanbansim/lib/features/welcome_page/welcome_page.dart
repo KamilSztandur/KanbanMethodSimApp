@@ -20,59 +20,64 @@ class WelcomePage extends StatefulWidget {
 class WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      resizeToAvoidBottomInset: false,
-      body: WindowBorder(
-        color: Theme.of(context).primaryColor,
-        width: 1,
-        child: Center(
-          child: Column(
-            children: [
-              KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
-              Flexible(flex: 2, child: SizedBox()),
-              Flexible(
-                flex: 13,
-                fit: FlexFit.tight,
-                child: _Logo(),
-              ),
-              Flexible(
-                flex: 2,
-                fit: FlexFit.tight,
-                child: _MenuButton(
-                  text: AppLocalizations.of(context).createEmptySession,
-                  action: () => _newSessionButtonPressed(),
+    return Container(
+      decoration: BoxDecoration(
+        image: KanbanSimApp.of(context).getBackgroundImage(),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: false,
+        body: WindowBorder(
+          color: Theme.of(context).primaryColor,
+          width: 1,
+          child: Center(
+            child: Column(
+              children: [
+                KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
+                Flexible(flex: 2, child: SizedBox()),
+                Flexible(
+                  flex: 13,
+                  fit: FlexFit.tight,
+                  child: _Logo(),
                 ),
-              ),
-              Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-              Flexible(
-                flex: 2,
-                fit: FlexFit.tight,
-                child: _MenuButton(
-                  text: AppLocalizations.of(context).loadSession,
-                  action: () => _loadButtonPressed(),
+                Flexible(
+                  flex: 2,
+                  fit: FlexFit.tight,
+                  child: _MenuButton(
+                    text: AppLocalizations.of(context).createEmptySession,
+                    action: () => _newSessionButtonPressed(),
+                  ),
                 ),
-              ),
-              Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-              KanbanSimApp.of(context).isWeb()
-                  ? Center()
-                  : Flexible(
-                      flex: 2,
-                      fit: FlexFit.tight,
-                      child: _MenuButton(
-                        text: AppLocalizations.of(context).quit,
-                        action: () => _quitButtonPressed(),
+                Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+                Flexible(
+                  flex: 2,
+                  fit: FlexFit.tight,
+                  child: _MenuButton(
+                    text: AppLocalizations.of(context).loadSession,
+                    action: () => _loadButtonPressed(),
+                  ),
+                ),
+                Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+                KanbanSimApp.of(context).isWeb()
+                    ? Center()
+                    : Flexible(
+                        flex: 2,
+                        fit: FlexFit.tight,
+                        child: _MenuButton(
+                          text: AppLocalizations.of(context).quit,
+                          action: () => _quitButtonPressed(),
+                        ),
                       ),
-                    ),
-              Flexible(flex: 2, fit: FlexFit.tight, child: SizedBox()),
-              _LangSwitchButtons(),
-              Flexible(
-                flex: 2,
-                fit: FlexFit.tight,
-                child: _AuthorsNotice(),
-              ),
-              Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-            ],
+                Flexible(flex: 2, fit: FlexFit.tight, child: SizedBox()),
+                _LangSwitchButtons(),
+                Flexible(
+                  flex: 2,
+                  fit: FlexFit.tight,
+                  child: _AuthorsNotice(),
+                ),
+                Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+              ],
+            ),
           ),
         ),
       ),

@@ -30,6 +30,8 @@ dependencies:
   syncfusion_flutter_sliders: ^19.1.55-beta
   flutter_material_color_picker: ^1.0.5
   cupertino_icons: ^1.0.3
+  animated_background: ^2.0.0
+  fl_chart: ^0.36.1
 
 dev_dependencies:
   flutter_test:

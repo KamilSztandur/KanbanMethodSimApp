@@ -35,6 +35,20 @@ class Task {
     this.stage = 0;
   }
 
+  int getCompletionTime() {
+    if (this.startDay == null || this.endDay == null) {
+      return -1;
+    } else {
+      int completionTime = this.endDay - this.startDay;
+
+      if (completionTime < 0) {
+        return 0;
+      } else {
+        return completionTime;
+      }
+    }
+  }
+
   int getLatestTaskID() {
     return _latestTaskID;
   }
@@ -79,13 +93,8 @@ class Task {
     return this._type.toString().split('.').last;
   }
 
-  void blockTaskRandomly() {
-    var dice = Random().nextInt(6) + 1;
-    if (dice == 1) {
-      this._productivityRequiredToUnlock = Random().nextInt(3) + 1;
-    } else {
-      this._productivityRequiredToUnlock = 0;
-    }
+  void block(int productivity) {
+    this._productivityRequiredToUnlock = productivity;
   }
 
   void unlock() {

@@ -7,7 +7,7 @@ import 'package:kanbansim/models/User.dart';
 
 class TaskCard extends StatelessWidget {
   final Function(Task, User, int) productivityAssigned;
-  final Function taskUnlocked;
+  final Function(Task) taskUnlocked;
   final Function getUsers;
   final Function getCurrentDay;
   final Function getFinalDay;
@@ -58,7 +58,7 @@ class TaskCard extends StatelessWidget {
           context: context,
           builder: (BuildContext context) => TaskCardPopup(
             getUsers: this.getUsers,
-            taskUnlocked: this.taskUnlocked,
+            taskUnlocked: () => this.taskUnlocked(this.task),
             taskCardColor: this._taskCardColor,
             deleteTask: () => deleteMe(this.task),
             productivityAssigned: this.productivityAssigned,

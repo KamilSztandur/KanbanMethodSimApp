@@ -11,7 +11,7 @@ class KanbanBoard extends StatefulWidget {
   final Function(Task, User, int) productivityAssigned;
   final Function(Task) deleteMe;
   final Function(Task) taskCreated;
-  final Function taskUnlocked;
+  final Function(Task) taskUnlocked;
   final Function getMaxSimDay;
   final Function getCurrentDay;
   final Function getUsers;

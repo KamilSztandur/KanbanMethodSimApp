@@ -1,22 +1,20 @@
 import 'dart:io';
-
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/common/savefile_parsers/savefile_reader.dart';
+import 'package:kanbansim/common/story_module.dart';
+import 'package:kanbansim/features/final_page/final_page.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
 import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
 import 'package:kanbansim/features/main_page/widgets/story_logs/logs_button.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/day_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_status.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
-import 'package:kanbansim/features/notifications/story_notification.dart';
-import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:kanbansim/features/scroll_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
   List<User> createdUsers;
@@ -33,49 +31,19 @@ class _MainPageState extends State<MainPage> {
   DayStatus dayStatus;
   LocksStatus locksStatus;
   ProductivityBar productivityBar;
+  StoryModule storyModule;
 
   AllTasksContainer allTasks;
   List<String> messages;
   List<User> currentUsers;
 
   final int MIN_DAY = 1;
-  final int MAX_DAY = 25;
+  int MAX_DAY;
   int currentDay;
 
   int stageOneInProgressColumnLimit;
   int stageOneDoneColumnLimit;
   int stageTwoColumnLimit;
-
-  void _restoreUsersProductivities() {
-    int n = this.currentUsers.length;
-    for (int i = 0; i < n; i++) {
-      this.currentUsers[i].restoreProductivity();
-    }
-  }
-
-  void _eventOccured(EventType type, String text) {
-    _printNotification(type, text);
-    _addLog(text);
-  }
-
-  String _getTranslatedTaskTypeName(String type) {
-    switch (type) {
-      case "Standard":
-        return AppLocalizations.of(context).standard;
-        break;
-
-      case "Expedite":
-        return AppLocalizations.of(context).expedite;
-        break;
-
-      case "FixedDate":
-        return AppLocalizations.of(context).fixedDate;
-        break;
-
-      default:
-        return AppLocalizations.of(context).standard;
-    }
-  }
 
   void _addLog(String text) {
     setState(() {
@@ -83,12 +51,22 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  void _printNotification(EventType type, String text) {
-    StoryNotification(
-      context: this.context,
-      type: type,
-      message: text,
-    ).show();
+  void _initializeStoryModule() {
+    this.storyModule = StoryModule(
+      addLog: this._addLog,
+      context: context,
+      getAllTasks: () => this.allTasks,
+      getCurrentDay: () => this.currentDay,
+      getUsers: () => this.currentUsers,
+    );
+    this.MAX_DAY = this.storyModule.getMaxDays();
+  }
+
+  void _restoreUsersProductivities() {
+    int n = this.currentUsers.length;
+    for (int i = 0; i < n; i++) {
+      this.currentUsers[i].addProductivity(5);
+    }
   }
 
   void _initializeMainMenuBar() {
@@ -114,9 +92,6 @@ class _MainPageState extends State<MainPage> {
             this.dayStatus.updateCurrentDay(this.currentDay);
           });
         });
-
-        SubtleMessage.messageWithContext(
-            context, "Pomyślnie załadowano plik zapisu.}");
       },
       getCurrentDay: () => this.currentDay,
       clearAllTasks: () {
@@ -187,37 +162,33 @@ class _MainPageState extends State<MainPage> {
       getCurrentDay: () => this.currentDay,
       getMaxSimDay: () => this.MAX_DAY,
       getAllTasks: () => this.allTasks,
+      getUsers: () => this.currentUsers,
+      getStageOneInProgressLimit: () => this.stageOneInProgressColumnLimit,
+      getStageTwoLimit: () => this.stageTwoColumnLimit,
+      getStageOneDoneLimit: () => this.stageOneDoneColumnLimit,
+      defaultMinColumnHeight: _calcKanbanColumnHeight(),
       taskCreated: (Task task) {
+        this.storyModule.newTaskAppeared(task);
         setState(() {
           this.allTasks.idleTasksColumn.add(task);
         });
-
-        _eventOccured(
-          EventType.NEWTASK,
-          "${AppLocalizations.of(context).newTaskAppeared}! ${_getTranslatedTaskTypeName(task.getTaskTypeName())} '${task.getTitle()}'.",
-        );
       },
       deleteMe: (Task task) {
+        this.storyModule.taskDeleted(task);
         setState(
           () {
             this.allTasks.removeTask(task);
           },
         );
-
-        _eventOccured(
-          EventType.DELETE,
-          "${AppLocalizations.of(context).elementDeleted}! ${_getTranslatedTaskTypeName(task.getTaskTypeName())} '${task.getTitle()}'.",
-        );
       },
-      getUsers: () {
-        return this.currentUsers;
-      },
-      taskUnlocked: () {
+      taskUnlocked: (Task task) {
+        this.storyModule.taskUnlocked(task);
         setState(() {
           this.locksStatus.checkForLocks();
         });
       },
       productivityAssigned: (Task task, User user, int value) {
+        this.storyModule.productivityAssigned(task, user, value);
         setState(() {
           task.investProductivityFrom(
             user,
@@ -225,10 +196,6 @@ class _MainPageState extends State<MainPage> {
           );
         });
       },
-      getStageOneInProgressLimit: () => this.stageOneInProgressColumnLimit,
-      getStageTwoLimit: () => this.stageTwoColumnLimit,
-      getStageOneDoneLimit: () => this.stageOneDoneColumnLimit,
-      defaultMinColumnHeight: _calcKanbanColumnHeight(),
     );
   }
 
@@ -244,13 +211,35 @@ class _MainPageState extends State<MainPage> {
     }
 
     dayStatus = DayStatus(
-      MIN_DAY: this.MIN_DAY,
-      MAX_DAY: this.MAX_DAY,
-      dayHasChanged: (int daysPassed) {
-        this.currentDay = daysPassed;
-      },
-      getCurrentDay: () => this.currentDay,
-    );
+        MIN_DAY: this.MIN_DAY,
+        MAX_DAY: this.MAX_DAY,
+        dayHasChanged: (int daysPassed) {
+          if (daysPassed < this.currentDay) {
+            this.storyModule.switchedToPreviousDay();
+          } else if (daysPassed > this.currentDay) {
+            this.storyModule.switchedToNextDay();
+          }
+
+          setState(() {
+            this.currentDay = daysPassed;
+          });
+        },
+        getCurrentDay: () => this.currentDay,
+        simulationCompleted: () {
+          if (Theme.of(context).brightness == Brightness.light) {
+            KanbanSimApp.of(context).switchTheme();
+          }
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FinalPage(
+                allTasks: this.allTasks,
+                users: this.currentUsers,
+              ),
+            ),
+          );
+        });
 
     locksStatus = LocksStatus(
       checkForLocks: () {
@@ -266,14 +255,9 @@ class _MainPageState extends State<MainPage> {
   void _initializeAllTasksContainer() {
     if (this.allTasks == null) {
       this.allTasks = AllTasksContainer(
-        () {
-          return this.currentUsers;
-        },
+        () => this.currentUsers,
         (Task task) {
-          _eventOccured(
-            EventType.NEWTASK,
-            "${AppLocalizations.of(context).newTaskAppeared}! ${_getTranslatedTaskTypeName(task.getTaskTypeName())} '${task.getTitle()}'.",
-          );
+          //TODO DELETE
         },
       );
     }
@@ -298,11 +282,12 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     _initializeUsersIfNeeded();
     _initializeAllTasksContainer();
+    _initializeStoryLogs();
+    _initializeStoryModule();
 
     _initializeKanbanBoard();
     _initializeMainMenuBar();
     _initializeStatusBar();
-    _initializeStoryLogs();
 
     return Container(
       decoration: BoxDecoration(
@@ -376,5 +361,15 @@ class _MainPageState extends State<MainPage> {
         floatingActionButton: LogsButton(messages: this.messages),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (this.currentDay == null || this.currentDay == 0) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => this.storyModule.simulationHasBegun(),
+      );
+    }
   }
 }

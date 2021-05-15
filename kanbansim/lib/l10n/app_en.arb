@@ -117,6 +117,7 @@
     "doubleCost": "Double cost", 
     "completed_CAP": "COMPLETED", 
 
+
     "cannotAssignProductivityFromThisUser": "Cannot assign productivity from this user.",
     "productivityAvailableFromThisUser": "Productivity available from this user",
     "productivitiyNeededToFinishThisTask": "Productivity required to finish this task",
@@ -128,6 +129,7 @@
     "assignUser": "Assign user",
     "assign": "Assign",
 
+
     "areYouSureYouWantToDeleteTask": "Are you sure you want to delete task ",
     "taskDeletionTitle": "TASK DELETION",
     "delete": "Delete",
@@ -136,15 +138,18 @@
     "couldntMoveTaskTo": "Could not move task to",
     "tasksLimitReached": "Tasks amount in this column reached",
     
+
     "selectOwner": "Select",
     "selectTasksOwner": "SELECT TASK'S OWNER",
     "successfullySetAsOwnerOf": "successfully set as owner of",
+
 
     "clickToAddNewUser": "Click here to add new team member.",
     "clickToRemoveUser": "Click here to remove this team member.",
     "clickToModifyUser": "Click here to modify this team member.",
     "usersCreator": "TEAM MEMBERS CREATOR",
     "begin": "Begin",
+
 
     "userCreator": "TEAM MEMBER'S CREATOR",
     "chooseUserColor": "Choose team member's color",
@@ -153,11 +158,13 @@
     "enterUserNicknameHere": "Enter nickname here",
     "usernameIsAlreadyTakenWarning" : "Name is already taken",
 
+
     "timeLeftToCompleteTask": "Time left to complete task",
     "days": "days",
     "theDeadlineIsToday": "The deadline is today",
     "theDeadlineWas": "The deadline was",
     "daysAgo": "days ago",
+
 
     "taskStartDay": "Task's start day",
     "taskEndDay": "Task's end day",
@@ -166,7 +173,66 @@
     "atDeadline": "at deadline",
     "daysAfterDeadline": "days after deadline",
 
+
     "modifyTasksLimits": "MODIFY TASKS LIMITS",
     "discard": "Discard",
-    "setLimitFor": "Set limit for"
+    "setLimitFor": "Set limit for",
+
+    "simulationCompleted": "SIMULATION COMPLETED",
+    "summary": "SUMMARY",
+    "completed": "Completed",
+    "tasksOfType": "tasks of type",
+    "pts": "pts",
+    "points": "points",
+    "tasksOfFixedDateTypeCompleted": "tasks of Fixed Date type completed",
+    "beforeDeadline": "before deadline",
+    "onDeadline": "on deadline",
+    "afterDeadline": "after deadline",
+    "bonuses": "BONUSES",
+    "teamConsistedOf": "Team consisted of",
+    "teamMembers": "team members",
+    "so": "so",
+    "pointsAsPartOfSmallTeamBonusAreAwarded": "points as part of small team bonus are awarded",
+    "smallTeamBonusIsNotAwarded": "small team bonus is not awaraded",
+    "incompletedTasksFinishedProgressPhaseOfFirstStage": "incomplete tasks finished progress phase of first stage",
+    "noBonusIsAwarded": "no bonus is awarded",
+    "smallBonusOf": "as a small bonus",
+    "pointsAreAwarded": "points are awarded",
+    "total": "Total",
+    "returnToTitleScreen": "Return to title screen",
+
+    "stats": "Stats",
+    "amountOfCompletedTasks": "Amount of completed tasks",
+    "legend": "Legend",
+    "standardTasks": "Standard Tasks",
+    "expediteTasks": "Expedite Tasks",
+    "fixedDateTasks": "Fixed Date Tasks",
+
+    "amountOfTasks": "Amount of tasks",
+    "completionTime": "Completion Time",
+    "amountOfTasksAndTheirCompletionTime": "Amount of tasks and their completion time",
+    "averageTaskCompletionoTime": "Average task completion time",
+    "standardDeviationFromAverageTaskCompletionoTime": "Standard deviation from average task completion time",
+
+
+    "warning": "WARNING",
+    "simulationIsGoingToBeOverWarning": "Simulation is going to be over and total points summed up. This action cannot be undone",
+    "savingSimulationStateIsAdvised": "Saving simulation state before proceeding is advised",
+    "proceed": "Proceed",
+
+    "hasCome": "has come",
+    "cheatWasUsed": "Cheat was used",
+    "additionalDayAdded": "Additional day added",
+    "task": "Task",
+    "invested": "invested",
+    "productivityInTask": "productivity in task",
+    "hasBeenLocked": "has been locked",
+    "hasBeenUnlocked": "has been unlocked",
+    "teamMember": "Team member",
+    "startedDayWithProductivityEqualTo": "started day with productivity equal to",
+
+    "email": "Email",
+    "messageFrom": "Message from",
+    "management": "Menagement",
+    "fellowDevs": "Fellow devs"
 }

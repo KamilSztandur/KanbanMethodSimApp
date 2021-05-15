@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kanbansim/features/final_page/confirm_ending_simulation_popup.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DayStatus extends StatelessWidget {
+  final Function simulationCompleted;
   final Function(int) dayHasChanged;
   final Function getCurrentDay;
   final int MAX_DAY;
@@ -11,6 +13,7 @@ class DayStatus extends StatelessWidget {
 
   DayStatus({
     Key key,
+    @required this.simulationCompleted,
     @required this.MAX_DAY,
     @required this.MIN_DAY,
     @required this.dayHasChanged,
@@ -58,13 +61,14 @@ class DayStatus extends StatelessWidget {
               _Title(),
               SizedBox(height: 10),
               _subRow(
-                (int delta) {
+                simulationCompleted: this.simulationCompleted,
+                dayHasChanged: (int delta) {
                   this._daysPassed += delta;
                   this.dayHasChanged(_daysPassed);
                 },
-                MAX_DAY,
-                MIN_DAY,
-                _daysPassed,
+                MAX_DAY: MAX_DAY,
+                MIN_DAY: MIN_DAY,
+                daysPassed: _daysPassed,
               ),
               SizedBox(height: 10),
             ],
@@ -90,17 +94,20 @@ class _Title extends StatelessWidget {
 }
 
 class _subRow extends StatefulWidget {
+  final Function simulationCompleted;
   Function(int) dayHasChanged;
-  int MAX_DAY;
-  int MIN_DAY;
+  final int MAX_DAY;
+  final int MIN_DAY;
   int daysPassed;
 
-  _subRow(Function(int) dayHasChanged, int MAX_DAY, int MIN_DAY, int days) {
-    this.MAX_DAY = MAX_DAY;
-    this.MIN_DAY = MIN_DAY;
-    this.dayHasChanged = dayHasChanged;
-    this.daysPassed = days;
-  }
+  _subRow({
+    Key key,
+    @required this.simulationCompleted,
+    @required this.dayHasChanged,
+    @required this.MAX_DAY,
+    @required this.MIN_DAY,
+    @required this.daysPassed,
+  }) : super(key: key);
 
   @override
   _subRowState createState() => _subRowState();
@@ -113,6 +120,12 @@ class _subRowState extends State<_subRow> {
       this.widget.dayHasChanged(1);
       return true;
     } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => ConfirmEndingSimulationPopup(
+          simulationCompleted: this.widget.simulationCompleted,
+        ).show(),
+      );
       return false;
     }
   }
