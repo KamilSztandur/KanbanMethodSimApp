@@ -3,11 +3,14 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kanbansim/common/savefile_parsers/savefile_reader.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
 import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:kanbansim/features/users_creator/users_creator.dart';
 import 'package:kanbansim/features/window_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
+import 'package:kanbansim/models/AllTasksContainer.dart';
+import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -93,7 +96,11 @@ class WelcomePageState extends State<WelcomePage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => MainPage(createdUsers: users),
+              builder: (context) => MainPage(
+                loadedAllTasks: AllTasksContainer(() => users, (Task task) {}),
+                loadedCurrentDay: 1,
+                loadedUsers: users,
+              ),
             ),
           );
         },
@@ -106,13 +113,59 @@ class WelcomePageState extends State<WelcomePage> {
       context: context,
       builder: (BuildContext context) => LoadFilePopup(
         returnPickedFilepath: (String filePath) {
-          //TODO
+          File loadedSavefile = File(filePath);
+          loadedSavefile.open();
+          loadedSavefile.readAsString().then((String data) {
+            MainPage mainPage = _buildMainPageFromData(data);
+            _switchToMainPage(mainPage);
+          });
         },
-        returnPickedFileContent: (String data) {
-          //TODO
-        },
+        returnPickedFileContent: (String data) => _switchToMainPage(
+          _buildMainPageFromData(data),
+        ),
       ).show(context),
     );
+  }
+
+  void _switchToMainPage(MainPage mainPage) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => mainPage,
+      ),
+    );
+  }
+
+  MainPage _buildMainPageFromData(String data) {
+    SavefileReader reader = SavefileReader();
+
+    List<User> users = reader.readUsers(data);
+    int currentDay = reader.getCurrentDayFromString(data);
+    AllTasksContainer allTasks = _buildTasksFromSavefile(data, users);
+
+    MainPage mainPage = MainPage(
+      loadedUsers: users,
+      loadedAllTasks: allTasks,
+      loadedCurrentDay: currentDay,
+    );
+
+    return mainPage;
+  }
+
+  AllTasksContainer _buildTasksFromSavefile(String data, List<User> users) {
+    SavefileReader reader = SavefileReader();
+
+    AllTasksContainer allTasks = AllTasksContainer(() => users, (Task task) {});
+    allTasks.idleTasksColumn = reader.readIdleTasks(data);
+    allTasks.stageOneInProgressTasksColumn =
+        reader.readStageOneInProgressTasks(data);
+    allTasks.stageOneDoneTasksColumn = reader.readStageOneDoneTasks(data);
+    allTasks.stageTwoTasksColumn = reader.readStageTwoTasks(data);
+    allTasks.finishedTasksColumn = reader.readFinishedTasks(data);
+
+    Task.dummy().setLatestTaskID(reader.getLatestTaskID(data));
+
+    return allTasks;
   }
 
   void _quitButtonPressed() {

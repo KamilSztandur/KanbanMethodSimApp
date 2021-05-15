@@ -17,9 +17,17 @@ import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
 
 class MainPage extends StatefulWidget {
-  List<User> createdUsers;
+  final List<User> loadedUsers;
+  final AllTasksContainer loadedAllTasks;
+  final int loadedCurrentDay;
 
-  MainPage({Key key, @required this.createdUsers}) : super(key: key);
+  MainPage({
+    Key key,
+    @required this.loadedUsers,
+    @required this.loadedAllTasks,
+    @required this.loadedCurrentDay,
+    List<User> createdUsers,
+  }) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -207,7 +215,7 @@ class _MainPageState extends State<MainPage> {
 
   void _initializeStatusBar() {
     if (this.currentDay == null) {
-      this.currentDay = 1;
+      this.currentDay = this.widget.loadedCurrentDay;
     }
 
     dayStatus = DayStatus(
@@ -254,12 +262,7 @@ class _MainPageState extends State<MainPage> {
 
   void _initializeAllTasksContainer() {
     if (this.allTasks == null) {
-      this.allTasks = AllTasksContainer(
-        () => this.currentUsers,
-        (Task task) {
-          //TODO DELETE
-        },
-      );
+      this.allTasks = this.widget.loadedAllTasks;
     }
   }
 
@@ -274,7 +277,7 @@ class _MainPageState extends State<MainPage> {
 
   void _initializeUsersIfNeeded() {
     if (this.currentUsers == null) {
-      this.currentUsers = this.widget.createdUsers;
+      this.currentUsers = this.widget.loadedUsers;
     }
   }
 
@@ -366,7 +369,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    if (this.currentDay == null || this.currentDay == 0) {
+    if (this.widget.loadedCurrentDay == 1 && this.currentDay == null) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => this.storyModule.simulationHasBegun(),
       );
