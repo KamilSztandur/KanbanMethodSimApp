@@ -1,9 +1,6 @@
-import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:kanbansim/common/savefile_parsers/savefile_reader.dart';
 import 'package:kanbansim/common/story_module.dart';
-import 'package:kanbansim/features/final_page/final_page.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
 import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
 import 'package:kanbansim/features/main_page/widgets/story_logs/logs_button.dart';
@@ -12,285 +9,52 @@ import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_statu
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
 import 'package:kanbansim/features/scroll_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
-import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/sim_engine.dart';
+import 'package:kanbansim/models/sim_state.dart';
 
 class MainPage extends StatefulWidget {
-  final List<User> loadedUsers;
-  final AllTasksContainer loadedAllTasks;
-  final int loadedCurrentDay;
+  final SimState loadedSimState;
 
-  MainPage({
-    Key key,
-    @required this.loadedUsers,
-    @required this.loadedAllTasks,
-    @required this.loadedCurrentDay,
-    List<User> createdUsers,
-  }) : super(key: key);
+  MainPage({Key key, @required this.loadedSimState}) : super(key: key);
 
   @override
-  _MainPageState createState() => _MainPageState();
+  MainPageState createState() => MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class MainPageState extends State<MainPage> {
   MainMenuBar menuBar;
   KanbanBoard kanbanBoard;
   DayStatus dayStatus;
   LocksStatus locksStatus;
   ProductivityBar productivityBar;
+
   StoryModule storyModule;
+  SimState currentSimState;
+  SimEngine simEngine;
 
-  AllTasksContainer allTasks;
-  List<String> messages;
-  List<User> currentUsers;
+  @override
+  void initState() {
+    super.initState();
+    this.simEngine = SimEngine();
 
-  final int MIN_DAY = 1;
-  int MAX_DAY;
-  int currentDay;
-
-  int stageOneInProgressColumnLimit;
-  int stageOneDoneColumnLimit;
-  int stageTwoColumnLimit;
-
-  void _addLog(String text) {
-    setState(() {
-      this.messages.add(text);
-    });
-  }
-
-  void _initializeStoryModule() {
-    this.storyModule = StoryModule(
-      addLog: this._addLog,
-      context: context,
-      getAllTasks: () => this.allTasks,
-      getCurrentDay: () => this.currentDay,
-      getUsers: () => this.currentUsers,
-    );
-    this.MAX_DAY = this.storyModule.getMaxDays();
-  }
-
-  void _restoreUsersProductivities() {
-    int n = this.currentUsers.length;
-    for (int i = 0; i < n; i++) {
-      this.currentUsers[i].addProductivity(5);
-    }
-  }
-
-  void _initializeMainMenuBar() {
-    this.menuBar = MainMenuBar(
-      loadSimStateFromFilePath: (String filePath) {
-        File loadedSavefile = File(filePath);
-        loadedSavefile.open();
-        loadedSavefile.readAsString().then((String data) {
-          SavefileReader reader = SavefileReader();
-
-          setState(() {
-            this.currentUsers = reader.readUsers(data);
-            this.allTasks.idleTasksColumn = reader.readIdleTasks(data);
-            this.allTasks.stageOneInProgressTasksColumn =
-                reader.readStageOneInProgressTasks(data);
-            this.allTasks.stageOneDoneTasksColumn =
-                reader.readStageOneDoneTasks(data);
-            this.allTasks.stageTwoTasksColumn = reader.readStageTwoTasks(data);
-            this.allTasks.finishedTasksColumn = reader.readFinishedTasks(data);
-            Task.dummy().setLatestTaskID(reader.getLatestTaskID(data));
-
-            this.currentDay = reader.getCurrentDayFromString(data);
-            this.dayStatus.updateCurrentDay(this.currentDay);
-          });
-        });
-      },
-      getCurrentDay: () => this.currentDay,
-      clearAllTasks: () {
-        setState(() {
-          _clearAllTasks();
-          _restoreUsersProductivities();
-          _clearAllLogs();
-          this.currentDay = 1;
-        });
-      },
-      addRandomTasks: () {
-        setState(() {
-          this.allTasks.addRandomTasksForAllColumns();
-        });
-      },
-      getAllTasks: () => this.allTasks,
-      getAllUsers: () => this.currentUsers,
-      loadSimStateFromFileContent: (String data) {
-        SavefileReader reader = SavefileReader();
-
-        setState(() {
-          this.currentUsers = reader.readUsers(data);
-          this.allTasks.idleTasksColumn = reader.readIdleTasks(data);
-          this.allTasks.stageOneInProgressTasksColumn =
-              reader.readStageOneInProgressTasks(data);
-          this.allTasks.stageOneDoneTasksColumn =
-              reader.readStageOneDoneTasks(data);
-          this.allTasks.stageTwoTasksColumn = reader.readStageTwoTasks(data);
-          this.allTasks.finishedTasksColumn = reader.readFinishedTasks(data);
-          Task.dummy().setLatestTaskID(reader.getLatestTaskID(data));
-
-          this.currentDay = reader.getCurrentDayFromString(data);
-          this.dayStatus.updateCurrentDay(this.currentDay);
-        });
-      },
-      getStageOneInProgressLimit: () => this.stageOneInProgressColumnLimit,
-      getStageTwoLimit: () => this.stageTwoColumnLimit,
-      stageOneInProgressLimitChanged: (int newLimit) {
-        setState(() {
-          this.stageOneInProgressColumnLimit = newLimit;
-        });
-      },
-      stageTwoLimitChanged: (int newLimit) {
-        setState(() {
-          this.stageTwoColumnLimit = newLimit;
-        });
-      },
-      getStageOneDoneLimit: () => this.stageOneDoneColumnLimit,
-      stageOneDoneLimitChanged: (int newLimit) {
-        setState(() {
-          this.stageOneDoneColumnLimit = newLimit;
-        });
-      },
-    );
-  }
-
-  void _clearAllTasks() {
-    this.allTasks.clearAllTasks();
-  }
-
-  void _clearAllLogs() {
-    this.messages = <String>[];
-  }
-
-  void _initializeKanbanBoard() {
-    kanbanBoard = KanbanBoard(
-      getFinalDay: () => this.MAX_DAY,
-      getCurrentDay: () => this.currentDay,
-      getMaxSimDay: () => this.MAX_DAY,
-      getAllTasks: () => this.allTasks,
-      getUsers: () => this.currentUsers,
-      getStageOneInProgressLimit: () => this.stageOneInProgressColumnLimit,
-      getStageTwoLimit: () => this.stageTwoColumnLimit,
-      getStageOneDoneLimit: () => this.stageOneDoneColumnLimit,
-      defaultMinColumnHeight: _calcKanbanColumnHeight(),
-      taskCreated: (Task task) {
-        this.storyModule.newTaskAppeared(task);
-        setState(() {
-          this.allTasks.idleTasksColumn.add(task);
-        });
-      },
-      deleteMe: (Task task) {
-        this.storyModule.taskDeleted(task);
-        setState(
-          () {
-            this.allTasks.removeTask(task);
-          },
-        );
-      },
-      taskUnlocked: (Task task) {
-        this.storyModule.taskUnlocked(task);
-        setState(() {
-          this.locksStatus.checkForLocks();
-        });
-      },
-      productivityAssigned: (Task task, User user, int value) {
-        this.storyModule.productivityAssigned(task, user, value);
-        setState(() {
-          task.investProductivityFrom(
-            user,
-            value,
-          );
-        });
-      },
-    );
-  }
-
-  void _initializeStoryLogs() {
-    if (this.messages == null) {
-      this.messages = <String>[];
-    }
-  }
-
-  void _initializeStatusBar() {
-    if (this.currentDay == null) {
-      this.currentDay = this.widget.loadedCurrentDay;
+    if (this.simEngine.justLaunched(this)) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => this.storyModule.simulationHasBegun(),
+      );
     }
 
-    dayStatus = DayStatus(
-        MIN_DAY: this.MIN_DAY,
-        MAX_DAY: this.MAX_DAY,
-        dayHasChanged: (int daysPassed) {
-          if (daysPassed < this.currentDay) {
-            this.storyModule.switchedToPreviousDay();
-          } else if (daysPassed > this.currentDay) {
-            this.storyModule.switchedToNextDay();
-          }
-
-          setState(() {
-            this.currentDay = daysPassed;
-          });
-        },
-        getCurrentDay: () => this.currentDay,
-        simulationCompleted: () {
-          if (Theme.of(context).brightness == Brightness.light) {
-            KanbanSimApp.of(context).switchTheme();
-          }
-
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FinalPage(
-                allTasks: this.allTasks,
-                users: this.currentUsers,
-              ),
-            ),
-          );
-        });
-
-    locksStatus = LocksStatus(
-      checkForLocks: () {
-        return this.allTasks.areThereAnyLocks();
-      },
-    );
-
-    productivityBar = ProductivityBar(
-      users: this.currentUsers,
-    );
-  }
-
-  void _initializeAllTasksContainer() {
-    if (this.allTasks == null) {
-      this.allTasks = this.widget.loadedAllTasks;
-    }
-  }
-
-  double _calcKanbanColumnHeight() {
-    return _calcKanbanBoardHeight() - 100;
-  }
-
-  double _calcKanbanBoardHeight() {
-    return MediaQuery.of(context).size.height -
-        (180 + (KanbanSimApp.of(context).isWeb() ? 0 : 33));
-  }
-
-  void _initializeUsersIfNeeded() {
-    if (this.currentUsers == null) {
-      this.currentUsers = this.widget.loadedUsers;
-    }
+    this.simEngine.initializeSimStateIfNeeded(this);
+    this.simEngine.initializeStoryLogs();
+    this.simEngine.initializeStoryModule(this);
   }
 
   @override
   Widget build(BuildContext context) {
-    _initializeUsersIfNeeded();
-    _initializeAllTasksContainer();
-    _initializeStoryLogs();
-    _initializeStoryModule();
-
-    _initializeKanbanBoard();
     _initializeMainMenuBar();
     _initializeStatusBar();
+    _initializeKanbanBoard();
 
     return Container(
       decoration: BoxDecoration(
@@ -353,7 +117,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               Container(
-                height: this._calcKanbanBoardHeight(),
+                height: this.simEngine.calcKanbanBoardHeight(this),
                 child: ScrollBar(
                   child: kanbanBoard,
                 ),
@@ -361,18 +125,70 @@ class _MainPageState extends State<MainPage> {
             ],
           ),
         ),
-        floatingActionButton: LogsButton(messages: this.messages),
+        floatingActionButton: LogsButton(messages: this.simEngine.messages),
       ),
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    if (this.widget.loadedCurrentDay == 1 && this.currentDay == null) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => this.storyModule.simulationHasBegun(),
-      );
-    }
+  void _initializeMainMenuBar() {
+    this.menuBar = MainMenuBar(
+      getCurrentDay: () => this.currentSimState.currentDay,
+      getAllTasks: () => this.currentSimState.allTasks,
+      getAllUsers: () => this.currentSimState.users,
+      getStageOneInProgressLimit: () =>
+          this.currentSimState.stageOneInProgressColumnLimit,
+      getStageOneDoneLimit: () => this.currentSimState.stageOneDoneColumnLimit,
+      getStageTwoLimit: () => this.currentSimState.stageTwoColumnLimit,
+      loadSimStateFromFilePath: (String filePath) =>
+          this.simEngine.loadSimStateFromFilePath(this, filePath),
+      loadSimStateFromFileContent: (String data) =>
+          this.simEngine.loadSimStateFromFileContent(this, data),
+      stageOneInProgressLimitChanged: (int newLimit) =>
+          this.simEngine.stageOneInProgressLimitChanged(this, newLimit),
+      stageTwoLimitChanged: (int newLimit) =>
+          this.simEngine.stageTwoLimitChanged(this, newLimit),
+      stageOneDoneLimitChanged: (int newLimit) =>
+          this.simEngine.stageOneDoneLimitChanged(this, newLimit),
+      resetSimulation: () => this.simEngine.resetSimulationState(this),
+    );
+  }
+
+  void _initializeStatusBar() {
+    dayStatus = DayStatus(
+      MIN_DAY: this.simEngine.MIN_DAY,
+      MAX_DAY: this.simEngine.MAX_DAY,
+      getCurrentDay: () => this.currentSimState.currentDay,
+      simulationCompleted: () => this.simEngine.simulationCompleted(this),
+      dayHasChanged: (int daysPassed) =>
+          this.simEngine.dayHasChanged(this, daysPassed),
+    );
+
+    locksStatus = LocksStatus(
+      checkForLocks: () => this.simEngine.checkForLocks(this),
+    );
+
+    productivityBar = ProductivityBar(
+      users: this.currentSimState.users,
+    );
+  }
+
+  void _initializeKanbanBoard() {
+    kanbanBoard = KanbanBoard(
+      defaultMinColumnHeight: this.simEngine.calcKanbanColumnHeight(this),
+      getFinalDay: () => this.simEngine.MAX_DAY,
+      getCurrentDay: () => this.currentSimState.currentDay,
+      getMaxSimDay: () => this.simEngine.MAX_DAY,
+      getAllTasks: () => this.currentSimState.allTasks,
+      getUsers: () => this.currentSimState.users,
+      getStageOneInProgressLimit: () =>
+          this.currentSimState.stageOneInProgressColumnLimit,
+      getStageTwoLimit: () => this.currentSimState.stageTwoColumnLimit,
+      getStageOneDoneLimit: () => this.currentSimState.stageOneDoneColumnLimit,
+      taskCreated: (Task task) => this.simEngine.taskCreated(this, task),
+      deleteMe: (Task task) => this.simEngine.deleteTask(this, task),
+      taskUnlocked: (Task task) => this.simEngine.taskUnlocked(this, task),
+      productivityAssigned: (Task task, User user, int value) =>
+          this.simEngine.productivityAssigned(this, task, user, value),
+    );
   }
 }
