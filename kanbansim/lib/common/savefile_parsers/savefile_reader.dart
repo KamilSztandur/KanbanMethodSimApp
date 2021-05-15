@@ -57,6 +57,21 @@ class SavefileReader {
     return simStateParser.getLatestTaskID(data);
   }
 
+  int getStageOneInProgressColumnLimit(String data) {
+    SimStateParser simStateParser = SimStateParser();
+    return simStateParser.getStageOneInProgressColumnLimit(data);
+  }
+
+  int getStageOneDoneColumnLimit(String data) {
+    SimStateParser simStateParser = SimStateParser();
+    return simStateParser.getStageOneDoneColumnLimit(data);
+  }
+
+  int getStageTwoColumnLimit(String data) {
+    SimStateParser simStateParser = SimStateParser();
+    return simStateParser.getStageTwoColumnLimit(data);
+  }
+
   void _readAndUpdateUsers(String data) {
     UsersListsParser usersListsParser = UsersListsParser();
     this._users = usersListsParser.parseStringToUsersList(data);

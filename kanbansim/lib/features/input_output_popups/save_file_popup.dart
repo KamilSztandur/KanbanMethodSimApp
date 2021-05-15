@@ -13,39 +13,24 @@ import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/Task.dart';
 
 class SaveFilePopup {
-  final Function getCurrentDay;
-  final Function getAllUsers;
-  final Function getAllTasks;
+  final Function getSimState;
 
-  SaveFilePopup({
-    @required this.getCurrentDay,
-    @required this.getAllTasks,
-    @required this.getAllUsers,
-  });
+  SaveFilePopup({@required this.getSimState});
 
   Widget show(BuildContext context) {
     return new AlertDialog(
       backgroundColor: Colors.transparent,
       content: _SaveFilePage(
-        getCurrentDay: this.getCurrentDay,
-        getAllTasks: this.getAllTasks,
-        getAllUsers: this.getAllUsers,
+        getSimState: this.getSimState,
       ),
     );
   }
 }
 
 class _SaveFilePage extends StatefulWidget {
-  final Function getCurrentDay;
-  final Function getAllUsers;
-  final Function getAllTasks;
+  final Function getSimState;
 
-  _SaveFilePage({
-    Key key,
-    @required this.getCurrentDay,
-    @required this.getAllTasks,
-    @required this.getAllUsers,
-  }) : super(key: key);
+  _SaveFilePage({Key key, @required this.getSimState}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _SaveFilePageState();
@@ -117,9 +102,11 @@ class _SaveFilePageState extends State<_SaveFilePage> {
 
   String _getDataAsString() {
     SavefileCreator creator = SavefileCreator();
-    creator.setUsersList(this.widget.getAllUsers());
 
-    AllTasksContainer allTasks = this.widget.getAllTasks();
+    creator.setSimState(this.widget.getSimState());
+    creator.setUsersList(this.widget.getSimState().users);
+
+    AllTasksContainer allTasks = this.widget.getSimState().allTasks;
     creator.addTasksListsWithTitle(allTasks.idleTasksColumn, "idle");
     creator.addTasksListsWithTitle(
         allTasks.stageOneInProgressTasksColumn, "stage one in progress");
@@ -127,10 +114,6 @@ class _SaveFilePageState extends State<_SaveFilePage> {
         allTasks.stageOneDoneTasksColumn, "stage one done");
     creator.addTasksListsWithTitle(allTasks.stageTwoTasksColumn, "stage two");
     creator.addTasksListsWithTitle(allTasks.finishedTasksColumn, "finished");
-
-    int currentSimDay = this.widget.getCurrentDay();
-    int latestTaskID = Task.getEmpty().getLatestTaskID();
-    creator.setSimStateData(currentSimDay, latestTaskID);
 
     String data = creator.convertDataToString();
     return data;

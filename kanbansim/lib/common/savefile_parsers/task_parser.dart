@@ -13,6 +13,8 @@ class TaskParser {
     this._reader = _TaskReader(getAllUsers());
   }
 
+  get trueList => null;
+
   String parseTaskToString(Task task) {
     String data = "";
 
@@ -20,17 +22,20 @@ class TaskParser {
     TaskType type = task.getTaskType();
 
     int id = task.getID();
-    
+
     int ownerID;
-    if(task.owner == null) {
-       ownerID = -1;
+    if (task.owner == null) {
+      ownerID = -1;
     } else {
-       ownerID = task.owner.getID();
+      ownerID = task.owner.getID();
     }
-    
+
     int prodReqToUnlock = task.getProductivityRequiredToUnlock();
     int prodReqToComplete = task.progress.getNumberOfAllParts();
     int deadline = task.getDeadlineDay();
+    int startDay = task.startDay;
+    int endDay = task.endDay;
+    int currentStage = task.stage;
 
     data = _writer.writeHeadline(data);
     data = _writer.writeTaskTitle(data, title);
@@ -40,6 +45,9 @@ class TaskParser {
     data = _writer.writeTaskProdReqToUnlock(data, prodReqToUnlock);
     data = _writer.writeTaskProdReqToComplete(data, prodReqToComplete);
     data = _writer.writeTaskDeadline(data, deadline);
+    data = _writer.writeTaskStartDay(data, startDay);
+    data = _writer.writeTaskEndDay(data, endDay);
+    data = _writer.writeTaskCurrentStage(data, currentStage);
     data = _writer.writeTaskProgressHeadline(data);
     data = _writer.writeTaskProgressParts(data, task);
     data = _writer.writeTaskProgressEndingHeadline(data);
@@ -71,6 +79,9 @@ class TaskParser {
     }
 
     int deadline = _reader.getDeadlineDayNumber(data);
+    int startDay = _reader.getStartDay(data);
+    int endDay = _reader.getEndDay(data);
+    int currentStage = _reader.getCurrentStage(data);
 
     User owner = _getOwner(ownerID);
     List<User> parts = _reader.getParts(data, prodReqToComplete);
@@ -78,6 +89,9 @@ class TaskParser {
     Task task = Task(title, prodReqToComplete, owner, type);
     task.loadAdditionalDataFromSavefile(taskID, parts, prodReqToUnlock);
     task.setDeadlineDay(deadline);
+    task.startDay = startDay;
+    task.endDay = endDay;
+    task.stage = currentStage;
 
     return task;
   }
@@ -155,6 +169,29 @@ class _TaskWriter {
     return data;
   }
 
+  String writeTaskStartDay(String data, int startDay) {
+    if (startDay == null) {
+      startDay = -1;
+    }
+
+    data += _paramsTabs + "[START_DAY] $startDay" + "\n";
+    return data;
+  }
+
+  String writeTaskEndDay(String data, int endDay) {
+    if (endDay == null) {
+      endDay = -1;
+    }
+
+    data += _paramsTabs + "[END_DAY] $endDay" + "\n";
+    return data;
+  }
+
+  String writeTaskCurrentStage(String data, int currentStage) {
+    data += _paramsTabs + "[CURRENT_STAGE] $currentStage" + "\n";
+    return data;
+  }
+
   String writeTaskProgressParts(String data, Task task) {
     int n = task.progress.getNumberOfAllParts();
     int n_unfullfilled = task.progress.getNumberOfUnfulfilledParts();
@@ -221,8 +258,38 @@ class _TaskReader {
     return int.parse(data[7].split(" ")[1]);
   }
 
+  int getStartDay(List<String> data) {
+    int value = int.parse(data[8].split(" ")[1]);
+
+    if (value == -1) {
+      return null;
+    } else {
+      return value;
+    }
+  }
+
+  int getEndDay(List<String> data) {
+    int value = int.parse(data[9].split(" ")[1]);
+
+    if (value == -1) {
+      return null;
+    } else {
+      return value;
+    }
+  }
+
+  int getCurrentStage(List<String> data) {
+    int value = int.parse(data[10].split(" ")[1]);
+
+    if (value == -1) {
+      return null;
+    } else {
+      return value;
+    }
+  }
+
   List<User> getParts(List<String> data, int prodReqToComplete) {
-    int startLineNumber = 9;
+    int startLineNumber = 12;
 
     List<User> parts = <User>[];
     for (int i = 0; i < prodReqToComplete; i++) {
