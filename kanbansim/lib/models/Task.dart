@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/models/TaskType.dart';
 import 'package:kanbansim/models/User.dart';
@@ -17,9 +16,7 @@ class Task {
   int endDay;
   int stage;
 
-  Task.dummy() {
-    //
-  }
+  Task.getEmpty() {}
 
   Task(String title, int productivityRequired, User owner, TaskType type) {
     this._taskID = _latestTaskID;
@@ -131,12 +128,6 @@ class Task {
     }
   }
 
-  void _checkIfCompleted() {
-    if (this.progress.getNumberOfUnfulfilledParts() == 0) {
-      this._isCompleted = true;
-    }
-  }
-
   bool isLocked() {
     return this._productivityRequiredToUnlock != 0;
   }
@@ -163,6 +154,12 @@ class Task {
 
   int getID() {
     return this._taskID;
+  }
+
+  void _checkIfCompleted() {
+    if (this.progress.getNumberOfUnfulfilledParts() == 0) {
+      this._isCompleted = true;
+    }
   }
 }
 

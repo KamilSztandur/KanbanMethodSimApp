@@ -3,6 +3,7 @@ import 'package:kanbansim/common/input_output_file_picker/input/filepicker_inter
 import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker_desktop.dart';
 import 'package:kanbansim/common/input_output_file_picker/input/save_file_picker_web.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
+import 'dart:io';
 
 class FilePickerWidget extends StatefulWidget {
   final Function(String) pathIsPicked;
@@ -88,7 +89,8 @@ class FilePickerWidgetState extends State<FilePickerWidget> {
 
           this.widget.pathIsPicked(this.widget.filePath);
         },
-        returnPickedFileContent: (String fileContent) => this.widget.contentIsPicked(fileContent),
+        returnPickedFileContent: (String fileContent) =>
+            this.widget.contentIsPicked(fileContent),
       );
     } else {
       this.widget.filePicker = SaveFilePickerDesktop(
@@ -98,9 +100,21 @@ class FilePickerWidgetState extends State<FilePickerWidget> {
             this.widget.filePath = filePath;
           });
 
+          _readAndSaveFileContent(filePath);
           this.widget.pathIsPicked(this.widget.filePath);
         },
       );
     }
+  }
+
+  void _readAndSaveFileContent(String path) {
+    File loadedSavefile = File(path);
+
+    loadedSavefile.open();
+    loadedSavefile.readAsString().then(
+      (String data) {
+        this.widget.contentIsPicked(data);
+      },
+    );
   }
 }

@@ -1,18 +1,16 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/common/stats_calculator.dart';
-import 'package:kanbansim/models/AllTasksContainer.dart';
 import 'package:kanbansim/models/TaskType.dart';
 import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/sim_state.dart';
 
 class ScoreBoard extends StatefulWidget {
-  final AllTasksContainer allTasks;
-  final List<User> users;
+  final SimState simState;
 
   ScoreBoard({
     Key key,
-    @required this.allTasks,
-    @required this.users,
+    @required this.simState,
   }) : super(key: key);
 
   @override
@@ -67,11 +65,10 @@ class _ScoreBoardState extends State<ScoreBoard> {
             SizedBox(height: 5),
             _Statistics(
               width: this.width,
-              allTasks: this.widget.allTasks,
-              users: this.widget.users,
+              simState: this.widget.simState,
             ),
             _Divider(width: this.width * 0.3, height: 2),
-            _UsersStats(users: this.widget.users),
+            _UsersStats(users: this.widget.simState.users),
           ],
         ),
       ),
@@ -81,19 +78,19 @@ class _ScoreBoardState extends State<ScoreBoard> {
 
 class _Statistics extends StatelessWidget {
   final double width;
-  final AllTasksContainer allTasks;
-  final List<User> users;
+  final SimState simState;
 
   _Statistics({
     Key key,
     @required this.width,
-    @required this.allTasks,
-    @required this.users,
+    @required this.simState,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    StatsCalculator calculator = StatsCalculator(allTasks: this.allTasks);
+    StatsCalculator calculator = StatsCalculator(
+      allTasks: this.simState.allTasks,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,

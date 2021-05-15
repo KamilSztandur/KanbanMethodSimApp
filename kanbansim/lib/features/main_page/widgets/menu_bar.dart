@@ -5,17 +5,14 @@ import 'package:kanbansim/features/input_output_popups/save_file_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/confirm_returning_to_welcome_page_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/modify_column_limits_popup.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
-import 'package:kanbansim/features/welcome_page/welcome_page.dart';
 import 'package:kanbansim/features/window_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:pluto_menu_bar/pluto_menu_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainMenuBar extends StatelessWidget {
-  final VoidCallback addRandomTasks;
-  final VoidCallback clearAllTasks;
-  final Function(String) loadSimStateFromFilePath;
-  final Function(String) loadSimStateFromFileContent;
+  final VoidCallback resetSimulation;
+  final Function(String) loadSimStateFromPickedData;
   final Function(int) stageOneInProgressLimitChanged;
   final Function(int) stageOneDoneLimitChanged;
   final Function(int) stageTwoLimitChanged;
@@ -28,10 +25,8 @@ class MainMenuBar extends StatelessWidget {
 
   MainMenuBar({
     Key key,
-    @required this.addRandomTasks,
-    @required this.clearAllTasks,
-    @required this.loadSimStateFromFilePath,
-    @required this.loadSimStateFromFileContent,
+    @required this.resetSimulation,
+    @required this.loadSimStateFromPickedData,
     @required this.stageTwoLimitChanged,
     @required this.stageOneInProgressLimitChanged,
     @required this.stageOneDoneLimitChanged,
@@ -60,11 +55,9 @@ class MainMenuBar extends StatelessWidget {
         children: [
           KanbanSimApp.of(context).isWeb() ? Container() : WindowBar(),
           _ToolBar(
-            addRandomTasks: this.addRandomTasks,
-            clearAllTasks: this.clearAllTasks,
+            resetSimulation: this.resetSimulation,
             getCurrentDay: this.getCurrentDay,
-            loadSimStateFromFilePath: this.loadSimStateFromFilePath,
-            loadSimStateFromFileContent: this.loadSimStateFromFileContent,
+            loadSimStateFromPickedData: this.loadSimStateFromPickedData,
             getAllUsers: this.getAllUsers,
             getAllTasks: this.getAllTasks,
             getStageOneInProgressLimit: this.getStageOneInProgressLimit,
@@ -81,10 +74,8 @@ class MainMenuBar extends StatelessWidget {
 }
 
 class _ToolBar extends StatelessWidget {
-  final VoidCallback addRandomTasks;
-  final VoidCallback clearAllTasks;
-  final Function(String) loadSimStateFromFilePath;
-  final Function(String) loadSimStateFromFileContent;
+  final VoidCallback resetSimulation;
+  final Function(String) loadSimStateFromPickedData;
   final Function(int) stageOneInProgressLimitChanged;
   final Function(int) stageOneDoneLimitChanged;
   final Function(int) stageTwoLimitChanged;
@@ -100,10 +91,8 @@ class _ToolBar extends StatelessWidget {
 
   _ToolBar({
     Key key,
-    @required this.addRandomTasks,
-    @required this.clearAllTasks,
-    @required this.loadSimStateFromFilePath,
-    @required this.loadSimStateFromFileContent,
+    @required this.resetSimulation,
+    @required this.loadSimStateFromPickedData,
     @required this.stageTwoLimitChanged,
     @required this.stageOneDoneLimitChanged,
     @required this.stageOneInProgressLimitChanged,
@@ -116,11 +105,11 @@ class _ToolBar extends StatelessWidget {
   }) : super(key: key);
 
   void _initializeFilePickerPopup() {
-    pickFilePopup = LoadFilePopup(returnPickedFilepath: (String filePath) {
-      this.loadSimStateFromFilePath(filePath);
-    }, returnPickedFileContent: (String content) {
-      this.loadSimStateFromFileContent(content);
-    });
+    pickFilePopup = LoadFilePopup(
+      returnPickedFileContent: (String content) {
+        this.loadSimStateFromPickedData(content);
+      },
+    );
   }
 
   void _initializeFileSaverPopup() {
@@ -171,7 +160,7 @@ class _ToolBar extends StatelessWidget {
               title: AppLocalizations.of(context).resetSession,
               icon: Icons.delete_forever_outlined,
               onTap: () {
-                this.clearAllTasks();
+                this.resetSimulation();
 
                 SubtleMessage.messageWithContext(
                   context,

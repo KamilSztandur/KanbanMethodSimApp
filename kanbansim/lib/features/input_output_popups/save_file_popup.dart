@@ -107,7 +107,7 @@ class _SaveFilePageState extends State<_SaveFilePage> {
     if (_checkIfFilenameIsValid(filename)) {
       String savefileContent = _getDataAsString();
       this.creator.saveFileAs(filename, savefileContent);
-    
+
       SubtleMessage.messageWithContext(
         context,
         '"$filename" ${AppLocalizations.of(context).savingSuccess}',
@@ -118,16 +118,18 @@ class _SaveFilePageState extends State<_SaveFilePage> {
   String _getDataAsString() {
     SavefileCreator creator = SavefileCreator();
     creator.setUsersList(this.widget.getAllUsers());
-    
+
     AllTasksContainer allTasks = this.widget.getAllTasks();
     creator.addTasksListsWithTitle(allTasks.idleTasksColumn, "idle");
-    creator.addTasksListsWithTitle(allTasks.stageOneInProgressTasksColumn, "stage one in progress");
-    creator.addTasksListsWithTitle(allTasks.stageOneDoneTasksColumn, "stage one done");
+    creator.addTasksListsWithTitle(
+        allTasks.stageOneInProgressTasksColumn, "stage one in progress");
+    creator.addTasksListsWithTitle(
+        allTasks.stageOneDoneTasksColumn, "stage one done");
     creator.addTasksListsWithTitle(allTasks.stageTwoTasksColumn, "stage two");
     creator.addTasksListsWithTitle(allTasks.finishedTasksColumn, "finished");
 
     int currentSimDay = this.widget.getCurrentDay();
-    int latestTaskID = Task.dummy().getLatestTaskID();
+    int latestTaskID = Task.getEmpty().getLatestTaskID();
     creator.setSimStateData(currentSimDay, latestTaskID);
 
     String data = creator.convertDataToString();

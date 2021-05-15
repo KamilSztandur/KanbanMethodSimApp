@@ -7,21 +7,18 @@ import 'package:kanbansim/features/final_page/widgets/chart_legend.dart';
 import 'package:kanbansim/features/final_page/widgets/chart_window.dart';
 import 'package:kanbansim/features/final_page/widgets/tasks_completion_time_average.dart';
 import 'package:kanbansim/features/final_page/widgets/tasks_completion_time_standard_deviation.dart';
-import 'package:kanbansim/features/welcome_page/welcome_page.dart';
+import 'package:kanbansim/features/title_page/title_page.dart';
 import 'package:kanbansim/features/window_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
-import 'package:kanbansim/models/AllTasksContainer.dart';
-import 'package:kanbansim/models/User.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kanbansim/models/sim_state.dart';
 
 class FinalPage extends StatefulWidget {
-  final AllTasksContainer allTasks;
-  final List<User> users;
+  final SimState simState;
 
   FinalPage({
     Key key,
-    @required this.allTasks,
-    @required this.users,
+    @required this.simState,
   }) : super(key: key);
 
   @override
@@ -32,7 +29,7 @@ class _FinalPageState extends State<FinalPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     StatsCalculator calculator = StatsCalculator(
-      allTasks: this.widget.allTasks,
+      allTasks: this.widget.simState.allTasks,
     );
 
     return Container(
@@ -59,7 +56,7 @@ class _FinalPageState extends State<FinalPage> with TickerProviderStateMixin {
           onPressed: () => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => WelcomePage(),
+              builder: (context) => TitlePage(),
             ),
           ),
         ),
@@ -87,7 +84,7 @@ class _FinalPageState extends State<FinalPage> with TickerProviderStateMixin {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ChartWindow(allTasks: this.widget.allTasks),
+                        ChartWindow(allTasks: this.widget.simState.allTasks),
                         SizedBox(height: 20),
                         ChartLegend(),
                       ],
@@ -110,10 +107,7 @@ class _FinalPageState extends State<FinalPage> with TickerProviderStateMixin {
                               .countStandardDeviationOfCompletionTime(),
                         ),
                         SizedBox(height: 20),
-                        ScoreBoard(
-                          allTasks: this.widget.allTasks,
-                          users: this.widget.users,
-                        ),
+                        ScoreBoard(simState: this.widget.simState),
                       ],
                     ),
                   ],
