@@ -122,7 +122,7 @@ class MainPageState extends State<MainPage> {
                 ),
               ),
               Container(
-                height: this.simEngine.calcKanbanBoardHeight(this) - 20,
+                height: this.simEngine.calcKanbanBoardHeight(this),
                 child: ScrollBar(
                   child: kanbanBoard,
                 ),
