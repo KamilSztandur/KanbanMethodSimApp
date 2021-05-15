@@ -1,13 +1,7 @@
-import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/TaskType.dart';
-import 'package:kanbansim/models/User.dart';
 
 class AllTasksContainer {
-  static int _tasksCount = 1;
   Function getUsersList;
-  Function(Task) onRandomTaskAdded;
 
   List<Task> idleTasksColumn,
       stageOneInProgressTasksColumn,
@@ -15,23 +9,9 @@ class AllTasksContainer {
       stageTwoTasksColumn,
       finishedTasksColumn;
 
-  AllTasksContainer(Function getUserList, Function(Task) onRandomTaskAdded) {
+  AllTasksContainer(Function getUserList) {
     this.getUsersList = getUserList;
-    this.onRandomTaskAdded = onRandomTaskAdded;
     _setUpTaskLists();
-  }
-
-  void createTask(
-      String title, int productivityRequired, User owner, Color color) {
-    this.idleTasksColumn.add(
-          Task(
-            title,
-            productivityRequired,
-            owner,
-            _getRandomTaskType(),
-          ),
-        );
-    _tasksCount++;
   }
 
   void removeTask(Task task) {
@@ -54,14 +34,6 @@ class AllTasksContainer {
     if (this.finishedTasksColumn.remove(task) == true) {
       return;
     }
-  }
-
-  void addRandomTasksForAllColumns() {
-    _addRandomTasks(this.idleTasksColumn);
-    _addRandomTasks(this.stageOneInProgressTasksColumn);
-    _addRandomTasks(this.stageOneDoneTasksColumn);
-    _addRandomTasks(this.stageTwoTasksColumn);
-    _addRandomTasks(this.finishedTasksColumn);
   }
 
   void clearAllTasks() {
@@ -109,76 +81,5 @@ class AllTasksContainer {
     this.stageOneDoneTasksColumn = <Task>[];
     this.stageTwoTasksColumn = <Task>[];
     this.finishedTasksColumn = <Task>[];
-  }
-
-  void _addRandomTasks(List<Task> tasks) {
-    Random rand = new Random();
-    int newTasks = rand.nextInt(3);
-    for (int i = 0; i < newTasks; i++) {
-      var task = createRandomTask();
-      tasks.add(
-        task,
-      );
-      this.onRandomTaskAdded(task);
-    }
-  }
-
-  TaskType _getRandomTaskType() {
-    int randomIndex = Random().nextInt(3);
-    return TaskType.values[randomIndex];
-  }
-
-  Task createRandomTask() {
-    Task randomTask = Task(
-      "Task #$_tasksCount",
-      Random().nextInt(5) + 1,
-      _getRandomUser(),
-      _getRandomTaskType(),
-    );
-
-    randomTask = _fulfillTaskRandomly(randomTask);
-
-    _tasksCount++;
-    return randomTask;
-  }
-
-  Task _fulfillTaskRandomly(Task task) {
-    task.investProductivity(
-      Random().nextInt(task.owner.getProductivity() + 1),
-    );
-
-    var userList = this.getUsersList();
-    int n = userList.length;
-
-    for (int i = 0; i < n; i++) {
-      User otherUser = userList[i];
-      if (otherUser.getID() == task.owner.getID()) {
-        continue;
-      }
-
-      int randomUserProductivity = otherUser.getProductivity();
-      if (randomUserProductivity == 0) {
-        continue;
-      }
-
-      int range = Random().nextInt(randomUserProductivity + 1);
-      task.investProductivityFrom(
-        otherUser,
-        range,
-      );
-    }
-
-    if (task.getTaskType() == TaskType.FixedDate) {
-      task.setDeadlineDay(3);
-    }
-
-    return task;
-  }
-
-  User _getRandomUser() {
-    List<User> userList = this.getUsersList();
-    int randomIndex = Random().nextInt(userList.length);
-
-    return userList[randomIndex];
   }
 }

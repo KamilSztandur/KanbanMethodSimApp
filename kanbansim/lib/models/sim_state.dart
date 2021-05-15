@@ -18,10 +18,7 @@ class SimState {
     this.currentDay = 1;
     this.latestTaskID = 1;
     this.users = <User>[];
-    this.allTasks = AllTasksContainer(
-      () => this.users,
-      (Task task) {},
-    );
+    this.allTasks = AllTasksContainer(() => this.users);
   }
 
   int getAmountOfUsers() => this.users.length;
@@ -70,10 +67,7 @@ class SimState {
   }
 
   void _buildTasksFromData(SavefileReader reader, String data) {
-    AllTasksContainer allTasks = AllTasksContainer(
-      () => this.users,
-      (Task task) {},
-    );
+    AllTasksContainer allTasks = AllTasksContainer(() => this.users);
 
     allTasks.idleTasksColumn = reader.readIdleTasks(data);
     allTasks.stageOneInProgressTasksColumn =
