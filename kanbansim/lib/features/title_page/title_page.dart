@@ -5,23 +5,23 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
 import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:kanbansim/features/users_creator/users_creator.dart';
-import 'package:kanbansim/features/welcome_page/Logo.dart';
-import 'package:kanbansim/features/welcome_page/authors_notice.dart';
-import 'package:kanbansim/features/welcome_page/lang_switch_buttons.dart';
-import 'package:kanbansim/features/welcome_page/menu_button.dart';
+import 'package:kanbansim/features/title_page/Logo.dart';
+import 'package:kanbansim/features/title_page/authors_notice.dart';
+import 'package:kanbansim/features/title_page/lang_switch_buttons.dart';
+import 'package:kanbansim/features/title_page/menu_button.dart';
 import 'package:kanbansim/features/window_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:kanbansim/models/User.dart';
 import 'package:kanbansim/models/sim_state.dart';
 
-class WelcomePage extends StatefulWidget {
-  WelcomePage({Key key}) : super(key: key);
+class TitlePage extends StatefulWidget {
+  TitlePage({Key key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => WelcomePageState();
+  State<StatefulWidget> createState() => TitlePageState();
 }
 
-class WelcomePageState extends State<WelcomePage> {
+class TitlePageState extends State<TitlePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
