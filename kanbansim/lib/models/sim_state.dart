@@ -46,14 +46,6 @@ class SimState {
     _buildTasksFromData(reader, data);
   }
 
-  void createFromFilePath(String path) {
-    File loadedSavefile = File(path);
-    loadedSavefile.open();
-    loadedSavefile.readAsString().then((String data) {
-      createFromData(data);
-    });
-  }
-
   String parseIntoStringData() {
     SavefileCreator creator = SavefileCreator();
 

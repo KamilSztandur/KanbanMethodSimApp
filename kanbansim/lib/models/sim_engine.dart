@@ -86,15 +86,7 @@ class SimEngine {
     });
   }
 
-  void loadSimStateFromFilePath(MainPageState mainPageState, String path) {
-    mainPageState.setState(() {
-      SimState loadedSimState = SimState();
-      loadedSimState.createFromFilePath(path);
-      mainPageState.currentSimState = loadedSimState;
-    });
-  }
-
-  void loadSimStateFromFileContent(MainPageState mainPageState, String data) {
+  void loadSimStateFromPickedData(MainPageState mainPageState, String data) {
     mainPageState.setState(() {
       SimState loadedSimState = SimState();
       loadedSimState.createFromData(data);

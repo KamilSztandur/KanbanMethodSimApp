@@ -139,10 +139,8 @@ class MainPageState extends State<MainPage> {
           this.currentSimState.stageOneInProgressColumnLimit,
       getStageOneDoneLimit: () => this.currentSimState.stageOneDoneColumnLimit,
       getStageTwoLimit: () => this.currentSimState.stageTwoColumnLimit,
-      loadSimStateFromFilePath: (String filePath) =>
-          this.simEngine.loadSimStateFromFilePath(this, filePath),
-      loadSimStateFromFileContent: (String data) =>
-          this.simEngine.loadSimStateFromFileContent(this, data),
+      loadSimStateFromPickedData: (String data) =>
+          this.simEngine.loadSimStateFromPickedData(this, data),
       stageOneInProgressLimitChanged: (int newLimit) =>
           this.simEngine.stageOneInProgressLimitChanged(this, newLimit),
       stageTwoLimitChanged: (int newLimit) =>

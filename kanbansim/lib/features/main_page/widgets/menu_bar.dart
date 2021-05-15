@@ -12,8 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainMenuBar extends StatelessWidget {
   final VoidCallback resetSimulation;
-  final Function(String) loadSimStateFromFilePath;
-  final Function(String) loadSimStateFromFileContent;
+  final Function(String) loadSimStateFromPickedData;
   final Function(int) stageOneInProgressLimitChanged;
   final Function(int) stageOneDoneLimitChanged;
   final Function(int) stageTwoLimitChanged;
@@ -27,8 +26,7 @@ class MainMenuBar extends StatelessWidget {
   MainMenuBar({
     Key key,
     @required this.resetSimulation,
-    @required this.loadSimStateFromFilePath,
-    @required this.loadSimStateFromFileContent,
+    @required this.loadSimStateFromPickedData,
     @required this.stageTwoLimitChanged,
     @required this.stageOneInProgressLimitChanged,
     @required this.stageOneDoneLimitChanged,
@@ -59,8 +57,7 @@ class MainMenuBar extends StatelessWidget {
           _ToolBar(
             resetSimulation: this.resetSimulation,
             getCurrentDay: this.getCurrentDay,
-            loadSimStateFromFilePath: this.loadSimStateFromFilePath,
-            loadSimStateFromFileContent: this.loadSimStateFromFileContent,
+            loadSimStateFromPickedData: this.loadSimStateFromPickedData,
             getAllUsers: this.getAllUsers,
             getAllTasks: this.getAllTasks,
             getStageOneInProgressLimit: this.getStageOneInProgressLimit,
@@ -78,8 +75,7 @@ class MainMenuBar extends StatelessWidget {
 
 class _ToolBar extends StatelessWidget {
   final VoidCallback resetSimulation;
-  final Function(String) loadSimStateFromFilePath;
-  final Function(String) loadSimStateFromFileContent;
+  final Function(String) loadSimStateFromPickedData;
   final Function(int) stageOneInProgressLimitChanged;
   final Function(int) stageOneDoneLimitChanged;
   final Function(int) stageTwoLimitChanged;
@@ -96,8 +92,7 @@ class _ToolBar extends StatelessWidget {
   _ToolBar({
     Key key,
     @required this.resetSimulation,
-    @required this.loadSimStateFromFilePath,
-    @required this.loadSimStateFromFileContent,
+    @required this.loadSimStateFromPickedData,
     @required this.stageTwoLimitChanged,
     @required this.stageOneDoneLimitChanged,
     @required this.stageOneInProgressLimitChanged,
@@ -110,11 +105,11 @@ class _ToolBar extends StatelessWidget {
   }) : super(key: key);
 
   void _initializeFilePickerPopup() {
-    pickFilePopup = LoadFilePopup(returnPickedFilepath: (String filePath) {
-      this.loadSimStateFromFilePath(filePath);
-    }, returnPickedFileContent: (String content) {
-      this.loadSimStateFromFileContent(content);
-    });
+    pickFilePopup = LoadFilePopup(
+      returnPickedFileContent: (String content) {
+        this.loadSimStateFromPickedData(content);
+      },
+    );
   }
 
   void _initializeFileSaverPopup() {

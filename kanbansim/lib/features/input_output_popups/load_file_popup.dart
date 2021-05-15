@@ -7,11 +7,9 @@ import 'package:kanbansim/features/notifications/feedback_popup.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoadFilePopup {
-  Function(String) returnPickedFilepath;
   Function(String) returnPickedFileContent;
 
   LoadFilePopup({
-    @required this.returnPickedFilepath,
     @required this.returnPickedFileContent,
   });
 
@@ -19,9 +17,6 @@ class LoadFilePopup {
     return new AlertDialog(
       backgroundColor: Colors.transparent,
       content: _LoadFilePage(
-        returnPickedFilePath: (String filePath) {
-          this.returnPickedFilepath(filePath);
-        },
         returnPickedFileContent: (String content) {
           this.returnPickedFileContent(content);
         },
@@ -31,14 +26,12 @@ class LoadFilePopup {
 }
 
 class _LoadFilePage extends StatefulWidget {
-  final Function(String) returnPickedFilePath;
   final Function(String) returnPickedFileContent;
   String filePath;
 
   _LoadFilePage({
     Key key,
     this.filePath,
-    @required this.returnPickedFilePath,
     @required this.returnPickedFileContent,
   }) : super(key: key);
 
@@ -52,7 +45,7 @@ class _LoadFilePageState extends State<_LoadFilePage> {
   double _cornerRadius = 35;
   double _height = 250;
   double _width = 400;
-  String _fileContent_onlyWeb;
+  String _pickedFileContent;
 
   @override
   Widget build(BuildContext context) {
@@ -86,11 +79,10 @@ class _LoadFilePageState extends State<_LoadFilePage> {
               pathIsPicked: (String path) {
                 setState(() {
                   this.widget.filePath = path;
-                  if (kIsWeb) {}
                 });
               },
               contentIsPicked: (String content) =>
-                  (this._fileContent_onlyWeb = content),
+                  (this._pickedFileContent = content),
               width: _width,
             ),
           ),
@@ -100,10 +92,8 @@ class _LoadFilePageState extends State<_LoadFilePage> {
             child: _Buttons(
               filePath: this.widget.filePath,
               isReadyToSubmit: _readyToSubmit,
-              returnPickedFilePath: (String path) =>
-                  this.widget.returnPickedFilePath(path),
               returnPickedFileContent: () =>
-                  this.widget.returnPickedFileContent(_fileContent_onlyWeb),
+                  this.widget.returnPickedFileContent(_pickedFileContent),
             ),
           ),
           Flexible(flex: 1, child: Container()),
@@ -151,7 +141,6 @@ class _Headline extends StatelessWidget {
 
 class _Buttons extends StatelessWidget {
   final bool isReadyToSubmit;
-  final Function returnPickedFilePath;
   final Function returnPickedFileContent;
   final String filePath;
 
@@ -159,7 +148,6 @@ class _Buttons extends StatelessWidget {
     Key key,
     @required this.filePath,
     @required this.isReadyToSubmit,
-    @required this.returnPickedFilePath,
     @required this.returnPickedFileContent,
   }) : super(key: key);
 
@@ -215,7 +203,7 @@ class _Buttons extends StatelessWidget {
     } else {
       File saveFile = File(this.filePath);
       if (saveFile.existsSync()) {
-        this.returnPickedFilePath(this.filePath);
+        this.returnPickedFileContent();
       } else {
         showDialog(
           context: context,
@@ -225,7 +213,7 @@ class _Buttons extends StatelessWidget {
             AppLocalizations.of(context).fileCorruptedNotice,
           ),
         );
-        this.returnPickedFilePath(null);
+        this.returnPickedFileContent(null);
       }
     }
   }

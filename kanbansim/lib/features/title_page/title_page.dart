@@ -40,7 +40,7 @@ class TitlePageState extends State<TitlePage> {
                 KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
                 Flexible(flex: 1, child: SizedBox()),
                 Flexible(
-                  flex: 26,
+                  flex: 23,
                   fit: FlexFit.tight,
                   child: Logo(),
                 ),
@@ -108,13 +108,6 @@ class TitlePageState extends State<TitlePage> {
     showDialog(
       context: context,
       builder: (BuildContext context) => LoadFilePopup(
-        returnPickedFilepath: (String filePath) {
-          SimState loadedSimState = SimState();
-          loadedSimState.createFromFilePath(filePath);
-
-          MainPage mainPage = MainPage(loadedSimState: loadedSimState);
-          _switchToMainPage(mainPage);
-        },
         returnPickedFileContent: (String data) {
           SimState loadedSimState = SimState();
           loadedSimState.createFromData(data);
