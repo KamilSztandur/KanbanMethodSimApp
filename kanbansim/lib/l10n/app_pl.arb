@@ -227,5 +227,16 @@
     "email": "Poczta",
     "messageFrom": "Wiadomość od",
     "management": "Zarząd",
-    "fellowDevs": "Drodzy deweloperzy"
+    "fellowDevs": "Drodzy deweloperzy",
+
+    "storyMessageDay1": "Rozpoczynacie pracę w nowym zespole. Zdefiniujcie zadania standardowe i zacznijcie nad nimi pracować.",
+    "storyMessageDay2": "Nie zapomnijcie o wypełnieniu wszystkich pól w skrypcie.",
+    "storyMessageDay3": "System płatności uległ awarii. Z każdą godziną firma traci duże pieniądze. Zdefiniujcie 4 zadania pilne (Expedite) i natychmiast zacznijcie nad nimi pracować. Ich ukończenie ma najwyższy priorytet.",
+    "storyMessageDay4": "Specjaliści od marketingu wymyślili promocję z okazji „Dnia Słonecznika”. Zdefiniujcie 3 zadania z ustaloną datą (Fixed Date). By przynieść wartość dla naszej organizacji muszą być ukończone najpóźniej 10 dnia. Ich wcześniejsze ukończenie nie jest ważne bo i tak promocja nie zostanie upubliczniona do końca 10 dnia.",
+    "storyMessageDay5": "To ostatni dzień w tygodniu. Pamiętajcie by po zakończeniu pracy podsumować tydzień tak jak zostało to opisane w skrypcie.",
+    "storyMessageDay6": "Nowy tydzień, nowe możliwości. Powodzenia.",
+    "storyMessageDay7": "Dobra robota, pracujcie dalej.",
+    "storyMessageDay8": "Jeden z menedżerów wpadł na pomysł dodania nowej funkcji do naszego produktu. Wymagałoby to zrealizowania 4 standardowych zadań (wszystkie muszą być ukończone by nowa funkcja działała). Prosi was o podanie szacowanego czasu zrealizowania tych zadań. Szacowany dzień ukończenia tych 4 zadań zapiszcie w skrypcie.",
+    "storyMessageDay9": "Zostały już tylko dwa dni na ukończenie zadań z ustaloną datą.",
+    "storyMessageDay10": "Ostatni dzień symulacji. Dokończcie pracę i podsumujcie ją w skrypcie."
 }

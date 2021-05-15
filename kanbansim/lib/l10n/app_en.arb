@@ -234,5 +234,16 @@
     "email": "Email",
     "messageFrom": "Message from",
     "management": "Menagement",
-    "fellowDevs": "Fellow devs"
+    "fellowDevs": "Fellow devs",
+
+    "storyMessageDay1": "You are starting to work in new team. Define some standard tasks and start working on them.",
+    "storyMessageDay2": "Don't forget to fill all the fields in the script.",
+    "storyMessageDay3": "The payment system has just crashed. Every hour the company is losing a lot of money. Define 4 expedite tasks and start working on them immediately. Completing them has the highest priority.",
+    "storyMessageDay4": "Marketing specialists came up with a promotion on the occasion of „Sunflower Day”. Define 3 tasks with a fixed date. To make them beneficial for our company, they must be completed by the 10th day at the latest. Their earlier completion is not important because the promotion will not be made public until the end of the 10th day." ,
+    "storyMessageDay5": "This is the last day of the week. Remember to sum up your workdays after finishing work just as described in the script",
+    "storyMessageDay6": "New week, new opportunities. Good luck.",
+    "storyMessageDay7": "Well done, keep working.",
+    "storyMessageDay8": "One of the managers came up with an idea of adding a new feature to our product. This would require 4 standard tasks (each of them must be completed for the new feature to work). He asked you for an estimated time to complete these tasks. Write your estimated date of completion of these 4 tasks in your script.",
+    "storyMessageDay9": "There are only two days left to complete those tasks with a fixed date.",
+    "storyMessageDay10": "The very last day of the simulation. Finish your work and summarize it in a script."
 }

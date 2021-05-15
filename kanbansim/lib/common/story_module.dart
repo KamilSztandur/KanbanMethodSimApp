@@ -19,18 +19,7 @@ class StoryModule {
   final List<int> _POSSIBLE_PRODUCTIVITIES_AFTER_NEW_DAY = [3, 4, 5];
   final List<int> _POSSIBLE_PRODUCTIVITIES_TO_UNLOCK = [2, 3, 4];
   final List<int> _UNLOCK_POSSIBILITIES_RANGES = [1, 30, 31, 75, 76, 100];
-  final List<String> _scriptedMessages = [
-    "Rozpoczynacie pracę w nowym zespole. Zdefiniujcie zadania standardowe i zacznijcie nad nimi pracować.",
-    "Nie zapomnijcie o wypełnieniu wszystkich pól w skrypcie.",
-    "System płatności uległ awarii. Z każdą godziną firma traci duże pieniądze. Zdefiniujcie 4 zadania pilne (Expedite) i natychmiast zacznijcie nad nimi pracować. Ich ukończenie ma najwyższy priorytet.",
-    "Specjaliści od marketingu wymyślili promocję z okazji „Dnia Słonecznika”. Zdefiniujcie 3 zadania z ustaloną datą (Fixed Date). By przynieść wartość dla naszej organizacji muszą być ukończone najpóźniej 10 dnia. Ich wcześniejsze ukończenie nie jest ważne bo i tak promocja nie zostanie upubliczniona do końca 10 dnia.",
-    "To ostatni dzień w tygodniu. Pamiętajcie by po zakończeniu pracy podsumować tydzień tak jak zostało to opisane w skrypcie.",
-    "Nowy tydzień, nowe możliwości. Powodzenia.",
-    "Dobra robota, pracujcie dalej.",
-    "Jeden z menedżerów wpadł na pomysł dodania nowej funkcji do naszego produktu. Wymagałoby to zrealizowania 4 standardowych zadań (wszystkie muszą być ukończone by nowa funkcja działała). Prosi was o podanie szacowanego czasu zrealizowania tych zadań. Szacowany dzień ukończenia tych 4 zadań zapiszcie w skrypcie.",
-    "Zostały już tylko dwa dni na ukończenie zadań z ustaloną datą.",
-    "Ostatni dzień symulacji. Dokończcie pracę i podsumujcie ją w skrypcie.",
-  ];
+  List<String> _scriptedMessages;
 
   StoryModule({
     @required this.context,
@@ -42,6 +31,23 @@ class StoryModule {
 
   int getMaxDays() {
     return this._MAX_DAYS;
+  }
+
+  void _initializeScriptedMessagesIfNeeded() {
+    if (this._scriptedMessages == null) {
+      this._scriptedMessages = [
+        AppLocalizations.of(context).storyMessageDay1,
+        AppLocalizations.of(context).storyMessageDay2,
+        AppLocalizations.of(context).storyMessageDay3,
+        AppLocalizations.of(context).storyMessageDay4,
+        AppLocalizations.of(context).storyMessageDay5,
+        AppLocalizations.of(context).storyMessageDay6,
+        AppLocalizations.of(context).storyMessageDay7,
+        AppLocalizations.of(context).storyMessageDay8,
+        AppLocalizations.of(context).storyMessageDay9,
+        AppLocalizations.of(context).storyMessageDay10,
+      ];
+    }
   }
 
   void simulationHasBegun() {
@@ -215,6 +221,7 @@ class StoryModule {
   }
 
   void _showNoteFromManagement(int currentDay) {
+    _initializeScriptedMessagesIfNeeded();
     String message = this._scriptedMessages[currentDay];
 
     showDialog(
