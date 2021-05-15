@@ -38,49 +38,48 @@ class TitlePageState extends State<TitlePage> {
             child: Column(
               children: [
                 KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
-                Flexible(flex: 1, child: SizedBox()),
                 Flexible(
-                  flex: 23,
+                  flex: 15,
                   fit: FlexFit.tight,
                   child: Logo(),
                 ),
                 Flexible(
-                  flex: 4,
+                  flex: 3,
                   fit: FlexFit.tight,
                   child: MenuButton(
                     text: AppLocalizations.of(context).createEmptySession,
                     action: () => _newSessionButtonPressed(),
                   ),
                 ),
-                Flexible(flex: 2, fit: FlexFit.tight, child: SizedBox()),
+                Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
                 Flexible(
-                  flex: 4,
+                  flex: 3,
                   fit: FlexFit.tight,
                   child: MenuButton(
                     text: AppLocalizations.of(context).loadSession,
                     action: () => _loadButtonPressed(),
                   ),
                 ),
-                Flexible(flex: 2, fit: FlexFit.tight, child: SizedBox()),
+                Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
                 KanbanSimApp.of(context).isWeb()
                     ? Center()
                     : Flexible(
-                        flex: 4,
+                        flex: 3,
                         fit: FlexFit.tight,
                         child: MenuButton(
                           text: AppLocalizations.of(context).quit,
                           action: () => _quitButtonPressed(),
                         ),
                       ),
-                Flexible(flex: 4, fit: FlexFit.tight, child: SizedBox()),
+                Flexible(flex: 3, fit: FlexFit.tight, child: SizedBox()),
                 LangSwitchButtons(),
                 Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
                 Flexible(
-                  flex: 4,
+                  flex: 3,
                   fit: FlexFit.tight,
                   child: AuthorsNotice(),
                 ),
-                Flexible(flex: 2, fit: FlexFit.tight, child: SizedBox()),
+                Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
               ],
             ),
           ),

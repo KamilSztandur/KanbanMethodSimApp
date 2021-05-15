@@ -1,6 +1,7 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/common/story_module.dart';
+import 'package:kanbansim/features/main_page/widgets/days_progress_indicator_bar.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_board.dart';
 import 'package:kanbansim/features/main_page/widgets/menu_bar.dart';
 import 'package:kanbansim/features/main_page/widgets/story_logs/logs_button.dart';
@@ -29,6 +30,7 @@ class MainPageState extends State<MainPage> {
   DayStatus dayStatus;
   LocksStatus locksStatus;
   ProductivityBar productivityBar;
+  DaysProgressIndicatorBar progressBar;
 
   StoryModule storyModule;
   SimState currentSimState;
@@ -55,6 +57,7 @@ class MainPageState extends State<MainPage> {
     _initializeMainMenuBar();
     _initializeStatusBar();
     _initializeKanbanBoard();
+    _initializeProgressBar();
 
     return Container(
       decoration: BoxDecoration(
@@ -100,7 +103,8 @@ class MainPageState extends State<MainPage> {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(height: 15),
+                    SizedBox(height: 5),
+                    SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,6 +117,7 @@ class MainPageState extends State<MainPage> {
                       ],
                     ),
                     SizedBox(height: 15),
+                    progressBar,
                   ],
                 ),
               ),
@@ -181,6 +186,13 @@ class MainPageState extends State<MainPage> {
       taskUnlocked: (Task task) => this.simEngine.taskUnlocked(this, task),
       productivityAssigned: (Task task, User user, int value) =>
           this.simEngine.productivityAssigned(this, task, user, value),
+    );
+  }
+
+  void _initializeProgressBar() {
+    this.progressBar = DaysProgressIndicatorBar(
+      currentDay: this.currentSimState.currentDay,
+      maxDays: this.simEngine.MAX_DAY,
     );
   }
 }

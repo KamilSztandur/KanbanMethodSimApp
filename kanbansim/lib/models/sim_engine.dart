@@ -188,7 +188,7 @@ class SimEngine {
 
   double calcKanbanColumnHeight(MainPageState mainPageState) {
     double kanbanBoardHeight = calcKanbanBoardHeight(mainPageState);
-    double columnHeadlineHeightModifier = 100.0;
+    double columnHeadlineHeightModifier = 70.0;
 
     return kanbanBoardHeight - columnHeadlineHeightModifier;
   }
@@ -197,7 +197,7 @@ class SimEngine {
     bool isWeb = KanbanSimApp.of(mainPageState.context).isWeb();
 
     double defaultHeight = MediaQuery.of(mainPageState.context).size.height;
-    double topBarHeightModifier = 180.0 + (isWeb ? 0.0 : 33.0);
+    double topBarHeightModifier = 200.0 + (isWeb ? 0.0 : 33.0);
 
     return defaultHeight - topBarHeightModifier;
   }
