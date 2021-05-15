@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
 import 'package:kanbansim/features/input_output_popups/save_file_popup.dart';
+import 'package:kanbansim/features/main_page/widgets/confirm_returning_to_welcome_page_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/modify_column_limits_popup.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
+import 'package:kanbansim/features/welcome_page/welcome_page.dart';
 import 'package:kanbansim/features/window_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:pluto_menu_bar/pluto_menu_bar.dart';
@@ -176,6 +178,15 @@ class _ToolBar extends StatelessWidget {
                   AppLocalizations.of(context).resetSessionSuccess,
                 );
               },
+            ),
+            MenuItem(
+              title: AppLocalizations.of(context).returnToTitleScreen,
+              icon: Icons.exit_to_app,
+              onTap: () => showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    ConfirmReturningToWelcomePagePopup().show(),
+              ),
             ),
           ],
         ),

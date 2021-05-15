@@ -229,6 +229,8 @@
     "management": "Zarząd",
     "fellowDevs": "Drodzy deweloperzy",
 
+    "youreAboutToReturnToTitleScreen": "Nastąpi powrót do ekranu tytułowego",
+
     "storyMessageDay1": "Rozpoczynacie pracę w nowym zespole. Zdefiniujcie zadania standardowe i zacznijcie nad nimi pracować.",
     "storyMessageDay2": "Nie zapomnijcie o wypełnieniu wszystkich pól w skrypcie.",
     "storyMessageDay3": "System płatności uległ awarii. Z każdą godziną firma traci duże pieniądze. Zdefiniujcie 4 zadania pilne (Expedite) i natychmiast zacznijcie nad nimi pracować. Ich ukończenie ma najwyższy priorytet.",
