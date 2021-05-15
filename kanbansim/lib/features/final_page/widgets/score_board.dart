@@ -21,7 +21,7 @@ class ScoreBoard extends StatefulWidget {
 
 class _ScoreBoardState extends State<ScoreBoard> {
   final double cornerRadius = 15.0;
-  final double width = 500.0;
+  final double width = 450.0;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class _ScoreBoardState extends State<ScoreBoard> {
           right: 40,
         ),
         height: 335,
-        width: 450,
+        width: this.width,
         decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.light
               ? Theme.of(context).accentColor
@@ -55,7 +55,7 @@ class _ScoreBoardState extends State<ScoreBoard> {
           children: [
             SizedBox(height: 5),
             Text(
-              "STATYSTYKI",
+              AppLocalizations.of(context).stats.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).primaryColor,

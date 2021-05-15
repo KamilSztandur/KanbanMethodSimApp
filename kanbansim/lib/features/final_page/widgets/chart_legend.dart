@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChartLegend extends StatelessWidget {
   @override
@@ -17,7 +18,7 @@ class ChartLegend extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
-            "Legenda",
+            AppLocalizations.of(context).legend.toUpperCase(),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Theme.of(context).primaryColor,
@@ -32,15 +33,15 @@ class ChartLegend extends StatelessWidget {
             children: [
               _LegendPosition(
                 color: Colors.lightBlueAccent,
-                name: "Zadania typu Z Ustaloną Datą",
+                name: AppLocalizations.of(context).fixedDateTasks,
               ),
               _LegendPosition(
                 color: Colors.redAccent,
-                name: "Zadania typu Pilnego",
+                name: AppLocalizations.of(context).expediteTasks,
               ),
               _LegendPosition(
                 color: Colors.yellowAccent,
-                name: "Zadania typu Standardowego",
+                name: AppLocalizations.of(context).standardTasks,
               ),
             ],
           ),

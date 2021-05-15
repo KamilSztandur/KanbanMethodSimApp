@@ -194,6 +194,20 @@
     "total": "Razem",
     "returnToTitleScreen": "Powrót do ekranu tytułowego",
 
+    "stats": "Statystyki",
+    "amountOfCompletedTasks": "Ilość ukończonych zadań",
+    "legend": "Legenda",
+    "standardTasks": "Zadania standardowe",
+    "expediteTasks": "Zadania pilne",
+    "fixedDateTasks": "Zadania z ustaloną datą",
+
+    "amountOfTasks": "Liczba zadań",
+    "completionTime": "Czas ukończenia",
+    "amountOfTasksAndTheirCompletionTime": "Liczba zadań w zależności od wspólnego czasu ukończenia",
+    "averageTaskCompletionoTime": "Średni czas ukończenia zadania",
+    "standardDeviationFromAverageTaskCompletionoTime": "Odchylenie standardowe od średniego czasu ukończenia zadania",
+    
+
     "warning": "UWAGA",
     "simulationIsGoingToBeOverWarning": "Symulacja dobiegnie końca i zostaną podliczone punkty końcowe. Tej akcji nie można cofnąć",
     "savingSimulationStateIsAdvised": "Sugerowane jest zapisanie stanu symulacji przed kontynuowaniem",

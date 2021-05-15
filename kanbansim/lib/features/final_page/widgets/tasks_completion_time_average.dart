@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TasksCompletionTimeAverage extends StatelessWidget {
   final double average;
@@ -24,7 +25,7 @@ class TasksCompletionTimeAverage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
-            "Średni czas wykonania jednego zadania",
+            "${AppLocalizations.of(context).averageTaskCompletionoTime}:",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Theme.of(context).primaryColor,
@@ -34,7 +35,7 @@ class TasksCompletionTimeAverage extends StatelessWidget {
           ),
           SizedBox(height: 5),
           Text(
-            "${average.toStringAsFixed(2)} dni",
+            "${average.toStringAsFixed(2)} ${AppLocalizations.of(context).days}",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Theme.of(context).brightness == Brightness.light

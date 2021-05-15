@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TasksCompletionTimeStandardDeviation extends StatelessWidget {
   final double standardDeviation;
@@ -24,7 +25,7 @@ class TasksCompletionTimeStandardDeviation extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
-            "Odchylenie standardowe od średniej wykonania jednego zadania",
+            "${AppLocalizations.of(context).standardDeviationFromAverageTaskCompletionoTime}:",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Theme.of(context).primaryColor,
@@ -34,7 +35,7 @@ class TasksCompletionTimeStandardDeviation extends StatelessWidget {
           ),
           SizedBox(height: 5),
           Text(
-            "${standardDeviation.toStringAsFixed(2)} dni",
+            "${standardDeviation.toStringAsFixed(2)} ${AppLocalizations.of(context).days}",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Theme.of(context).brightness == Brightness.light

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AmountOfCompletedTasksInfo extends StatelessWidget {
   final int amount;
@@ -24,7 +25,7 @@ class AmountOfCompletedTasksInfo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Ilość wykonanych zadań",
+            "${AppLocalizations.of(context).amountOfCompletedTasks}:",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Theme.of(context).primaryColor,

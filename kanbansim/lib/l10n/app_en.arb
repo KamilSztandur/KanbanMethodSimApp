@@ -201,6 +201,20 @@
     "total": "Total",
     "returnToTitleScreen": "Return to title screen",
 
+    "stats": "Stats",
+    "amountOfCompletedTasks": "Amount of completed tasks",
+    "legend": "Legend",
+    "standardTasks": "Standard Tasks",
+    "expediteTasks": "Expedite Tasks",
+    "fixedDateTasks": "Fixed Date Tasks",
+
+    "amountOfTasks": "Amount of tasks",
+    "completionTime": "Completion Time",
+    "amountOfTasksAndTheirCompletionTime": "Amount of tasks and their completion time",
+    "averageTaskCompletionoTime": "Average task completion time",
+    "standardDeviationFromAverageTaskCompletionoTime": "Standard deviation from average task completion time",
+
+
     "warning": "WARNING",
     "simulationIsGoingToBeOverWarning": "Simulation is going to be over and total points summed up. This action cannot be undone",
     "savingSimulationStateIsAdvised": "Saving simulation state before proceeding is advised",

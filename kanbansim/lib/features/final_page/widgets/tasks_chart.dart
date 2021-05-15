@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TasksChart extends StatefulWidget {
   final List<BarChartGroupData> bars;
@@ -52,30 +53,31 @@ class _TasksChartState extends State<TasksChart> {
           axisTitleData: FlAxisTitleData(
             leftTitle: AxisTitle(
               showTitle: true,
-              margin: 10,
-              titleText: 'Ilość zadań',
+              titleText: AppLocalizations.of(context).amountOfCompletedTasks,
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColor,
-                fontSize: 20,
+                fontSize: 15,
               ),
             ),
             bottomTitle: AxisTitle(
               showTitle: true,
-              margin: 5,
-              titleText: 'Czas realizacji [dni]',
+              titleText:
+                  '${AppLocalizations.of(context).completionTime} [${AppLocalizations.of(context).days}]',
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColor,
-                fontSize: 20,
+                fontSize: 15,
               ),
             ),
             topTitle: AxisTitle(
               showTitle: true,
               margin: 20,
-              titleText: 'Zależność ilości zadań od czasu realizacji',
+              titleText: AppLocalizations.of(context)
+                  .amountOfTasksAndTheirCompletionTime
+                  .toUpperCase(),
               textStyle: TextStyle(
                 color: Theme.of(context).primaryColor,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 12,
               ),
             ),
           ),

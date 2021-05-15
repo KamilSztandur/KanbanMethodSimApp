@@ -1,7 +1,7 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/common/stats_calculator.dart';
-import 'package:kanbansim/features/final_page/score_board.dart';
+import 'package:kanbansim/features/final_page/widgets/score_board.dart';
 import 'package:kanbansim/features/final_page/widgets/amount_of_completed_tasks_info.dart';
 import 'package:kanbansim/features/final_page/widgets/chart_legend.dart';
 import 'package:kanbansim/features/final_page/widgets/chart_window.dart';
