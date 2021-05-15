@@ -76,7 +76,7 @@ class SimState {
     allTasks.stageTwoTasksColumn = reader.readStageTwoTasks(data);
     allTasks.finishedTasksColumn = reader.readFinishedTasks(data);
 
-    Task.dummy().setLatestTaskID(this.latestTaskID);
+    Task.getEmpty().setLatestTaskID(this.latestTaskID);
 
     this.allTasks = allTasks;
   }
