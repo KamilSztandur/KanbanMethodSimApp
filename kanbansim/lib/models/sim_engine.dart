@@ -145,8 +145,7 @@ class SimEngine {
       context,
       MaterialPageRoute(
         builder: (context) => FinalPage(
-          allTasks: mainPageState.currentSimState.allTasks,
-          users: mainPageState.currentSimState.users,
+          simState: mainPageState.currentSimState,
         ),
       ),
     );
