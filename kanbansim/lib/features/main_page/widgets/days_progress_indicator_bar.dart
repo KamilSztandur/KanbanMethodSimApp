@@ -15,7 +15,7 @@ class DaysProgressIndicatorBar extends StatelessWidget {
     return Container(
       height: 20,
       decoration: BoxDecoration(
-        color: Colors.grey.shade800,
+        color: Theme.of(context).primaryColor.withOpacity(0.25),
         border: Border.all(color: Theme.of(context).primaryColor),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.elliptical(25, 20),
@@ -33,15 +33,19 @@ class DaysProgressIndicatorBar extends StatelessWidget {
                       colors: [
                         Colors.lightBlueAccent.withOpacity(0.6),
                         Colors.blue.shade700.withOpacity(0.6),
-                        Colors.purple.withOpacity(0.6),
+                        Theme.of(context).brightness == Brightness.light
+                            ? Colors.blue.shade800.withOpacity(0.6)
+                            : Colors.purple.withOpacity(0.6),
                       ],
                       stops: [0.0, 0.75, 1.0],
                       tileMode: TileMode.clamp,
                     ),
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.elliptical(25, 20),
-                      topRight: Radius.zero,
-                      bottomRight: Radius.elliptical(25, 20),
+                      topRight: _isAtEnd() ? Radius.zero : Radius.circular(10),
+                      bottomRight: _isAtEnd()
+                          ? Radius.elliptical(25, 20)
+                          : Radius.circular(10),
                     ),
                   ),
                 ),
@@ -58,16 +62,26 @@ class DaysProgressIndicatorBar extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: Text(
-              "${(currentDay / maxDays) * 100}%",
+              "${_calcPercent()}%",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
+                fontSize: 12,
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  int _calcPercent() {
+    double percents = (currentDay / maxDays) * 100;
+    return percents.toInt();
+  }
+
+  bool _isAtEnd() {
+    return this.currentDay == this.maxDays;
   }
 }
