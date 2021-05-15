@@ -44,6 +44,10 @@ class StoryModule {
     return this._MAX_DAYS;
   }
 
+  void simulationHasBegun() {
+    _showNoteFromManagement(0);
+  }
+
   void switchedToNextDay() {
     int currentDay = this.getCurrentDay();
 
@@ -52,6 +56,7 @@ class StoryModule {
       "${AppLocalizations.of(context).day} $currentDay ${AppLocalizations.of(context).hasCome}.",
       true,
     );
+
     _showNoteFromManagement(currentDay);
     _pushNotificationForDay(currentDay);
     _restoreProductivitiesAfterNewDay();
@@ -210,7 +215,7 @@ class StoryModule {
   }
 
   void _showNoteFromManagement(int currentDay) {
-    String message = this._scriptedMessages[currentDay - 1];
+    String message = this._scriptedMessages[currentDay];
 
     showDialog(
       context: context,

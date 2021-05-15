@@ -362,4 +362,14 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+    if (this.currentDay == null || this.currentDay == 0) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => this.storyModule.simulationHasBegun(),
+      );
+    }
+  }
 }
