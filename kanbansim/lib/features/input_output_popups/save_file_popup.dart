@@ -10,7 +10,6 @@ import 'package:kanbansim/features/notifications/subtle_message.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
 import 'package:kanbansim/models/AllTasksContainer.dart';
-import 'package:kanbansim/models/Task.dart';
 
 class SaveFilePopup {
   final Function getSimState;
