@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_task/task_creator_popup/sub_title.dart';
@@ -45,6 +46,12 @@ class _TaskTitleCreatorState extends State<TaskTitleCreator> {
                 this.widget.updateTitle(value);
               },
               controller: _controller,
+              inputFormatters: [
+                FilteringTextInputFormatter(
+                  RegExp("[a-zA-Z0-9-#-' ']"),
+                  allow: true,
+                ),
+              ],
               decoration: new InputDecoration(
                 hintText: KanbanSimApp.of(context).isWeb()
                     ? AppLocalizations.of(context).enterTaskTitleHere

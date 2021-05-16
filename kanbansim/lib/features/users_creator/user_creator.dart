@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
@@ -423,6 +424,12 @@ class _UserNameCreatorState extends State<UserNameCreator> {
                 color: Colors.white,
               ),
               controller: _controller,
+              inputFormatters: [
+                FilteringTextInputFormatter(
+                  RegExp("[a-zA-Z0-9-#-' ']"),
+                  allow: true,
+                ),
+              ],
               decoration: InputDecoration(
                 counterStyle: TextStyle(color: Theme.of(context).primaryColor),
                 hintText: KanbanSimApp.of(context).isWeb()
