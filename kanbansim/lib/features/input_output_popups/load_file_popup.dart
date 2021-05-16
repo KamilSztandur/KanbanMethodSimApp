@@ -41,7 +41,6 @@ class _LoadFilePage extends StatefulWidget {
 
 class _LoadFilePageState extends State<_LoadFilePage> {
   bool _readyToSubmit;
-  FilePicker _picker;
   double _cornerRadius = 35;
   double _height = 250;
   double _width = 400;
