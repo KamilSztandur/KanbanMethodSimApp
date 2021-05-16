@@ -35,57 +35,66 @@ class TitlePageState extends State<TitlePage> {
           color: Theme.of(context).primaryColor,
           width: 1,
           child: Center(
-            child: Column(
-              children: [
-                KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
-                Flexible(
-                  flex: 15,
-                  fit: FlexFit.tight,
-                  child: Logo(),
-                ),
-                Flexible(
-                  flex: 3,
-                  fit: FlexFit.tight,
-                  child: MenuButton(
-                    text: AppLocalizations.of(context).createEmptySession,
-                    action: () => _newSessionButtonPressed(),
-                  ),
-                ),
-                Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-                Flexible(
-                  flex: 3,
-                  fit: FlexFit.tight,
-                  child: MenuButton(
-                    text: AppLocalizations.of(context).loadSession,
-                    action: () => _loadButtonPressed(),
-                  ),
-                ),
-                Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-                KanbanSimApp.of(context).isWeb()
-                    ? Center()
-                    : Flexible(
-                        flex: 3,
+            child: _isOnMobileDevice()
+                ? Container()
+                : Column(
+                    children: [
+                      KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
+                      Flexible(flex: 3, fit: FlexFit.tight, child: SizedBox()),
+                      Flexible(
+                        flex: 6,
+                        fit: FlexFit.tight,
+                        child: Logo(),
+                      ),
+                      Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+                      Flexible(
+                        flex: 2,
                         fit: FlexFit.tight,
                         child: MenuButton(
-                          text: AppLocalizations.of(context).quit,
-                          action: () => _quitButtonPressed(),
+                          text: AppLocalizations.of(context).createEmptySession,
+                          action: () => _newSessionButtonPressed(),
                         ),
                       ),
-                Flexible(flex: 3, fit: FlexFit.tight, child: SizedBox()),
-                LangSwitchButtons(),
-                Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-                Flexible(
-                  flex: 3,
-                  fit: FlexFit.tight,
-                  child: AuthorsNotice(),
-                ),
-                Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-              ],
-            ),
+                      Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+                      Flexible(
+                        flex: 2,
+                        fit: FlexFit.tight,
+                        child: MenuButton(
+                          text: AppLocalizations.of(context).loadSession,
+                          action: () => _loadButtonPressed(),
+                        ),
+                      ),
+                      Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+                      KanbanSimApp.of(context).isWeb()
+                          ? Center()
+                          : Flexible(
+                              flex: 2,
+                              fit: FlexFit.tight,
+                              child: MenuButton(
+                                text: AppLocalizations.of(context).quit,
+                                action: () => _quitButtonPressed(),
+                              ),
+                            ),
+                      Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+                      LangSwitchButtons(),
+                      Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+                      Flexible(
+                        flex: 2,
+                        fit: FlexFit.tight,
+                        child: AuthorsNotice(),
+                      ),
+                      Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
+                    ],
+                  ),
           ),
         ),
       ),
     );
+  }
+
+  bool _isOnMobileDevice() {
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    return shortestSide < 650;
   }
 
   void _newSessionButtonPressed() {
