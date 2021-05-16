@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
 import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:kanbansim/features/users_creator/users_creator.dart';
-import 'package:kanbansim/features/title_page/Logo.dart';
+import 'package:kanbansim/features/title_page/logo.dart';
 import 'package:kanbansim/features/title_page/authors_notice.dart';
 import 'package:kanbansim/features/title_page/lang_switch_buttons.dart';
 import 'package:kanbansim/features/title_page/menu_button.dart';
