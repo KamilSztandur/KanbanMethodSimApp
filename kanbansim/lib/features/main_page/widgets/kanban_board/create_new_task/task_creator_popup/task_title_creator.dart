@@ -53,6 +53,10 @@ class _TaskTitleCreatorState extends State<TaskTitleCreator> {
                 ),
               ],
               decoration: new InputDecoration(
+                counterStyle: TextStyle(color: Theme.of(context).primaryColor),
+                counter: KanbanSimApp.of(context).isWeb()
+                    ? TextField().decoration.counter
+                    : Offstage(),
                 hintText: KanbanSimApp.of(context).isWeb()
                     ? AppLocalizations.of(context).enterTaskTitleHere
                     : "",

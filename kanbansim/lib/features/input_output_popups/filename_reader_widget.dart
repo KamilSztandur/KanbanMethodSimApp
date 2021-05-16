@@ -42,12 +42,12 @@ class _FilenameReaderWidgetState extends State<FilenameReaderWidget> {
               this.widget.saveFile(value);
             },
             controller: _controller,
-            decoration: new InputDecoration(
+            decoration: InputDecoration(
               hintText: KanbanSimApp.of(context).isWeb()
                   ? AppLocalizations.of(context).enterSaveNameHere
                   : "",
               labelText: "${AppLocalizations.of(context).filenameLabel}:",
-              labelStyle: new TextStyle(color: const Color(0xFF424242)),
+              labelStyle: TextStyle(color: Theme.of(context).primaryColor),
               floatingLabelBehavior: FloatingLabelBehavior.always,
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Theme.of(context).primaryColor),
