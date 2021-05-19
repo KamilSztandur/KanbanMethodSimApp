@@ -15,6 +15,7 @@ class SimState {
     this.currentDay = 1;
     this.users = <User>[];
     this.allTasks = AllTasksContainer(() => this.users);
+    Task.getEmpty().setLatestTaskID(0);
   }
 
   int getAmountOfUsers() => this.users.length;
