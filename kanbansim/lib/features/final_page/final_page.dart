@@ -66,12 +66,7 @@ class _FinalPageState extends State<FinalPage> with TickerProviderStateMixin {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              KanbanSimApp.of(context).isWeb()
-                  ? Center()
-                  : Align(
-                      alignment: Alignment.topCenter,
-                      child: WindowBar(),
-                    ),
+              KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
               Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
               Flexible(
                 flex: 38,
