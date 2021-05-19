@@ -109,7 +109,11 @@ class StoryModule {
   }
 
   void lockTask(Task task) {
-    if (task.getProductivityRequiredToUnlock() == 0) {
+    bool taskIsNotAlreadyBlocked = task.getProductivityRequiredToUnlock() != 0;
+    bool taskProgressBarIsNotFull =
+        task.progress.getNumberOfUnfulfilledParts() != 0;
+
+    if (taskIsNotAlreadyBlocked && taskProgressBarIsNotFull) {
       int diceRoll = Random().nextInt(
         _POSSIBLE_PRODUCTIVITIES_TO_UNLOCK.length,
       );
