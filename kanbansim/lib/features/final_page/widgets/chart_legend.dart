@@ -6,8 +6,6 @@ class ChartLegend extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(20),
-      height: 100,
-      width: 600,
       decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.light
               ? Theme.of(context).accentColor

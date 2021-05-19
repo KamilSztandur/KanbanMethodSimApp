@@ -100,7 +100,7 @@ class _TasksChartState extends State<TasksChart> {
   }
 
   double _calcGroupsSpace() {
-    double defaultGroupsSpace = 20;
+    double defaultGroupsSpace = 25;
     int defaultAmountOfBars = 10;
 
     int n = this.widget.bars.length;

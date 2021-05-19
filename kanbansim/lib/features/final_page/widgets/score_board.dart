@@ -19,7 +19,6 @@ class ScoreBoard extends StatefulWidget {
 
 class _ScoreBoardState extends State<ScoreBoard> {
   final double cornerRadius = 15.0;
-  final double width = 450.0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +28,6 @@ class _ScoreBoardState extends State<ScoreBoard> {
           left: 40,
           right: 40,
         ),
-        height: 335,
-        width: this.width,
         decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.light
               ? Theme.of(context).accentColor
@@ -61,13 +58,12 @@ class _ScoreBoardState extends State<ScoreBoard> {
                 fontSize: 20,
               ),
             ),
-            _Divider(width: this.width * 0.6, height: 2),
+            _Divider(height: 2),
             SizedBox(height: 5),
             _Statistics(
-              width: this.width,
               simState: this.widget.simState,
             ),
-            _Divider(width: this.width * 0.3, height: 2),
+            _Divider(height: 2),
             _UsersStats(users: this.widget.simState.users),
           ],
         ),
@@ -77,12 +73,10 @@ class _ScoreBoardState extends State<ScoreBoard> {
 }
 
 class _Statistics extends StatelessWidget {
-  final double width;
   final SimState simState;
 
   _Statistics({
     Key key,
-    @required this.width,
     @required this.simState,
   }) : super(key: key);
 
@@ -123,7 +117,7 @@ class _Statistics extends StatelessWidget {
               type: AppLocalizations.of(context).fixedDate,
             ),
             SizedBox(height: 10),
-            _Divider(width: this.width * 0.3, height: 2),
+            _Divider(height: 2),
             SizedBox(height: 10),
             _FixedDateTasksStatistics(
               beforeDeadlineAmount:
@@ -218,7 +212,7 @@ class _TaskTypeStatistic extends StatelessWidget {
             ),
           ),
           TextSpan(
-            text: ":",
+            text: ".",
           ),
         ],
       ),
@@ -272,13 +266,11 @@ class _FixedDateTasksStatistics extends StatelessWidget {
 }
 
 class _Divider extends StatelessWidget {
-  final double width;
   final double height;
 
   _Divider({
     Key key,
     @required this.height,
-    @required this.width,
   }) : super(key: key);
 
   @override
@@ -290,7 +282,6 @@ class _Divider extends StatelessWidget {
           child: Container(
             height: this.height,
             color: Theme.of(context).primaryColor,
-            width: this.width,
           ),
         ),
         SizedBox(height: 10),

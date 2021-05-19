@@ -6,7 +6,7 @@ void main() {
   runApp(KanbanSimApp());
 
   doWhenWindowReady(() {
-    final initialSize = Size(1300, 650);
+    final initialSize = Size(1300, 700);
 
     appWindow.minSize = initialSize;
     appWindow.size = initialSize;

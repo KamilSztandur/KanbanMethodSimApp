@@ -39,7 +39,7 @@ class _FinalPageState extends State<FinalPage> with TickerProviderStateMixin {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Theme.of(context).primaryColor,
           icon: Icon(
@@ -69,42 +69,94 @@ class _FinalPageState extends State<FinalPage> with TickerProviderStateMixin {
               KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
               Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
               Flexible(
-                flex: 38,
+                flex: 19,
                 fit: FlexFit.tight,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ChartWindow(allTasks: this.widget.simState.allTasks),
-                        SizedBox(height: 20),
-                        ChartLegend(),
-                      ],
+                    Flexible(flex: 1, child: Container()),
+                    Flexible(
+                      flex: 30,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minWidth: 600,
+                        ),
+                        child: ChartWindow(
+                          allTasks: this.widget.simState.allTasks,
+                        ),
+                      ),
                     ),
-                    SizedBox(width: 20),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        AmountOfCompletedTasksInfo(
-                          amount: calculator.getAmountOfFinishedTasks(),
-                        ),
-                        SizedBox(height: 20),
-                        TasksCompletionTimeAverage(
-                          average: calculator.countAverageOfCompletionTime(),
-                        ),
-                        SizedBox(height: 20),
-                        TasksCompletionTimeStandardDeviation(
-                          standardDeviation: calculator
-                              .countStandardDeviationOfCompletionTime(),
-                        ),
-                        SizedBox(height: 20),
-                        ScoreBoard(simState: this.widget.simState),
-                      ],
+                    Flexible(flex: 1, child: Container()),
+                    Flexible(
+                      flex: 20,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(flex: 1, child: Container()),
+                          Flexible(
+                            flex: 15,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxHeight: 100,
+                              ),
+                              child: ChartLegend(),
+                            ),
+                          ),
+                          Flexible(flex: 3, child: Container()),
+                          Flexible(
+                            flex: 45,
+                            child: ScoreBoard(simState: this.widget.simState),
+                          ),
+                          Flexible(flex: 1, child: Container()),
+                        ],
+                      ),
                     ),
+                    Flexible(flex: 1, child: Container()),
+                    Flexible(
+                      flex: 10,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(flex: 1, child: Container()),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: 155,
+                              maxHeight: 168,
+                            ),
+                            child: AmountOfCompletedTasksInfo(
+                              amount: calculator.getAmountOfFinishedTasks(),
+                            ),
+                          ),
+                          Flexible(flex: 1, child: Container()),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: 175,
+                              maxHeight: 175,
+                            ),
+                            child: TasksCompletionTimeAverage(
+                              average:
+                                  calculator.countAverageOfCompletionTime(),
+                            ),
+                          ),
+                          Flexible(flex: 1, child: Container()),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: 205,
+                              maxHeight: 230,
+                            ),
+                            child: TasksCompletionTimeStandardDeviation(
+                              standardDeviation: calculator
+                                  .countStandardDeviationOfCompletionTime(),
+                            ),
+                          ),
+                          Flexible(flex: 1, child: Container()),
+                        ],
+                      ),
+                    ),
+                    Flexible(flex: 1, child: Container()),
                   ],
                 ),
               ),

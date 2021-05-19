@@ -12,9 +12,7 @@ class AmountOfCompletedTasksInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(30),
-      height: 135,
-      width: 450,
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.light
               ? Theme.of(context).accentColor
@@ -22,6 +20,7 @@ class AmountOfCompletedTasksInfo extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
           border: Border.all(color: Theme.of(context).primaryColor)),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(

@@ -21,8 +21,6 @@ class ChartWindow extends StatelessWidget {
         right: 65,
         left: 20,
       ),
-      height: 710,
-      width: 600,
       decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.light
               ? Theme.of(context).accentColor
