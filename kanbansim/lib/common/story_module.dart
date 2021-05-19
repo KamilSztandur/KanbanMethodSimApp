@@ -17,16 +17,6 @@ class StoryModule {
   final int _MAX_DAYS = 10;
   final double _LOCK_PROBABILITY = 0.15;
   final List<int> _POSSIBLE_PRODUCTIVITIES_TO_UNLOCK = [2, 3, 4];
-  final List<int> _POSSIBLE_RESTORED_PRODUCTIVITIES = [0, 1, 2, 3, 4, 5];
-  final List<int> _RESTORED_PRODUCTIVITIES_PROBABILITY_RANGES = [
-    0,
-    5,
-    15,
-    30,
-    65,
-    90,
-    100,
-  ];
 
   List<String> _scriptedMessages;
 
@@ -120,7 +110,10 @@ class StoryModule {
 
   void lockTask(Task task) {
     if (task.getProductivityRequiredToUnlock() == 0) {
-      int diceRoll = Random().nextInt(3);
+      int diceRoll = Random().nextInt(
+        _POSSIBLE_PRODUCTIVITIES_TO_UNLOCK.length,
+      );
+
       int productivityToUnlock = _POSSIBLE_PRODUCTIVITIES_TO_UNLOCK[diceRoll];
 
       task.block(productivityToUnlock);
@@ -150,36 +143,16 @@ class StoryModule {
   void _restoreRandomProductivity(User user) {
     int diceRoll = Random().nextInt(100) + 1;
 
-    if (_isInRange(
-      diceRoll,
-      _RESTORED_PRODUCTIVITIES_PROBABILITY_RANGES[0],
-      _RESTORED_PRODUCTIVITIES_PROBABILITY_RANGES[1],
-    )) {
-      user.addProductivity(_POSSIBLE_RESTORED_PRODUCTIVITIES[0]);
-    } else if (_isInRange(
-      diceRoll,
-      _RESTORED_PRODUCTIVITIES_PROBABILITY_RANGES[1] + 1,
-      _RESTORED_PRODUCTIVITIES_PROBABILITY_RANGES[2],
-    )) {
-      user.addProductivity(_POSSIBLE_RESTORED_PRODUCTIVITIES[1]);
-    } else if (_isInRange(
-      diceRoll,
-      _RESTORED_PRODUCTIVITIES_PROBABILITY_RANGES[2] + 1,
-      _RESTORED_PRODUCTIVITIES_PROBABILITY_RANGES[3],
-    )) {
-      user.addProductivity(_POSSIBLE_RESTORED_PRODUCTIVITIES[2]);
-    } else if (_isInRange(
-      diceRoll,
-      _RESTORED_PRODUCTIVITIES_PROBABILITY_RANGES[3] + 1,
-      _RESTORED_PRODUCTIVITIES_PROBABILITY_RANGES[4],
-    )) {
-      user.addProductivity(_POSSIBLE_RESTORED_PRODUCTIVITIES[3]);
-    } else if (_isInRange(
-      diceRoll,
-      _RESTORED_PRODUCTIVITIES_PROBABILITY_RANGES[4] + 1,
-      _RESTORED_PRODUCTIVITIES_PROBABILITY_RANGES[5],
-    )) {
-      user.addProductivity(_POSSIBLE_RESTORED_PRODUCTIVITIES[4]);
+    if (_isInRange(diceRoll, 0, 10)) {
+      user.addProductivity(1);
+    } else if (_isInRange(diceRoll, 11, 30)) {
+      user.addProductivity(2);
+    } else if (_isInRange(diceRoll, 31, 65)) {
+      user.addProductivity(3);
+    } else if (_isInRange(diceRoll, 66, 90)) {
+      user.addProductivity(4);
+    } else if (_isInRange(diceRoll, 91, 100)) {
+      user.addProductivity(5);
     }
 
     this._eventOccured(
