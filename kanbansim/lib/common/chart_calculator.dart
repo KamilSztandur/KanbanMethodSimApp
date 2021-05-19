@@ -20,7 +20,7 @@ class CharCalculator {
   List<BarChartGroupData> getBars() {
     List<BarChartGroupData> bars = <BarChartGroupData>[];
 
-    for (int i = 0; i <= MAX_DAY; i++) {
+    for (int i = 1; i <= MAX_DAY; i++) {
       bars.add(
         ChartColumnData(
           daysAmount: i,
