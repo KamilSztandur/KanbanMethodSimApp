@@ -63,9 +63,9 @@
     "enterDeadlineDayNumber": "Wprowadź numer dnia",
     "enterTaskTitleHere": "Wpisz tutaj tytuł zadania",
     "create": "Stwórz",
-    "standard": "Standardowe",
-    "expedite": "Pilne",
-    "fixedDate": "Z ustaloną datą",
+    "standard": "Standardowe (Standard)",
+    "expedite": "Pilne (Expedite)",
+    "fixedDate": "Z ustaloną datą (Fixed Date)",
 
     "taskCreationSuccess": "Zadanie utworzone pomyślnie!",
     
