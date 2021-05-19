@@ -216,7 +216,7 @@ class _ToolBar extends StatelessWidget {
             String platform = _getPlatformName(context).toUpperCase();
             showAboutDialog(
               context: context,
-              applicationVersion: '1.0.0-$platform',
+              applicationVersion: '1.1.0-$platform',
               applicationIcon: Icon(Icons.info_outline_rounded),
               applicationLegalese:
                   AppLocalizations.of(context).applicationLegalese,
