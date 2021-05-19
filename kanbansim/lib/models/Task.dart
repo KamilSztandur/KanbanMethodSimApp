@@ -3,7 +3,7 @@ import 'package:kanbansim/models/TaskType.dart';
 import 'package:kanbansim/models/User.dart';
 
 class Task {
-  static int _latestTaskID = 1;
+  static int _latestTaskID = 0;
   int _taskID;
   String _title;
   User owner;
@@ -19,8 +19,8 @@ class Task {
   Task.getEmpty() {}
 
   Task(String title, int productivityRequired, User owner, TaskType type) {
-    this._taskID = _latestTaskID;
     _latestTaskID++;
+    this._taskID = _latestTaskID;
 
     this._title = title;
     this.progress = _TaskProgress(

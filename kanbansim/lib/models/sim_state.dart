@@ -7,14 +7,12 @@ class SimState {
   List<User> users;
   AllTasksContainer allTasks;
   int currentDay;
-  int latestTaskID;
   int stageOneInProgressColumnLimit;
   int stageOneDoneColumnLimit;
   int stageTwoColumnLimit;
 
   SimState() {
     this.currentDay = 1;
-    this.latestTaskID = 1;
     this.users = <User>[];
     this.allTasks = AllTasksContainer(() => this.users);
   }
@@ -42,6 +40,13 @@ class SimState {
     _buildLatestTaskIDFromData(reader, data);
   }
 
+  int getLatestTaskID() {
+    print(this.allTasks.idleTasksColumn[0].getLatestTaskID());
+    print(Task.getEmpty().getLatestTaskID());
+    print(this.allTasks.idleTasksColumn[0].getLatestTaskID());
+    return Task.getEmpty().getLatestTaskID();
+  }
+
   void _buildCurrentDayFromData(SavefileReader reader, String data) {
     this.currentDay = reader.getCurrentDayFromString(data);
   }
@@ -51,8 +56,8 @@ class SimState {
   }
 
   void _buildLatestTaskIDFromData(SavefileReader reader, String data) {
-    this.latestTaskID = reader.getLatestTaskID(data);
-    Task.getEmpty().setLatestTaskID(this.latestTaskID);
+    int latestTaskID = reader.getLatestTaskID(data);
+    Task.getEmpty().setLatestTaskID(latestTaskID);
   }
 
   void _buildTasksFromData(SavefileReader reader, String data) {

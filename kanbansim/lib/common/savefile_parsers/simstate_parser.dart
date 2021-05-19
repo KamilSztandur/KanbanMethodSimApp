@@ -14,7 +14,7 @@ class SimStateParser {
 
     data = _writer.writeHeadline(data);
     data = _writer.writeCurrentDay(data, state.currentDay);
-    data = _writer.writeLatestTaskID(data, state.latestTaskID);
+    data = _writer.writeLatestTaskID(data, state.getLatestTaskID());
     data = _writer.writeStageOneInProgressColumnLimit(
       data,
       state.stageOneInProgressColumnLimit,

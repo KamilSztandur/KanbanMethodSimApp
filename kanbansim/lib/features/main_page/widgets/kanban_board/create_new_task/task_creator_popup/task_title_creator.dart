@@ -101,6 +101,6 @@ class _TaskTitleCreatorState extends State<TaskTitleCreator> {
 
   void _generateNameAutomatically() {
     this._controller.text =
-        "Task #" + Task.getEmpty().getLatestTaskID().toString();
+        "Task #" + (Task.getEmpty().getLatestTaskID() + 1).toString();
   }
 }
