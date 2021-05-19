@@ -26,8 +26,8 @@ class DeadlineDaySwitchState extends State<DeadlineDaySwitch> {
   Color _leftArrowColor;
 
   void setUp() {
-    if (this.deadlineDay == 0) {
-      this.deadlineDay = widget.initialDeadlineDay;
+    if (this.deadlineDay == 0 || this.deadlineDay == null) {
+      this.deadlineDay = this.widget.initialDeadlineDay;
     }
     _setArrowColors();
   }

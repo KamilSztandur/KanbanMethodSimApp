@@ -68,16 +68,15 @@ class _TaskCreatorPageState extends State<_TaskCreatorPage> {
 
     this._currentTaskTitle = '';
     this._selectedType = TaskType.Standard;
-    this._currentDeadline = this.widget.getCurrentDay();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+    this._currentDeadline = this.widget.getMaxSimDay();
     this._readyToCreate = _checkIfReadyToCreate();
     this._cornerRadius = 35;
     this._width = 440;
     this._subWidth = this._width * 0.7;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: this._width,
       height: 600,
