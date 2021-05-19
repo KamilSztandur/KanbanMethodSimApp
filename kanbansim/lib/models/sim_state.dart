@@ -42,9 +42,6 @@ class SimState {
   }
 
   int getLatestTaskID() {
-    print(this.allTasks.idleTasksColumn[0].getLatestTaskID());
-    print(Task.getEmpty().getLatestTaskID());
-    print(this.allTasks.idleTasksColumn[0].getLatestTaskID());
     return Task.getEmpty().getLatestTaskID();
   }
 
