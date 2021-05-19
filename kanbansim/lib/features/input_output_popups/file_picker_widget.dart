@@ -110,7 +110,7 @@ class FilePickerWidgetState extends State<FilePickerWidget> {
   void _readAndSaveFileContent(String path) {
     File loadedSavefile = File(path);
 
-    loadedSavefile.open();
+    var reader = loadedSavefile.openRead();
     loadedSavefile.readAsString().then(
       (String data) {
         this.widget.contentIsPicked(data);
