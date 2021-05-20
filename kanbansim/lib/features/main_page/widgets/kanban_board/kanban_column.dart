@@ -256,33 +256,9 @@ class _TaskColumn extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Draggable<Task>(
-                childWhenDragging: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                  ),
-                ),
-                data: this.tasks[i].task,
-                dragAnchor: DragAnchor.pointer,
-                feedback: this.tasks[i],
-                child: this.tasks[i],
-              ),
+              _parseDraggableIfNotLocked(this.tasks[i]),
               SizedBox(width: 15),
-              Draggable<Task>(
-                childWhenDragging: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                  ),
-                ),
-                data: this.tasks[++i].task,
-                dragAnchor: DragAnchor.pointer,
-                feedback: this.tasks[i],
-                child: this.tasks[i],
-              ),
+              _parseDraggableIfNotLocked(this.tasks[++i])
             ],
           ),
         );
@@ -296,58 +272,40 @@ class _TaskColumn extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Draggable<Task>(
-                  childWhenDragging: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                    ),
-                  ),
-                  data: this.tasks[i].task,
-                  dragAnchor: DragAnchor.pointer,
-                  feedback: this.tasks[i],
-                  child: this.tasks[i],
-                ),
+                _parseDraggableIfNotLocked(this.tasks[i]),
                 SizedBox(width: 15),
-                Draggable<Task>(
-                  childWhenDragging: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                    ),
-                  ),
-                  data: this.tasks[++i].task,
-                  dragAnchor: DragAnchor.pointer,
-                  feedback: this.tasks[i],
-                  child: this.tasks[i],
-                ),
+                _parseDraggableIfNotLocked(this.tasks[++i])
               ],
             ),
           );
         } else {
-          column.add(
-            Draggable<Task>(
-              data: this.tasks[i].task,
-              dragAnchor: DragAnchor.pointer,
-              childWhenDragging: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                ),
-              ),
-              feedback: this.tasks[i],
-              child: this.tasks[i],
-            ),
-          );
+          column.add(_parseDraggableIfNotLocked(this.tasks[i]));
         }
         column.add(SizedBox(height: 15));
       }
     }
 
     return column;
+  }
+
+  Widget _parseDraggableIfNotLocked(TaskCard taskCard) {
+    if (taskCard.task.isLocked()) {
+      return taskCard;
+    } else {
+      return Draggable<Task>(
+        data: taskCard.task,
+        dragAnchor: DragAnchor.pointer,
+        childWhenDragging: Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+          ),
+        ),
+        feedback: taskCard,
+        child: taskCard,
+      );
+    }
   }
 }
 
