@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
 
 class KanbanSimApp extends StatefulWidget {
+  final String version = "1.1.5";
+
   static _KanbanSimAppState of(BuildContext context) =>
       context.findAncestorStateOfType<_KanbanSimAppState>();
 
@@ -90,6 +92,18 @@ class _KanbanSimAppState extends State<KanbanSimApp> {
           _locale = Locale("en");
       }
     });
+  }
+
+  String getReleaseVersionInfo() {
+    String platform = "";
+
+    if (isWeb()) {
+      platform = "web";
+    } else {
+      platform = "desktop";
+    }
+
+    return '${this.widget.version}-${platform.toUpperCase()}';
   }
 
   void switchTheme() {
