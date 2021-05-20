@@ -219,7 +219,7 @@
     "task": "Zadanie",
     "invested": "zainwestował",
     "productivityInTask": "oroduktywności w zadanie",
-    "wasLocked": "zostało zablokowane",
+    "hasBeenLocked": "zostało zablokowane",
     "hasBeenUnlocked": "zostało odblokowane",
     "teamMember": "Członek zespołu",
     "startedDayWithProductivityEqualTo": "rozpoczął dzień z produktywnością równą",

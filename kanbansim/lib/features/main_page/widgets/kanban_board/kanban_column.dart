@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/tasks_limit_reached_popup.dart';
 import 'package:kanbansim/models/Task.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class KanbanColumn extends StatefulWidget {
   final double defaultMinColumnHeight;
@@ -217,7 +218,7 @@ class _TaskColumn extends StatelessWidget {
     List<Widget> taskColumn = <Widget>[];
     taskColumn = _addHorizontalParentFitGuard(taskColumn);
     taskColumn = _addAdditionalWidget(taskColumn);
-    taskColumn = _buildTaskList(taskColumn);
+    taskColumn = _buildTaskList(context, taskColumn);
 
     return Column(
       children: taskColumn,
@@ -246,7 +247,7 @@ class _TaskColumn extends StatelessWidget {
     return column;
   }
 
-  List<Widget> _buildTaskList(List<Widget> column) {
+  List<Widget> _buildTaskList(BuildContext context, List<Widget> column) {
     int n = this.tasks.length;
 
     if (n % 2 == 0) {
@@ -256,33 +257,9 @@ class _TaskColumn extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Draggable<Task>(
-                childWhenDragging: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                  ),
-                ),
-                data: this.tasks[i].task,
-                dragAnchor: DragAnchor.pointer,
-                feedback: this.tasks[i],
-                child: this.tasks[i],
-              ),
+              _parseDraggableIfNotLocked(context, this.tasks[i]),
               SizedBox(width: 15),
-              Draggable<Task>(
-                childWhenDragging: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                  ),
-                ),
-                data: this.tasks[++i].task,
-                dragAnchor: DragAnchor.pointer,
-                feedback: this.tasks[i],
-                child: this.tasks[i],
-              ),
+              _parseDraggableIfNotLocked(context, this.tasks[++i])
             ],
           ),
         );
@@ -296,58 +273,53 @@ class _TaskColumn extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Draggable<Task>(
-                  childWhenDragging: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                    ),
-                  ),
-                  data: this.tasks[i].task,
-                  dragAnchor: DragAnchor.pointer,
-                  feedback: this.tasks[i],
-                  child: this.tasks[i],
-                ),
+                _parseDraggableIfNotLocked(context, this.tasks[i]),
                 SizedBox(width: 15),
-                Draggable<Task>(
-                  childWhenDragging: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                    ),
-                  ),
-                  data: this.tasks[++i].task,
-                  dragAnchor: DragAnchor.pointer,
-                  feedback: this.tasks[i],
-                  child: this.tasks[i],
-                ),
+                _parseDraggableIfNotLocked(context, this.tasks[++i])
               ],
             ),
           );
         } else {
-          column.add(
-            Draggable<Task>(
-              data: this.tasks[i].task,
-              dragAnchor: DragAnchor.pointer,
-              childWhenDragging: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                ),
-              ),
-              feedback: this.tasks[i],
-              child: this.tasks[i],
-            ),
-          );
+          column.add(_parseDraggableIfNotLocked(context, this.tasks[i]));
         }
         column.add(SizedBox(height: 15));
       }
     }
 
     return column;
+  }
+
+  Widget _parseDraggableIfNotLocked(BuildContext context, TaskCard taskCard) {
+    if (taskCard.task.isLocked()) {
+      return Tooltip(
+        child: taskCard,
+        message:
+            "${AppLocalizations.of(context).task} ${AppLocalizations.of(context).hasBeenLocked}",
+        decoration: BoxDecoration(
+          color: Colors.redAccent,
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        ),
+        textStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    } else {
+      return Draggable<Task>(
+        data: taskCard.task,
+        dragAnchor: DragAnchor.pointer,
+        childWhenDragging: Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+          ),
+        ),
+        feedback: taskCard,
+        child: taskCard,
+      );
+    }
   }
 }
 
