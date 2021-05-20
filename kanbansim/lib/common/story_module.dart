@@ -181,7 +181,7 @@ class StoryModule {
   }
 
   void _pushNotificationForDay(int dayNumber) {
-    this._eventOccured(EventType.INFO, _scriptedMessages[dayNumber - 1], false);
+    this._eventOccured(EventType.INFO, _scriptedMessages[dayNumber], false);
   }
 
   String _getTranslatedTaskTypeName(String type) {
