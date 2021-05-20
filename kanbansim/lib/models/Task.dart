@@ -36,13 +36,9 @@ class Task {
     if (this.startDay == null || this.endDay == null) {
       return -1;
     } else {
-      int completionTime = this.endDay - this.startDay + 1;
+      int completionTime = (this.endDay - this.startDay).abs() + 1;
 
-      if (completionTime < 0) {
-        return 0;
-      } else {
-        return completionTime;
-      }
+      return completionTime;
     }
   }
 
