@@ -213,10 +213,10 @@ class _ToolBar extends StatelessWidget {
           title: AppLocalizations.of(context).info,
           icon: Icons.info_outline_rounded,
           onTap: () {
-            String platform = _getPlatformName(context).toUpperCase();
+            String version = KanbanSimApp.of(context).getReleaseVersionInfo();
             showAboutDialog(
               context: context,
-              applicationVersion: '1.1.0-$platform',
+              applicationVersion: '$version',
               applicationIcon: Icon(Icons.info_outline_rounded),
               applicationLegalese:
                   AppLocalizations.of(context).applicationLegalese,
@@ -241,13 +241,5 @@ class _ToolBar extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String _getPlatformName(BuildContext context) {
-    if (KanbanSimApp.of(context).isWeb()) {
-      return "web";
-    } else {
-      return "desktop";
-    }
   }
 }

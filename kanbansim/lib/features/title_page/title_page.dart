@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/features/input_output_popups/load_file_popup.dart';
 import 'package:kanbansim/features/main_page/main_page.dart';
+import 'package:kanbansim/features/title_page/version_info.dart';
 import 'package:kanbansim/features/users_creator/users_creator.dart';
 import 'package:kanbansim/features/title_page/logo.dart';
 import 'package:kanbansim/features/title_page/authors_notice.dart';
@@ -40,12 +41,13 @@ class TitlePageState extends State<TitlePage> {
                 : Column(
                     children: [
                       KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
-                      Flexible(flex: 3, fit: FlexFit.tight, child: SizedBox()),
+                      Flexible(flex: 2, fit: FlexFit.tight, child: SizedBox()),
                       Flexible(
-                        flex: 6,
+                        flex: 5,
                         fit: FlexFit.tight,
                         child: Logo(),
                       ),
+                      VersionInfo(),
                       Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
                       Flexible(
                         flex: 2,
@@ -81,7 +83,12 @@ class TitlePageState extends State<TitlePage> {
                       Flexible(
                         flex: 2,
                         fit: FlexFit.tight,
-                        child: AuthorsNotice(),
+                        child: Column(
+                          children: [
+                            AuthorsNotice(),
+                            //SizedBox(height: 10),
+                          ],
+                        ),
                       ),
                       Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
                     ],
