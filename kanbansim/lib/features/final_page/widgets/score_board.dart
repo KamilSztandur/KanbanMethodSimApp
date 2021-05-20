@@ -174,7 +174,7 @@ class _UsersStats extends StatelessWidget {
           ),
         ),
       );
-      names.add(TextSpan(text: ", "));
+      names.add(TextSpan(text: " "));
     }
 
     return names;
