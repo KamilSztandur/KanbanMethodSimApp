@@ -109,7 +109,7 @@ class StoryModule {
   }
 
   void lockTask(Task task) {
-    bool taskIsNotAlreadyBlocked = task.getProductivityRequiredToUnlock() != 0;
+    bool taskIsNotAlreadyBlocked = task.getProductivityRequiredToUnlock() == 0;
     bool taskProgressBarIsNotFull =
         task.progress.getNumberOfUnfulfilledParts() != 0;
 
