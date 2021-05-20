@@ -36,7 +36,7 @@ class TitlePageState extends State<TitlePage> {
           width: 1,
           child: Center(
             child: _isOnMobileDevice()
-                ? Container()
+                ? _DeviceNotSupported()
                 : Column(
                     children: [
                       KanbanSimApp.of(context).isWeb() ? Center() : WindowBar(),
@@ -138,5 +138,30 @@ class TitlePageState extends State<TitlePage> {
 
   void _quitButtonPressed() {
     exit(0);
+  }
+}
+
+class _DeviceNotSupported extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Logo(),
+        Container(
+          padding: EdgeInsets.all(40),
+          child: Text(
+            "${AppLocalizations.of(context).warning.toUpperCase()}\n${AppLocalizations.of(context).deviceNotSupportedMessage}.",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.yellow,
+            ),
+          ),
+        ),
+        LangSwitchButtons(),
+      ],
+    );
   }
 }

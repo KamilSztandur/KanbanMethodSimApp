@@ -247,5 +247,8 @@
     "storyMessageDay7": "Well done, keep working.",
     "storyMessageDay8": "One of the managers came up with an idea of adding a new feature to our product. This would require 4 standard tasks (each of them must be completed for the new feature to work). He asked you for an estimated time to complete these tasks. Write your estimated date of completion of these 4 tasks in your script.",
     "storyMessageDay9": "There are only two days left to complete those tasks with a fixed date.",
-    "storyMessageDay10": "The very last day of the simulation. Finish your work and summarize it in a script."
+    "storyMessageDay10": "The very last day of the simulation. Finish your work and summarize it in a script.",
+
+    
+    "deviceNotSupportedMessage": "Your device is not supported. Mobile devices and screens with unusually low resolutions are not permitted"
 }

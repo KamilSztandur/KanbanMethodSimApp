@@ -240,5 +240,7 @@
     "storyMessageDay7": "Dobra robota, pracujcie dalej.",
     "storyMessageDay8": "Jeden z menedżerów wpadł na pomysł dodania nowej funkcji do naszego produktu. Wymagałoby to zrealizowania 4 standardowych zadań (wszystkie muszą być ukończone by nowa funkcja działała). Prosi was o podanie szacowanego czasu zrealizowania tych zadań. Szacowany dzień ukończenia tych 4 zadań zapiszcie w skrypcie.",
     "storyMessageDay9": "Zostały już tylko dwa dni na ukończenie zadań z ustaloną datą.",
-    "storyMessageDay10": "Ostatni dzień symulacji. Dokończcie pracę i podsumujcie ją w skrypcie."
+    "storyMessageDay10": "Ostatni dzień symulacji. Dokończcie pracę i podsumujcie ją w skrypcie.",
+
+    "deviceNotSupportedMessage": "Twoje urządzenie nie jest wspierane. Urządzenia mobilne oraz ekrany o wyjątkowo niskiej rozdzielczości są niedozwolone"
 }
