@@ -148,25 +148,11 @@ class _Logs extends StatelessWidget {
 
   List<ListTile> _getTiles(BuildContext context) {
     List<ListTile> tiles = <ListTile>[];
-    tiles.add(
-      ListTile(
-        title: Container(
-          height: 1,
-          width: MediaQuery.of(context).size.height,
-          color: Theme.of(context).hintColor,
-        ),
-      ),
-    );
 
     int length = this.messages.length;
-    for (int i = length - 1; i >= 0; i--) {
-      tiles.add(
-        ListTile(
-          title: SelectableText(
-            this.messages[i],
-          ),
-        ),
-      );
+    if (length == 0) {
+      return tiles;
+    } else {
       tiles.add(
         ListTile(
           title: Container(
@@ -176,8 +162,27 @@ class _Logs extends StatelessWidget {
           ),
         ),
       );
-    }
 
-    return tiles;
+      for (int i = length - 1; i >= 0; i--) {
+        tiles.add(
+          ListTile(
+            title: SelectableText(
+              this.messages[i],
+            ),
+          ),
+        );
+        tiles.add(
+          ListTile(
+            title: Container(
+              height: 1,
+              width: MediaQuery.of(context).size.height,
+              color: Theme.of(context).hintColor,
+            ),
+          ),
+        );
+      }
+
+      return tiles;
+    }
   }
 }
