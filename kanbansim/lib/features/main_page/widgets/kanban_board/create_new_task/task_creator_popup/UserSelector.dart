@@ -24,11 +24,20 @@ class UserSelector extends StatefulWidget {
 class UserSelectorState extends State<UserSelector> {
   String _selectedUser;
 
-  @override
-  Widget build(BuildContext context) {
+  void _setDefaultSelectedUserIfNeeded() {
     if (this._selectedUser == null) {
       _selectedUser = widget.initialUserName;
     }
+
+    if (this.widget.ownerName != null &&
+        this.widget.names.contains(this.widget.ownerName)) {
+      _selectedUser = this.widget.ownerName;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _setDefaultSelectedUserIfNeeded();
 
     return Container(
       width: this.widget.subWidth,

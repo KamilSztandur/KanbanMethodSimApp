@@ -15,7 +15,7 @@ class User {
     this._color = color;
 
     this._id = _registeredUsersAmount++;
-    this._productivity = maxProductivity;
+    this._productivity = 0;
   }
 
   void loadAdditionalDataFromSavefile(int id, int productivity) {

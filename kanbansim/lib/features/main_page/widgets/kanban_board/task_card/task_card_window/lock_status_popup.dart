@@ -126,7 +126,11 @@ class _LockStatusState extends State<_LockStatus> {
     List<String> names = _getAvailableUsersNames();
     if (names.length != 0) {
       if (_selectedValue == null) {
-        _selectedValue = names[0];
+        if (this.widget.task.owner != null) {
+          _selectedValue = this.widget.task.owner.getName();
+        } else {
+          _selectedValue = names[0];
+        }
       }
 
       this._readyToUnlock = true;

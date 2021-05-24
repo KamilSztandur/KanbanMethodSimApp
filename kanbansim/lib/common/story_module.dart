@@ -15,7 +15,7 @@ class StoryModule {
 
   final BuildContext context;
   final int _MAX_DAYS = 10;
-  final double _LOCK_PROBABILITY = 0.15;
+  final double _LOCK_PROBABILITY = 0.20;
   final List<int> _POSSIBLE_PRODUCTIVITIES_TO_UNLOCK = [2, 3, 4];
 
   List<String> _scriptedMessages;
@@ -51,6 +51,8 @@ class StoryModule {
 
   void simulationHasBegun() {
     _showNoteFromManagement(0);
+    _pushNotificationForDay(0);
+    _restoreProductivitiesAfterNewDay();
   }
 
   void switchedToNextDay() {
@@ -145,24 +147,15 @@ class StoryModule {
   }
 
   void _restoreRandomProductivity(User user) {
-    int diceRoll = Random().nextInt(100) + 1;
+    int diceRoll = Random().nextInt(5) + 1;
 
-    if (_isInRange(diceRoll, 0, 10)) {
-      user.addProductivity(1);
-    } else if (_isInRange(diceRoll, 11, 30)) {
-      user.addProductivity(2);
-    } else if (_isInRange(diceRoll, 31, 65)) {
-      user.addProductivity(3);
-    } else if (_isInRange(diceRoll, 66, 90)) {
-      user.addProductivity(4);
-    } else if (_isInRange(diceRoll, 91, 100)) {
-      user.addProductivity(5);
-    }
+    user.addProductivity(diceRoll);
 
     this._eventOccured(
-        EventType.INFO,
-        "${AppLocalizations.of(context).teamMember} ${user.getName()} ${AppLocalizations.of(context).startedDayWithProductivityEqualTo} ${user.getProductivity()}.",
-        false);
+      EventType.INFO,
+      "${AppLocalizations.of(context).teamMember} ${user.getName()} ${AppLocalizations.of(context).startedDayWithProductivityEqualTo} ${user.getProductivity()}.",
+      false,
+    );
   }
 
   bool _isInRange(int number, int min, int max) {
