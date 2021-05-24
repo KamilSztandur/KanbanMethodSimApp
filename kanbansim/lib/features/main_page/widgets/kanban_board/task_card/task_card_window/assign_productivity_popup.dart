@@ -153,7 +153,21 @@ class _AssignProductivityWindowState extends State<_AssignProductivityWindow> {
   void _assignInitialValues() {
     this._isReadyToAssign = false;
     this._assignedProductivity = 0;
-    this._assignedUsername = _getAvailableUsersNames()[0];
+
+    List<String> names = _getAvailableUsersNames();
+
+    if (this.widget.task.owner != null) {
+      String ownerName = this.widget.task.owner.getName();
+
+      if (names.contains(ownerName)) {
+        this._assignedUsername = ownerName;
+      } else {
+        this._assignedUsername = names[0];
+      }
+    } else {
+      this._assignedUsername = names[0];
+    }
+
     this._max = _getMaxProductivityValuePossibleToAssign().toDouble();
   }
 

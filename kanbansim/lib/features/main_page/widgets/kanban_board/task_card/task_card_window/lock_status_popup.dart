@@ -127,7 +127,13 @@ class _LockStatusState extends State<_LockStatus> {
     if (names.length != 0) {
       if (_selectedValue == null) {
         if (this.widget.task.owner != null) {
-          _selectedValue = this.widget.task.owner.getName();
+          String ownerName = this.widget.task.owner.getName();
+
+          if (names.contains(ownerName)) {
+            _selectedValue = this.widget.task.owner.getName();
+          } else {
+            _selectedValue = names[0];
+          }
         } else {
           _selectedValue = names[0];
         }
