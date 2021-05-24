@@ -15,7 +15,7 @@ class StoryModule {
 
   final BuildContext context;
   final int _MAX_DAYS = 10;
-  final double _LOCK_PROBABILITY = 0.15;
+  final double _LOCK_PROBABILITY = 0.20;
   final List<int> _POSSIBLE_PRODUCTIVITIES_TO_UNLOCK = [2, 3, 4];
 
   List<String> _scriptedMessages;
