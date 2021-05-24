@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
 
 class KanbanSimApp extends StatefulWidget {
-  final String version = "1.1.5";
+  final String version = "1.1.8";
 
   static _KanbanSimAppState of(BuildContext context) =>
       context.findAncestorStateOfType<_KanbanSimAppState>();
