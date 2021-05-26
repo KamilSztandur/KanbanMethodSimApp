@@ -1,7 +1,7 @@
 import 'package:kanbansim/common/savefile_parsers/savefile_reader.dart';
-import 'package:kanbansim/models/AllTasksContainer.dart';
-import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/all_tasks_container.dart';
+import 'package:kanbansim/models/task.dart';
+import 'package:kanbansim/models/user.dart';
 
 class SimState {
   List<User> users;
@@ -42,6 +42,9 @@ class SimState {
   }
 
   int getLatestTaskID() {
+    print(this.allTasks.idleTasksColumn[2].getID());
+    print(Task.getEmpty().getLatestTaskID());
+    print(this.allTasks.idleTasksColumn[2].getID());
     return Task.getEmpty().getLatestTaskID();
   }
 

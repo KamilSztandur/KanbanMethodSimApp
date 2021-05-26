@@ -1,9 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kanbansim/features/final_page/widgets/tasks_chart.dart';
-import 'package:kanbansim/models/AllTasksContainer.dart';
-import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/TaskType.dart';
+import 'package:kanbansim/models/all_tasks_container.dart';
+import 'package:kanbansim/models/task.dart';
+import 'package:kanbansim/models/task_type.dart';
 
 class CharCalculator {
   final int MAX_DAY = 10;

@@ -4,8 +4,8 @@ import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_tas
 import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_task/task_creator_popup/task_title_creator.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_task/task_creator_popup/task_type_selector.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
-import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/TaskType.dart';
+import 'package:kanbansim/models/task.dart';
+import 'package:kanbansim/models/task_type.dart';
 
 class TaskCreatorPopup {
   final Function getMaxSimDay;

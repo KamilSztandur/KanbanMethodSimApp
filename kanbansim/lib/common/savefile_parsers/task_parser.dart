@@ -1,6 +1,6 @@
-import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/TaskType.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/task.dart';
+import 'package:kanbansim/models/task_type.dart';
+import 'package:kanbansim/models/user.dart';
 
 class TaskParser {
   Function _getAllUsers;

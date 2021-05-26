@@ -1,5 +1,5 @@
 import 'package:kanbansim/common/savefile_parsers/user_parser.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/user.dart';
 
 class UsersListsParser {
   _UsersListsWriter _writer;

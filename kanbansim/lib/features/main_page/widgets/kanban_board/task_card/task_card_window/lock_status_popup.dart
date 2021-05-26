@@ -1,8 +1,8 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/notifications/subtle_message.dart';
-import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/task.dart';
+import 'package:kanbansim/models/user.dart';
 
 class LockStatusPopup {
   final Function taskUnlocked;

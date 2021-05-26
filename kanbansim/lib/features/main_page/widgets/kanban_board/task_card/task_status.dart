@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_completed_icon.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_completed_text.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_progress.dart';
-import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/task.dart';
+import 'package:kanbansim/models/user.dart';
 
 class TaskStatus extends StatefulWidget {
   final Task task;

@@ -3,9 +3,9 @@ import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_tas
 import 'package:kanbansim/features/main_page/widgets/kanban_board/kanban_column.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/set_owner_popup.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/task_card/task_card.dart';
-import 'package:kanbansim/models/Task.dart';
+import 'package:kanbansim/models/task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/user.dart';
 
 class KanbanBoard extends StatefulWidget {
   final Function(Task, User, int) productivityAssigned;

@@ -12,7 +12,7 @@ import 'package:kanbansim/features/title_page/lang_switch_buttons.dart';
 import 'package:kanbansim/features/title_page/menu_button.dart';
 import 'package:kanbansim/features/window_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/user.dart';
 import 'package:kanbansim/models/sim_state.dart';
 
 class TitlePage extends StatefulWidget {

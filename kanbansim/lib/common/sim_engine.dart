@@ -3,8 +3,8 @@ import 'package:kanbansim/common/story_module.dart';
 import 'package:kanbansim/features/final_page/final_page.dart';
 import 'package:kanbansim/features/main_page/main_page.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
-import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/task.dart';
+import 'package:kanbansim/models/user.dart';
 import 'package:kanbansim/models/sim_state.dart';
 
 class SimEngine {

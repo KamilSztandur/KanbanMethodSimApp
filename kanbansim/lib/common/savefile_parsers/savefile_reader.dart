@@ -1,8 +1,8 @@
 import 'package:kanbansim/common/savefile_parsers/simstate_parser.dart';
 import 'package:kanbansim/common/savefile_parsers/tasks_lists_list_parser.dart';
 import 'package:kanbansim/common/savefile_parsers/users_list_parser.dart';
-import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/task.dart';
+import 'package:kanbansim/models/user.dart';
 
 class SavefileReader {
   List<User> _users;
