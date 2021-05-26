@@ -48,9 +48,9 @@
     "availableTasks": "DOSTĘPNE ZADANIA",
     "stageOneTasks": "ZADANIA PIERWSZEGO ETAPU",
     "inProgressTasks": "W TRAKCIE",
-    "doneTasks": "ZROBIONE",
+    "doneTasks": "GOTOWE NA ETAP DRUGI",
     "stageTwoTasks": "ZADANIA DRUGIEGO ETAPU",
-    "finishedTasks": "UKONCZONE ZADANIA",
+    "finishedTasks": "UKOŃCZONE ZADANIA",
 
 
     "createNewTask": "STWÓRZ NOWE ZADANIE",
