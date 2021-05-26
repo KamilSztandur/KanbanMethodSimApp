@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:kanbansim/models/AllTasksContainer.dart';
-import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/TaskType.dart';
+import 'package:kanbansim/models/all_tasks_container.dart';
+import 'package:kanbansim/models/task.dart';
+import 'package:kanbansim/models/task_type.dart';
 
 class StatsCalculator {
   final AllTasksContainer allTasks;

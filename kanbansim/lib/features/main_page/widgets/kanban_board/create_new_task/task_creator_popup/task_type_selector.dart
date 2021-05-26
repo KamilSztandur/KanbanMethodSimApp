@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_task/task_creator_popup/sub_title.dart';
-import 'package:kanbansim/models/TaskType.dart';
+import 'package:kanbansim/models/task_type.dart';
 
 class TaskTypeSelector extends StatefulWidget {
   final Function(TaskType) updateSelectedType;

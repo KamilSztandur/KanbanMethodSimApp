@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/user_info_popup.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/user.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductivityBar extends StatefulWidget {

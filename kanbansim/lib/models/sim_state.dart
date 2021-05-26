@@ -1,7 +1,7 @@
 import 'package:kanbansim/common/savefile_parsers/savefile_reader.dart';
-import 'package:kanbansim/models/AllTasksContainer.dart';
-import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/all_tasks_container.dart';
+import 'package:kanbansim/models/task.dart';
+import 'package:kanbansim/models/user.dart';
 
 class SimState {
   List<User> users;
@@ -15,7 +15,6 @@ class SimState {
     this.currentDay = 1;
     this.users = <User>[];
     this.allTasks = AllTasksContainer(() => this.users);
-    Task.getEmpty().setLatestTaskID(0);
   }
 
   int getAmountOfUsers() => this.users.length;
@@ -42,7 +41,11 @@ class SimState {
   }
 
   int getLatestTaskID() {
-    return Task.getEmpty().getLatestTaskID();
+    return Task.getLatestTaskID();
+  }
+
+  void resetLatestTaskID() {
+    return Task.setLatestTaskID(0);
   }
 
   void _buildCurrentDayFromData(SavefileReader reader, String data) {
@@ -55,7 +58,7 @@ class SimState {
 
   void _buildLatestTaskIDFromData(SavefileReader reader, String data) {
     int latestTaskID = reader.getLatestTaskID(data);
-    Task.getEmpty().setLatestTaskID(latestTaskID);
+    Task.setLatestTaskID(latestTaskID);
   }
 
   void _buildTasksFromData(SavefileReader reader, String data) {

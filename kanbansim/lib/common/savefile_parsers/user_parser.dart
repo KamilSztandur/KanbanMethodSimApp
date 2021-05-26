@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/user.dart';
 
 class UserParser {
   _UserWriter _writer;

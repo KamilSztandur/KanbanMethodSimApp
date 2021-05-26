@@ -48,7 +48,7 @@
     "availableTasks": "AVAILABLE TASKS",
     "stageOneTasks": "STAGE ONE TASKS",
     "inProgressTasks": "IN PROGRESS",
-    "doneTasks": "DONE",
+    "doneTasks": "READY FOR STAGE TWO",
     "stageTwoTasks": "STAGE TWO TASKS",
     "finishedTasks": "FINISHED TASKS",
 

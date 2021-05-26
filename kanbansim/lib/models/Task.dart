@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kanbansim/models/TaskType.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/task_type.dart';
+import 'package:kanbansim/models/user.dart';
 
 class Task {
   static int _latestTaskID = 0;
@@ -15,8 +15,6 @@ class Task {
   int startDay;
   int endDay;
   int stage;
-
-  Task.getEmpty() {}
 
   Task(String title, int productivityRequired, User owner, TaskType type) {
     _latestTaskID++;
@@ -42,11 +40,11 @@ class Task {
     }
   }
 
-  int getLatestTaskID() {
+  static int getLatestTaskID() {
     return _latestTaskID;
   }
 
-  void setLatestTaskID(int latestTaskID) {
+  static void setLatestTaskID(int latestTaskID) {
     _latestTaskID = latestTaskID;
   }
 

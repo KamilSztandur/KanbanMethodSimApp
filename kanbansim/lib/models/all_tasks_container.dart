@@ -1,4 +1,4 @@
-import 'package:kanbansim/models/Task.dart';
+import 'package:kanbansim/models/task.dart';
 
 class AllTasksContainer {
   Function getUsersList;

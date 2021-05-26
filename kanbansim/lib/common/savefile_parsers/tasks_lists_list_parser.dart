@@ -1,5 +1,5 @@
 import 'package:kanbansim/common/savefile_parsers/task_list_parser.dart';
-import 'package:kanbansim/models/Task.dart';
+import 'package:kanbansim/models/task.dart';
 
 class TasksListsListParser {
   _TasksListsListWriter _writer;

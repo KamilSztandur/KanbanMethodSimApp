@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/features/main_page/widgets/kanban_board/create_new_task/task_creator_popup/sub_title.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
-import 'package:kanbansim/models/Task.dart';
+import 'package:kanbansim/models/task.dart';
 
 class TaskTitleCreator extends StatefulWidget {
   final Function(String) updateTitle;
@@ -100,7 +100,6 @@ class _TaskTitleCreatorState extends State<TaskTitleCreator> {
   }
 
   void _generateNameAutomatically() {
-    this._controller.text =
-        "Task #" + (Task.getEmpty().getLatestTaskID() + 1).toString();
+    this._controller.text = "Task #" + (Task.getLatestTaskID() + 1).toString();
   }
 }

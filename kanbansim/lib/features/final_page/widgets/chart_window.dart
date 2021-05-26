@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/common/chart_calculator.dart';
 import 'package:kanbansim/features/final_page/widgets/tasks_chart.dart';
-import 'package:kanbansim/models/AllTasksContainer.dart';
+import 'package:kanbansim/models/all_tasks_container.dart';
 
 class ChartWindow extends StatelessWidget {
   final AllTasksContainer allTasks;

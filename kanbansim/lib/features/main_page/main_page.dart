@@ -10,8 +10,8 @@ import 'package:kanbansim/features/main_page/widgets/team_status_bar/locks_statu
 import 'package:kanbansim/features/main_page/widgets/team_status_bar/producivity_bar.dart';
 import 'package:kanbansim/features/scroll_bar.dart';
 import 'package:kanbansim/kanban_sim_app.dart';
-import 'package:kanbansim/models/Task.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/task.dart';
+import 'package:kanbansim/models/user.dart';
 import 'package:kanbansim/common/sim_engine.dart';
 import 'package:kanbansim/models/sim_state.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:kanbansim/common/stats_calculator.dart';
-import 'package:kanbansim/models/TaskType.dart';
-import 'package:kanbansim/models/User.dart';
+import 'package:kanbansim/models/task_type.dart';
+import 'package:kanbansim/models/user.dart';
 import 'package:kanbansim/models/sim_state.dart';
 
 class ScoreBoard extends StatefulWidget {
