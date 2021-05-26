@@ -86,7 +86,6 @@ class TitlePageState extends State<TitlePage> {
                         child: Column(
                           children: [
                             AuthorsNotice(),
-                            //SizedBox(height: 10),
                           ],
                         ),
                       ),
@@ -111,6 +110,7 @@ class TitlePageState extends State<TitlePage> {
         usersCreated: (List<User> users) {
           SimState newSimState = SimState();
           newSimState.users = users;
+          newSimState.resetLatestTaskID();
 
           MainPage mainPage = MainPage(loadedSimState: newSimState);
           _switchToMainPage(mainPage);

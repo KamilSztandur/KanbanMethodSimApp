@@ -44,6 +44,10 @@ class SimState {
     return Task.getLatestTaskID();
   }
 
+  void resetLatestTaskID() {
+    return Task.setLatestTaskID(0);
+  }
+
   void _buildCurrentDayFromData(SavefileReader reader, String data) {
     this.currentDay = reader.getCurrentDayFromString(data);
   }
