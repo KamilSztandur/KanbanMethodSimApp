@@ -60,7 +60,7 @@ class StoryModule {
 
     this._eventOccured(
       EventType.INFO,
-      "${AppLocalizations.of(context).day} $currentDay ${AppLocalizations.of(context).hasCome}.",
+      "${AppLocalizations.of(context).day} ${currentDay + 1} ${AppLocalizations.of(context).hasCome}.",
       true,
     );
 
