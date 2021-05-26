@@ -16,8 +16,6 @@ class Task {
   int endDay;
   int stage;
 
-  Task.getEmpty();
-
   Task(String title, int productivityRequired, User owner, TaskType type) {
     _latestTaskID++;
     this._taskID = _latestTaskID;
@@ -42,11 +40,11 @@ class Task {
     }
   }
 
-  int getLatestTaskID() {
+  static int getLatestTaskID() {
     return _latestTaskID;
   }
 
-  void setLatestTaskID(int latestTaskID) {
+  static void setLatestTaskID(int latestTaskID) {
     _latestTaskID = latestTaskID;
   }
 

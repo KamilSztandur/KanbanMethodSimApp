@@ -15,7 +15,6 @@ class SimState {
     this.currentDay = 1;
     this.users = <User>[];
     this.allTasks = AllTasksContainer(() => this.users);
-    Task.getEmpty().setLatestTaskID(0);
   }
 
   int getAmountOfUsers() => this.users.length;
@@ -42,10 +41,7 @@ class SimState {
   }
 
   int getLatestTaskID() {
-    print(this.allTasks.idleTasksColumn[2].getID());
-    print(Task.getEmpty().getLatestTaskID());
-    print(this.allTasks.idleTasksColumn[2].getID());
-    return Task.getEmpty().getLatestTaskID();
+    return Task.getLatestTaskID();
   }
 
   void _buildCurrentDayFromData(SavefileReader reader, String data) {
@@ -58,7 +54,7 @@ class SimState {
 
   void _buildLatestTaskIDFromData(SavefileReader reader, String data) {
     int latestTaskID = reader.getLatestTaskID(data);
-    Task.getEmpty().setLatestTaskID(latestTaskID);
+    Task.setLatestTaskID(latestTaskID);
   }
 
   void _buildTasksFromData(SavefileReader reader, String data) {
